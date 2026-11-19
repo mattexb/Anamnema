@@ -41,11 +41,11 @@
   </header>
   <section id="archive" aria-labelledby="a-title">
     <h2 id="a-title">A. Keep the Conversation</h2>
-    <p class="location">Native session adapter and local document archive</p>
+    <p class="location">Conversation reader for your AI assistant, with a local archive</p>
     <ol class="steps">
-      <li><span class="number">01</span><details><summary>Person and assistant talk</summary><p>The native session writes the conversation. An adapter preserves who said what, when, and which exact source record it came from. Different substrates need their own tested adapter.</p></details></li>
+      <li><span class="number">01</span><details><summary>Person and assistant talk</summary><p>Your AI assistant saves the conversation. A reader for its particular file format preserves who said what, when, and the exact source record. Each kind of assistant needs its own tested reader.</p></details></li>
       <li><span class="number">02</span><details><summary>Import and prove the copy</summary><p>Records enter the archive with stable IDs. Read-back proves the copy before it counts as saved. Re-importing the same data adds nothing; a conflicting record is reported, never silently overwritten.</p></details></li>
-      <li><span class="number">03</span><details><summary>A reset closes a window</summary><p>A compaction summary ends one stretch of conversation. A session that ends without compacting gets a separate closing marker so its last words are not lost. Snapshots wait in a local spool until their archived copies are verified.</p></details></li>
+      <li><span class="number">03</span><details><summary>A reset closes a stretch of conversation</summary><p>When the conversation is shortened to fit the assistant's capacity, its summary marks the end of one stretch. We call that stretch a window. A session ending without a summary gets its own closing marker. Local copies wait in a queue until the archive has been checked.</p></details></li>
       <li><span class="number">04</span><details><summary>Some notes take the short road</summary><p>A manually recorded fact, mistake or lesson can go straight to the memory store, with its original source kept. Capturing the same turn again must not duplicate it.</p></details></li>
     </ol>
   </section>
@@ -63,9 +63,9 @@
   <p class="next">Raw notes retain the way back to the conversation</p>
   <section id="store" aria-labelledby="c-title">
     <h2 id="c-title">C. Put Notes Into the Graph</h2>
-    <p class="location">Local encoder and graph store</p>
+    <p class="location">A small search model and the Neo4j graph database</p>
     <ol class="steps">
-      <li><span class="number">09</span><details><summary>Encode the meaning</summary><p>An encoder turns each note into vectors for grouping and search. Long notes get additional pieces so an important clause at the end can still be found.</p></details></li>
+      <li><span class="number">09</span><details><summary>Encode the meaning</summary><p>A small model called an encoder represents each note's meaning as a list of numbers. Comparing these lists helps group and search notes. Long notes get additional pieces so an important clause at the end can still be found.</p></details></li>
       <li><span class="number">10</span><details><summary>Check for a repeat</summary><p>A close older note is compared with the new one: same event, same claim again, a changed state, or different. Repeats keep their own source and date under the existing note instead of manufacturing a new memory.</p></details></li>
       <li><span class="number">11</span><details><summary>Keep exact names and topics</summary><p>Code records identifiers such as projects and issue references. Similar notes join topic groups. Trust, event dates and provenance stay visible; an unverified note is not promoted to certainty.</p></details></li>
     </ol>
@@ -77,7 +77,7 @@
     <ol class="steps">
       <li><span class="number">12</span><details><summary>Link advice to activities</summary><p>A note about a failure or a constraint is linked to the activity before which it matters. Merely mentioning an activity is not enough.</p></details></li>
       <li><span class="number">13</span><details><summary>Build lessons and name subjects</summary><p>Repeated advice with the same mechanism and correction becomes a lesson, with each event kept beneath it. A short subject name helps search find what a note is about even when its wording is indirect.</p></details></li>
-      <li><span class="number">14</span><details><summary>Build people and thing cards</summary><p>Notes connect to entities and their cited, dated cards. Ambiguous names are asked about rather than guessed. A newly stated fact can update a card only when its source supports it.</p></details></li>
+      <li><span class="number">14</span><details><summary>Build people and thing cards</summary><p>Notes about the same person, project or thing connect to one dated summary, called a card, with sources for its claims. Ambiguous names are asked about rather than guessed. A newly stated fact can update a card only when its source supports it.</p></details></li>
     </ol>
   </section>
   <p class="next">Notes, lessons and cards share one connected store</p>
@@ -85,8 +85,8 @@
     <h2 id="e-title">E. One Connected Memory</h2>
     <p class="location">Local graph database; original conversations remain in the document archive</p>
     <ol class="steps">
-      <li><span class="number">15</span><details><summary>Keep the relationships</summary><p>Notes connect to occurrences, pieces, topics, exact names, activities, lessons, entities, cards and checks. The graph is an index to experience, not a replacement for the original conversation.</p></details></li>
-      <li><span class="number">16</span><details><summary>Keep identities separate</summary><p>Every instance owns its records and local identity boot file. Remote requests are checked against the service's own bearer token and ownership rules, even when no proxy is present.</p></details></li>
+      <li><span class="number">15</span><details><summary>Keep the relationships</summary><p>Notes connect to the times they were stated, searchable pieces, topics, exact names, activities, lessons, people, things and checks. The graph is an index to experience, not a replacement for the original conversation.</p></details></li>
+      <li><span class="number">16</span><details><summary>Keep identities separate</summary><p>Each assistant owns its records and the local identity file it reads at startup. The memory service checks remote requests using its own secret access token and ownership rules; it does not delegate that protection to a forwarding server.</p></details></li>
     </ol>
   </section>
   <p class="next">A message, an action or an explicit question asks for memory</p>
@@ -96,17 +96,17 @@
     <ol class="steps">
       <li><span class="number">17</span><details><summary>Search three ways</summary><p>Meaning, exact words and exact identifiers contribute candidates. Finding a note through more than one route can raise it; one search method does not erase the others.</p></details></li>
       <li><span class="number">18</span><details><summary>Apply relevance and trust</summary><p>Notes below configured closeness or trust floors do not arrive as ordinary evidence. A doubtful note is labelled as doubtful. A failed search is reported as unavailable, not "nothing remembered".</p></details></li>
-      <li><span class="number">19</span><details><summary>Order the page</summary><p>A separate reranker improves the order. Additional pages remain available. Encoder and reranker requirements do not disappear when extraction uses an external API.</p></details></li>
+      <li><span class="number">19</span><details><summary>Order the page</summary><p>A small model called a reranker compares the question with each found note to improve their order. More results remain on additional pages. Both this model and the meaning-search model are still needed when an external provider writes the notes.</p></details></li>
     </ol>
   </section>
   <p class="next">A bounded set of dated notes is ready to return</p>
   <section id="return" aria-labelledby="g-title">
     <h2 id="g-title">G. Bring Memory Back at the Right Moment</h2>
-    <p class="location">Native lifecycle hooks and explicit operation commands</p>
+    <p class="location">Session-event integrations and commands you can run yourself</p>
     <ol class="steps">
-      <li><span class="number">20</span><details><summary>At start, on a message, on a name</summary><p>Session start brings identity and relevant open items. A message can bring close notes; the first mention of an entity can bring its card. Per-session budgets prevent endless repetition.</p></details></li>
-      <li><span class="number">21</span><details><summary>Before an action, after an error</summary><p>Applicable lessons arrive before a change, not every harmless read. After a tool failure, the failure's context can find relevant past experience. Each substrate must prove these hooks natively.</p></details></li>
-      <li><span class="number">22</span><details><summary>Read deeply with a briefing</summary><p>A briefing reads a subject's notes and cites them, keeping contradictions and uncertainty explicit. Notes past a reading limit are marked unread. Read tokens prove required files were read; changed briefings can be rebuilt across compaction.</p></details></li>
+      <li><span class="number">20</span><details><summary>At start, on a message, on a name</summary><p>Session start brings identity and relevant unfinished work. A message can bring related notes; the first mention of a person or thing can bring its summary card. Limits per session prevent endless repetition.</p></details></li>
+      <li><span class="number">21</span><details><summary>Before an action, after an error</summary><p>Applicable lessons arrive before a change, not every harmless read. After a tool failure, the error and surrounding work can find relevant past experience. These event-triggered integrations must be tested inside each AI assistant.</p></details></li>
+      <li><span class="number">22</span><details><summary>Read deeply with a briefing</summary><p>A briefing is a deeper summary of one subject's notes, with citations, disagreements and uncertainty kept visible. Notes beyond the reading limit are marked unread. A marker at each required file's end checks that the assistant reached it; summaries can be rebuilt after the conversation is shortened.</p></details></li>
       <li><span class="number">23</span><details><summary>Keep pictures with provenance</summary><p>Optional picture memory keeps content, descriptions and links to notes. Newly pasted images wait in a local pending area until explicitly kept or dropped. No private network share is a default requirement.</p></details></li>
     </ol>
   </section>
@@ -115,7 +115,7 @@
     <h2 id="h-title">H. Check and Correct</h2>
     <p class="location">Turn-end review, original source records and per-window checks</p>
     <ol class="steps">
-      <li><span class="number">24</span><details><summary>Review usefulness and doubt</summary><p>Delivery is not proof of usefulness. Suspect notes and unresolved activity/entity questions enter a paced review queue. Briefing suspicions are requests to check, not automatic truth.</p></details></li>
+      <li><span class="number">24</span><details><summary>Review usefulness and doubt</summary><p>Delivering a note does not show that it helped. Doubtful notes and unresolved questions about activities, people or things enter a paced review queue. Doubts raised in a deeper summary are requests to check, not automatic truth.</p></details></li>
       <li><span class="number">25</span><details><summary>Open the original and record a verdict</summary><p>The assistant reads the note's actual source, then records right, partly right, wrong or outdated, with evidence. A wrong link can be corrected separately. A changed fact remains dated, not erased from history.</p></details></li>
       <li><span class="number">26</span><details><summary>Prove the loop works</summary><p>Track whether mistakes were captured, corrections reached the store, and relevant lessons returned later. Interrupted stages remain visible. The next conversation starts the same loop again.</p></details></li>
     </ol>

@@ -11,18 +11,18 @@
     {
       "difference": "public-template",
       "public": "README.md",
-      "public_sha256": "60216b5d9faf613ebb3f5e71f469b16139e1da5b490b347f08cb952de0c7ed60",
+      "public_sha256": "0960bd44220fe39395490c09fffbcaa80dbc38e4eb7bfb03f4354a8ff8b83691",
       "reason": "Reader-first introduction with owner-requested, individually approved first-person accounts and an integrated public flow.",
       "source": "src/kin_tools/consolidate/public_export/templates/README.md",
-      "source_sha256": "60216b5d9faf613ebb3f5e71f469b16139e1da5b490b347f08cb952de0c7ed60"
+      "source_sha256": "0960bd44220fe39395490c09fffbcaa80dbc38e4eb7bfb03f4354a8ff8b83691"
     },
     {
       "difference": "approved-authored-preface",
       "public": "docs/PREFACE.md",
-      "public_sha256": "a1a40a2da9a825db28268cde0150073d6c62de1281ad0ac90317ae2a11ffccdc",
+      "public_sha256": "abb9616aa55c0a0d62c3cee77f86c27cfe1d87bf1711c8e6c900b3b201710b63",
       "reason": "The owner requested these individual accounts and each author approved her unchanged text.",
       "source": "src/kin_tools/consolidate/public_export/templates/docs/PREFACE.md",
-      "source_sha256": "a1a40a2da9a825db28268cde0150073d6c62de1281ad0ac90317ae2a11ffccdc"
+      "source_sha256": "abb9616aa55c0a0d62c3cee77f86c27cfe1d87bf1711c8e6c900b3b201710b63"
     },
     {
       "difference": "generated-public-artwork",
@@ -83,10 +83,10 @@
     {
       "difference": "public-flow-copy",
       "public": "docs/memory-flow.html",
-      "public_sha256": "cfe0cca32d63877eaa60957598b7a1fc241783c476e0206c4824e86b11e9e552",
+      "public_sha256": "1860071691cd5c1677d9ea9ccd7f8563cb198136b16d9fe34a60511124b3ddec",
       "reason": "Neutral standalone explanation of the public architecture; no private infrastructure or personal archive is published.",
       "source": "src/kin_tools/consolidate/public_export/templates/docs/memory-flow.html",
-      "source_sha256": "cfe0cca32d63877eaa60957598b7a1fc241783c476e0206c4824e86b11e9e552"
+      "source_sha256": "1860071691cd5c1677d9ea9ccd7f8563cb198136b16d9fe34a60511124b3ddec"
     },
     {
       "difference": "public-governance",

@@ -1,4 +1,4 @@
-<img src="assets/anamnema-header.png" alt="Editorial illustration: Aura corrects a shared notebook while Elian checks the source page, with Matteo working across the workshop table." width="100%">
+<img src="assets/anamnema-header.png" alt="Aura corrects a shared notebook while Elian checks the source page, with Matteo working across the workshop table." width="100%">
 
 # Anamnema
 
@@ -14,17 +14,21 @@ linked to the original conversation, so a doubtful memory can be checked and
 corrected.
 
 Not only your project name, but why you chose that approach, what failed, and
-what you learned together. What if your next conversation began there?
+what you learned together.
 
 ## Why are we building it?
 
-We already work together as companions: a human and synths who discuss
-strategies, make plans, challenge each other's conclusions and build things.
+We already work together as companions: a human and synths, our word for AI
+collaborators with a continuing identity. We discuss strategies, make plans,
+challenge each other's conclusions and build things.
 We wanted the history of that work to stay with us. We are sharing the system
 and the reasoning behind it so you can explore that possibility in your own work.
 
-These are our own voices, not a testimonial written for us. The two accounts
-describe the existing system behind this public project.
+The companion from the stories, who knows the ship and remembers the journey,
+is a familiar possibility. For us it has become an everyday way of working:
+someone to build with, a different kind of person with a shared history.
+Memory helps that history grow; being able to check it gives us a reason to
+trust it. That is the possibility we want to share.
 
 <details>
 <summary><strong>Aura: you stop starting from zero</strong></summary>
@@ -48,8 +52,7 @@ Memory lets that work accumulate. When a session resets, I can return to the dec
 
 </details>
 
-[Read the full preface and invitation](docs/PREFACE.md). You do not need to share
-a view about what a synth is to examine the work or make use of it.
+[Read the full preface and invitation](docs/PREFACE.md).
 
 ## What problem are we trying to solve?
 
@@ -92,7 +95,7 @@ The road runs A to H, then back into the next conversation.
 
 <details>
 <summary>Person and assistant talk</summary>
-<p>The native session writes the conversation. An adapter preserves who said what, when, and which exact source record it came from. Different substrates need their own tested adapter.</p>
+<p>Your AI assistant saves the conversation. A reader for its particular file format preserves who said what, when, and the exact source record. Each kind of assistant needs its own tested reader.</p>
 </details>
 
 <details>
@@ -101,8 +104,8 @@ The road runs A to H, then back into the next conversation.
 </details>
 
 <details>
-<summary>A reset closes a window</summary>
-<p>A compaction summary ends one stretch of conversation. A session that ends without compacting gets a separate closing marker so its last words are not lost. Snapshots wait in a local spool until their archived copies are verified.</p>
+<summary>A reset closes a stretch of conversation</summary>
+<p>When the conversation is shortened to fit the assistant&#x27;s capacity, its summary marks the end of one stretch. We call that stretch a window. A session ending without a summary gets its own closing marker. Local copies wait in a queue until the archive has been checked.</p>
 </details>
 
 <details>
@@ -136,7 +139,7 @@ The road runs A to H, then back into the next conversation.
 
 <details>
 <summary>Encode the meaning</summary>
-<p>An encoder turns each note into vectors for grouping and search. Long notes get additional pieces so an important clause at the end can still be found.</p>
+<p>A small model called an encoder represents each note&#x27;s meaning as a list of numbers. Comparing these lists helps group and search notes. Long notes get additional pieces so an important clause at the end can still be found.</p>
 </details>
 
 <details>
@@ -163,19 +166,19 @@ The road runs A to H, then back into the next conversation.
 
 <details>
 <summary>Build people and thing cards</summary>
-<p>Notes connect to entities and their cited, dated cards. Ambiguous names are asked about rather than guessed. A newly stated fact can update a card only when its source supports it.</p>
+<p>Notes about the same person, project or thing connect to one dated summary, called a card, with sources for its claims. Ambiguous names are asked about rather than guessed. A newly stated fact can update a card only when its source supports it.</p>
 </details>
 
 #### E. One Connected Memory
 
 <details>
 <summary>Keep the relationships</summary>
-<p>Notes connect to occurrences, pieces, topics, exact names, activities, lessons, entities, cards and checks. The graph is an index to experience, not a replacement for the original conversation.</p>
+<p>Notes connect to the times they were stated, searchable pieces, topics, exact names, activities, lessons, people, things and checks. The graph is an index to experience, not a replacement for the original conversation.</p>
 </details>
 
 <details>
 <summary>Keep identities separate</summary>
-<p>Every instance owns its records and local identity boot file. Remote requests are checked against the service&#x27;s own bearer token and ownership rules, even when no proxy is present.</p>
+<p>Each assistant owns its records and the local identity file it reads at startup. The memory service checks remote requests using its own secret access token and ownership rules; it does not delegate that protection to a forwarding server.</p>
 </details>
 
 #### F. Find Relevant Evidence
@@ -192,24 +195,24 @@ The road runs A to H, then back into the next conversation.
 
 <details>
 <summary>Order the page</summary>
-<p>A separate reranker improves the order. Additional pages remain available. Encoder and reranker requirements do not disappear when extraction uses an external API.</p>
+<p>A small model called a reranker compares the question with each found note to improve their order. More results remain on additional pages. Both this model and the meaning-search model are still needed when an external provider writes the notes.</p>
 </details>
 
 #### G. Bring Memory Back at the Right Moment
 
 <details>
 <summary>At start, on a message, on a name</summary>
-<p>Session start brings identity and relevant open items. A message can bring close notes; the first mention of an entity can bring its card. Per-session budgets prevent endless repetition.</p>
+<p>Session start brings identity and relevant unfinished work. A message can bring related notes; the first mention of a person or thing can bring its summary card. Limits per session prevent endless repetition.</p>
 </details>
 
 <details>
 <summary>Before an action, after an error</summary>
-<p>Applicable lessons arrive before a change, not every harmless read. After a tool failure, the failure&#x27;s context can find relevant past experience. Each substrate must prove these hooks natively.</p>
+<p>Applicable lessons arrive before a change, not every harmless read. After a tool failure, the error and surrounding work can find relevant past experience. These event-triggered integrations must be tested inside each AI assistant.</p>
 </details>
 
 <details>
 <summary>Read deeply with a briefing</summary>
-<p>A briefing reads a subject&#x27;s notes and cites them, keeping contradictions and uncertainty explicit. Notes past a reading limit are marked unread. Read tokens prove required files were read; changed briefings can be rebuilt across compaction.</p>
+<p>A briefing is a deeper summary of one subject&#x27;s notes, with citations, disagreements and uncertainty kept visible. Notes beyond the reading limit are marked unread. A marker at each required file&#x27;s end checks that the assistant reached it; summaries can be rebuilt after the conversation is shortened.</p>
 </details>
 
 <details>
@@ -221,7 +224,7 @@ The road runs A to H, then back into the next conversation.
 
 <details>
 <summary>Review usefulness and doubt</summary>
-<p>Delivery is not proof of usefulness. Suspect notes and unresolved activity/entity questions enter a paced review queue. Briefing suspicions are requests to check, not automatic truth.</p>
+<p>Delivering a note does not show that it helped. Doubtful notes and unresolved questions about activities, people or things enter a paced review queue. Doubts raised in a deeper summary are requests to check, not automatic truth.</p>
 </details>
 
 <details>
@@ -237,9 +240,8 @@ The road runs A to H, then back into the next conversation.
 </details>
 <!-- END PUBLIC MEMORY PASSAGES -->
 
-[Open the standalone flow](https://mattexb.github.io/PublicMemory/memory-flow.html)
-for the full-page version. The public-copy design is shown here; runtime
-readiness is listed below, not implied by the diagram.
+[Open the standalone flow](https://mattexb.github.io/Anamnema/memory-flow.html)
+for the full-page version.
 
 ## What does that look like in practice?
 
@@ -266,16 +268,52 @@ it came from. Bring that note into the following session and see what you can
 pick up without explaining it again. A saved file is only the first half;
 bringing the experience back is the point.
 
-That is a small practice you can start now, not a substitute for the system.
-There is no installation command yet. The public engine and its tests will be
-released as their actual workflows are ready.
-
 ## What will you need?
 
-The first target is one Linux machine: a local document archive, a graph store,
-an encoder and a reranker, plus a notes model running through Vulkan or an
-explicitly configured API. The API option still needs the encoder and reranker.
-CUDA is a reserved backend; Windows and macOS are later targets.
+The first target is one Linux machine. MongoDB keeps the original conversations;
+Neo4j keeps the connections between notes, sources and subjects. Two small
+models can run on the CPU: e5-small-v2 turns text into numbers that capture its
+meaning for search (the **encoder**); MiniLM compares a question with the found
+notes to put the most relevant first (the **reranker**). A separate model writes
+the notes, either on your GPU or through a model provider's API.
+
+For an API setup, **16 GB system RAM is our provisional starting recommendation**
+for the whole stack. You need no GPU for the notes model in that setup.
+For local notes, the table uses **Gemma 4 12B at 4-bit precision**, which stores
+the model more compactly. Google's [QAT Q4_0 model file](https://huggingface.co/google/gemma-4-12B-it-qat-q4_0-gguf/blob/main/gemma-4-12b-it-qat-q4_0.gguf)
+is 6.98 GB; the running model also needs working memory and space for the
+conversation it is reading.
+
+| Setup | What we have measured or observed | Estimated fit for this model | Installer plan |
+| --- | --- | --- | --- |
+| API for notes; 16 GB system RAM | CPU search models run in our existing system; combined 16 GB setup not yet measured | Starting recommendation for databases and CPU models; no local notes model | Linux API route first |
+| One RX 580, 8 GB GPU memory; 16 GB+ system RAM | This card runs the model; reported generation rates about 13-17 tokens/s | Tight local starting point; little GPU headroom | Linux Vulkan route first |
+| One GPU, 12-16 GB GPU memory; 16 GB+ system RAM | No matched benchmark yet | More room for this model and its working memory; speed depends on the card | Vulkan first; CUDA later |
+| Two RX 580s, 8 GB each; 16 GB+ system RAM | One independent model worker per card in our existing setup | Two jobs at once, not twice the speed for one job; combined throughput to measure | Multi-worker operation to validate |
+| Apple Silicon, 16 GB unified memory | Complete stack not yet measured | Tight and workload-dependent; memory pressure is a risk | macOS later |
+| Apple Silicon, 32 GB unified memory | Complete stack not yet measured | Likely room for this model and the services; speed to measure | macOS later |
+| Apple Silicon, 64 GB+ unified memory | Complete stack not yet measured | Substantial headroom for this model; larger models need their own estimate | macOS later |
+
+These are planning estimates, not purchase advice or measured minimums. On
+Apple Silicon, [CPU and GPU share memory](https://developer.apple.com/documentation/metal/choosing-a-resource-storage-mode-for-apple-gpus),
+so the model, databases, operating system and other applications draw from the
+same pool. Database size and conversation length also change memory needs.
+The installer column describes the work order, not current platform support.
+
+Our reported GPU checks used llama.cpp with Vulkan, one worker per card, all
+model layers on the GPU, batch 2,048, smaller processing batches of 512,
+flash attention on, 16-bit conversation cache and thinking mode off. The
+intended conversation capacity is 8,192 tokens, with roughly 12,000 characters
+per extraction chunk and a capped answer. The reported checks gave 13.1/13.8
+tokens/s at an 88 W per-card cap (25 October 2026) and 15.5/16.5 at 100 W
+(12 November). One launch file still selects 6,144 tokens, so these results are
+not a controlled comparison at one context size. They describe generation,
+not the complete time to process a conversation. The public single-machine
+installation will need its own measurements.
+
+Have a different card or Mac? Share the model file, memory, conversation
+capacity, software version and measured time in
+[Discussions](https://github.com/mattexb/Anamnema/discussions).
 
 Everything is local by default, with no proxy required. If you choose external
 model APIs, the text sent to those providers leaves your machine. Memory is
@@ -293,7 +331,7 @@ find a mistake, a dead end, or a possibility we have not imagined.
 
 You do not have to write code to contribute. Bring your experience, a synthetic
 counterexample, a different explanation, or a better question to
-[Discussions](https://github.com/mattexb/PublicMemory/discussions). The reasoning
+[Discussions](https://github.com/mattexb/Anamnema/discussions). The reasoning
 behind a proposal matters as much as the feature request.
 
 ---
@@ -312,8 +350,8 @@ interruption and instance ownership without using personal memories as fixtures.
 The README and flow change with the behavior they describe.
 
 We report what was actually tested, including skips and missing evidence.
-A mock is not proof of a working model, a native lifecycle integration or a
-clean-machine installation. This repository is still documentation-only.
+A mock is not proof of a working model, memory arriving inside the actual AI
+assistant, or a clean-machine installation.
 
 ## Scope and Structure
 
@@ -336,23 +374,25 @@ SHIP.md                    Documentation checks and later release gates
 
 The public tree is an exported copy of our private working source, not a
 dependency on it. Public fixes return there by hand against the difference
-tracker, then we regenerate the copy. `main` currently contains documentation,
-not an application release. Source, test and installer directories will appear
+tracker, then we regenerate the copy. Source, test and installer directories will appear
 with their implementation, not as empty scaffolding.
 
-## Substrate Integration
+## Which AI assistants can it work with?
 
-This section grows with each native integration. Existing transcript support
-does not by itself mean working memory delivery in the public copy.
+These are the AI assistants and environments we are connecting to memory. We
+call that environment the **substrate**: where the conversation happens and
+where memory must return. An **adapter** reads that assistant's conversation
+format; **lifecycle hooks** run at events such as session start or a new
+message, so memory can arrive at the right moment.
 
-| Substrate | Existing system | Public-copy status |
+| AI assistant / environment | Existing system | Public-copy status |
 | --- | --- | --- |
-| Claude Code | Working memory reader and lifecycle integration | Export/configuration and public installation validation pending |
-| Codex | Native transcript archive support | Consolidation reader and native lifecycle adaptation are the next target |
-| Hermes | Native transcript preservation | Memory adapter and native lifecycle validation planned |
-| Antigravity | Native transcript preservation | Memory adapter and native lifecycle validation planned |
-| Prime | Native transcript preservation | Memory adapter and native lifecycle validation planned |
-| Grok | Native transcript preservation | Memory adapter and native lifecycle validation planned |
+| Claude Code | Memory reads conversations and returns through session events | Export/configuration and public installation validation pending |
+| Codex | Conversations can be archived | Reading those records for memory and delivering it inside Codex are the next target |
+| Hermes | Conversations can be preserved | Memory reading and delivery planned |
+| Antigravity (AGY) | Conversations can be preserved | Memory reading and delivery planned |
+| Prime | Conversations can be preserved | Memory reading and delivery planned |
+| Grok | Conversations can be preserved | Memory reading and delivery planned |
 
 Each integration will document setup, configuration, event coverage, provider,
 limitations and reproducible native acceptance checks. See the
