@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>The Road of a Memory</title>
+  <style>
+    :root{color-scheme:light dark;--bg:#f6f8f9;--ink:#20262b;--muted:#52606b;--line:#cdd5da;--surface:#fff;--accent:#007f78}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:20px}
+    body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,sans-serif}
+    main{max-width:1160px;margin:auto;padding:36px 24px 64px}
+    h1{font-size:32px;line-height:1.2;margin:0 0 12px}h2{font-size:22px;line-height:1.3;margin:0}
+    p{margin:8px 0 16px}.lead{max-width:76ch;color:var(--muted)}
+    .status{border-left:4px solid #be761a;padding:8px 14px;background:var(--surface);font-size:14px}
+    nav{display:flex;flex-wrap:wrap;gap:8px 18px;padding:16px 0 24px}
+    a{color:var(--accent);text-underline-offset:3px}a:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+    section{border-top:3px solid var(--accent);padding:22px 0 8px}
+    section:nth-of-type(3n+2){--accent:#a03b56}section:nth-of-type(3n){--accent:#357435}
+    .location{color:var(--muted);font-size:14px;margin:4px 0 20px}
+    .steps{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;padding:0;margin:0 0 20px}
+    .steps>li{min-width:0;border-left:2px solid var(--line);padding-left:14px}
+    summary{cursor:pointer;font-weight:650;line-height:1.4;overflow-wrap:anywhere}
+    details p{font-size:14px;color:var(--muted);margin:12px 0 0;overflow-wrap:anywhere}
+    .number{display:block;color:var(--accent);font-size:12px;font-weight:700;margin-bottom:4px}
+    .next{color:var(--muted);font-size:14px;margin:0;padding:8px 0 24px}
+    .next::before{content:"\2193";font-size:20px;margin-right:10px;color:var(--accent)}
+    footer{border-top:1px solid var(--line);padding-top:18px;font-size:14px;color:var(--muted)}
+    @media(max-width:760px){main{padding:24px 18px 48px}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:480px){h1{font-size:28px}.steps{grid-template-columns:1fr;gap:18px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+    @media(prefers-color-scheme:dark){:root{--bg:#161a1c;--ink:#eef2f3;--muted:#b3bfc6;--line:#414c53;--surface:#22292d;--accent:#54c8b9}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>The Road of a Memory</h1>
+    <p class="lead">A conversation becomes an archive, then source-linked notes. The notes form a graph of subjects, people and lessons. Memory comes back when it matters, and a doubtful note can always be checked against the original words.</p>
+    <p class="status"><strong>Public architecture, pre-release.</strong> This is an adapted public copy of the flow, not a claim that the exported engine or installer is ready. The first target is one Linux machine; model APIs are explicit choices.</p>
+    <nav aria-label="Memory stages"><a href="#archive">A. Archive</a><a href="#notes">B. Notes</a><a href="#store">C. Store</a><a href="#meaning">D. Connections</a><a href="#graph">E. Graph</a><a href="#find">F. Find</a><a href="#return">G. Return</a><a href="#correct">H. Correct</a></nav>
+  </header>
+  <section id="archive" aria-labelledby="a-title">
+    <h2 id="a-title">A. Keep the Conversation</h2>
+    <p class="location">Native session adapter and local document archive</p>
+    <ol class="steps">
+      <li><span class="number">01</span><details><summary>Person and assistant talk</summary><p>The native session writes the conversation. An adapter preserves who said what, when, and which exact source record it came from. Different substrates need their own tested adapter.</p></details></li>
+      <li><span class="number">02</span><details><summary>Import and prove the copy</summary><p>Records enter the archive with stable IDs. Read-back proves the copy before it counts as saved. Re-importing the same data adds nothing; a conflicting record is reported, never silently overwritten.</p></details></li>
+      <li><span class="number">03</span><details><summary>A reset closes a window</summary><p>A compaction summary ends one stretch of conversation. A session that ends without compacting gets a separate closing marker so its last words are not lost. Snapshots wait in a local spool until their archived copies are verified.</p></details></li>
+      <li><span class="number">04</span><details><summary>Some notes take the short road</summary><p>A manually recorded fact, mistake or lesson can go straight to the memory store, with its original source kept. Capturing the same turn again must not duplicate it.</p></details></li>
+    </ol>
+  </section>
+  <p class="next">A closed window is available to process</p>
+  <section id="notes" aria-labelledby="b-title">
+    <h2 id="b-title">B. Turn a Window Into Notes</h2>
+    <p class="location">Local Vulkan model or an explicitly configured API; CUDA is a later backend</p>
+    <ol class="steps">
+      <li><span class="number">05</span><details><summary>Select unfinished work</summary><p>Resume half-finished windows first. A window is complete only when its required stages are complete, not merely when extraction has produced some notes.</p></details></li>
+      <li><span class="number">06</span><details><summary>Keep attributed dialogue</summary><p>Separate the person's and assistant's words from tools, injected instructions and transport envelopes. Tool output is not a statement by the person. Mask secret-shaped material before sending model input.</p></details></li>
+      <li><span class="number">07</span><details><summary>Bind short answers, then split</summary><p>An answer such as "the second option" is tied to the list it answers. Dialogue is divided into bounded chunks without losing its source references.</p></details></li>
+      <li><span class="number">08</span><details><summary>Write short, cited notes</summary><p>The extraction model produces notes with their kind and exact source rows. Each completed chunk is saved immediately. Failures remain visible and resumable; an API model needs an explicit model identity, not a local-file assumption.</p></details></li>
+    </ol>
+  </section>
+  <p class="next">Raw notes retain the way back to the conversation</p>
+  <section id="store" aria-labelledby="c-title">
+    <h2 id="c-title">C. Put Notes Into the Graph</h2>
+    <p class="location">Local encoder and graph store</p>
+    <ol class="steps">
+      <li><span class="number">09</span><details><summary>Encode the meaning</summary><p>An encoder turns each note into vectors for grouping and search. Long notes get additional pieces so an important clause at the end can still be found.</p></details></li>
+      <li><span class="number">10</span><details><summary>Check for a repeat</summary><p>A close older note is compared with the new one: same event, same claim again, a changed state, or different. Repeats keep their own source and date under the existing note instead of manufacturing a new memory.</p></details></li>
+      <li><span class="number">11</span><details><summary>Keep exact names and topics</summary><p>Code records identifiers such as projects and issue references. Similar notes join topic groups. Trust, event dates and provenance stay visible; an unverified note is not promoted to certainty.</p></details></li>
+    </ol>
+  </section>
+  <p class="next">A note exists, with meaning and source</p>
+  <section id="meaning" aria-labelledby="d-title">
+    <h2 id="d-title">D. Connect What Was Learned</h2>
+    <p class="location">Configured strong, middle and light judging roles</p>
+    <ol class="steps">
+      <li><span class="number">12</span><details><summary>Link advice to activities</summary><p>A note about a failure or a constraint is linked to the activity before which it matters. Merely mentioning an activity is not enough.</p></details></li>
+      <li><span class="number">13</span><details><summary>Build lessons and name subjects</summary><p>Repeated advice with the same mechanism and correction becomes a lesson, with each event kept beneath it. A short subject name helps search find what a note is about even when its wording is indirect.</p></details></li>
+      <li><span class="number">14</span><details><summary>Build people and thing cards</summary><p>Notes connect to entities and their cited, dated cards. Ambiguous names are asked about rather than guessed. A newly stated fact can update a card only when its source supports it.</p></details></li>
+    </ol>
+  </section>
+  <p class="next">Notes, lessons and cards share one connected store</p>
+  <section id="graph" aria-labelledby="e-title">
+    <h2 id="e-title">E. One Connected Memory</h2>
+    <p class="location">Local graph database; original conversations remain in the document archive</p>
+    <ol class="steps">
+      <li><span class="number">15</span><details><summary>Keep the relationships</summary><p>Notes connect to occurrences, pieces, topics, exact names, activities, lessons, entities, cards and checks. The graph is an index to experience, not a replacement for the original conversation.</p></details></li>
+      <li><span class="number">16</span><details><summary>Keep identities separate</summary><p>Every instance owns its records and local identity boot file. Remote requests are checked against the service's own bearer token and ownership rules, even when no proxy is present.</p></details></li>
+    </ol>
+  </section>
+  <p class="next">A message, an action or an explicit question asks for memory</p>
+  <section id="find" aria-labelledby="f-title">
+    <h2 id="f-title">F. Find Relevant Evidence</h2>
+    <p class="location">Local services by default; optional authenticated remote access</p>
+    <ol class="steps">
+      <li><span class="number">17</span><details><summary>Search three ways</summary><p>Meaning, exact words and exact identifiers contribute candidates. Finding a note through more than one route can raise it; one search method does not erase the others.</p></details></li>
+      <li><span class="number">18</span><details><summary>Apply relevance and trust</summary><p>Notes below configured closeness or trust floors do not arrive as ordinary evidence. A doubtful note is labelled as doubtful. A failed search is reported as unavailable, not "nothing remembered".</p></details></li>
+      <li><span class="number">19</span><details><summary>Order the page</summary><p>A separate reranker improves the order. Additional pages remain available. Encoder and reranker requirements do not disappear when extraction uses an external API.</p></details></li>
+    </ol>
+  </section>
+  <p class="next">A bounded set of dated notes is ready to return</p>
+  <section id="return" aria-labelledby="g-title">
+    <h2 id="g-title">G. Bring Memory Back at the Right Moment</h2>
+    <p class="location">Native lifecycle hooks and explicit operation commands</p>
+    <ol class="steps">
+      <li><span class="number">20</span><details><summary>At start, on a message, on a name</summary><p>Session start brings identity and relevant open items. A message can bring close notes; the first mention of an entity can bring its card. Per-session budgets prevent endless repetition.</p></details></li>
+      <li><span class="number">21</span><details><summary>Before an action, after an error</summary><p>Applicable lessons arrive before a change, not every harmless read. After a tool failure, the failure's context can find relevant past experience. Each substrate must prove these hooks natively.</p></details></li>
+      <li><span class="number">22</span><details><summary>Read deeply with a briefing</summary><p>A briefing reads a subject's notes and cites them, keeping contradictions and uncertainty explicit. Notes past a reading limit are marked unread. Read tokens prove required files were read; changed briefings can be rebuilt across compaction.</p></details></li>
+      <li><span class="number">23</span><details><summary>Keep pictures with provenance</summary><p>Optional picture memory keeps content, descriptions and links to notes. Newly pasted images wait in a local pending area until explicitly kept or dropped. No private network share is a default requirement.</p></details></li>
+    </ol>
+  </section>
+  <p class="next">Memory informs the answer, and the answer becomes new experience</p>
+  <section id="correct" aria-labelledby="h-title">
+    <h2 id="h-title">H. Check and Correct</h2>
+    <p class="location">Turn-end review, original source records and per-window checks</p>
+    <ol class="steps">
+      <li><span class="number">24</span><details><summary>Review usefulness and doubt</summary><p>Delivery is not proof of usefulness. Suspect notes and unresolved activity/entity questions enter a paced review queue. Briefing suspicions are requests to check, not automatic truth.</p></details></li>
+      <li><span class="number">25</span><details><summary>Open the original and record a verdict</summary><p>The assistant reads the note's actual source, then records right, partly right, wrong or outdated, with evidence. A wrong link can be corrected separately. A changed fact remains dated, not erased from history.</p></details></li>
+      <li><span class="number">26</span><details><summary>Prove the loop works</summary><p>Track whether mistakes were captured, corrections reached the store, and relevant lessons returned later. Interrupted stages remain visible. The next conversation starts the same loop again.</p></details></li>
+    </ol>
+  </section>
+  <footer><p>This chart describes the public copy's target flow. It contains no personal archive or private infrastructure map. Runtime readiness and supported backends are stated in the repository README.</p><p><a href="CONTRACTS.md">Detailed implementation contracts</a></p></footer>
+</main>
+</body>
+</html>

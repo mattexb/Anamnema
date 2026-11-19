@@ -1,0 +1,122 @@
+{
+  "files": [
+    {
+      "difference": "public-policy",
+      "public": ".gitignore",
+      "public_sha256": "25094d2f63893180fcf0fa14c1dff1bd0fe2cca2d44789b097cb6902b5adbb11",
+      "reason": "Keep credentials, databases, logs and generated environments out of public history.",
+      "source": "src/kin_tools/consolidate/public_export/templates/.gitignore",
+      "source_sha256": "25094d2f63893180fcf0fa14c1dff1bd0fe2cca2d44789b097cb6902b5adbb11"
+    },
+    {
+      "difference": "public-template",
+      "public": "README.md",
+      "public_sha256": "d7c061f7217df1bd385d5c29585a3c53b6047d270c739f1c9674d0cdcd6568b6",
+      "reason": "Public front page describes only the current exported checkpoint.",
+      "source": "src/kin_tools/consolidate/public_export/templates/README.md",
+      "source_sha256": "d7c061f7217df1bd385d5c29585a3c53b6047d270c739f1c9674d0cdcd6568b6"
+    },
+    {
+      "difference": "public-license",
+      "public": "LICENSE",
+      "public_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "reason": "Apache-2.0 distribution license, included from the first public tree.",
+      "source": "src/kin_tools/consolidate/public_export/templates/LICENSE",
+      "source_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "difference": "public-governance",
+      "public": "CONTRIBUTING.md",
+      "public_sha256": "fadbe1215127d5f516c5bf731cb79bbac55be23c1dda985f8e20479ffc76b169",
+      "reason": "Public contribution workflow preserves manual upstream porting and the copy rule.",
+      "source": "src/kin_tools/consolidate/public_export/templates/CONTRIBUTING.md",
+      "source_sha256": "fadbe1215127d5f516c5bf731cb79bbac55be23c1dda985f8e20479ffc76b169"
+    },
+    {
+      "difference": "public-governance",
+      "public": "SECURITY.md",
+      "public_sha256": "aec02784e9851c863c1e72bce524c45825c06543cf6cdf4ffd599c30dab88cc6",
+      "reason": "Private vulnerability reports must not be filed as public issues.",
+      "source": "src/kin_tools/consolidate/public_export/templates/SECURITY.md",
+      "source_sha256": "aec02784e9851c863c1e72bce524c45825c06543cf6cdf4ffd599c30dab88cc6"
+    },
+    {
+      "difference": "public-verification",
+      "public": "SHIP.md",
+      "public_sha256": "b6a992d8a2954ad98deee43a21397beb2562a697300880724c7613bdb75c4dbe",
+      "reason": "Docs-only checks are separated from future runtime release evidence.",
+      "source": "src/kin_tools/consolidate/public_export/templates/SHIP.md",
+      "source_sha256": "b6a992d8a2954ad98deee43a21397beb2562a697300880724c7613bdb75c4dbe"
+    },
+    {
+      "difference": "public-hosting",
+      "public": "docs/.nojekyll",
+      "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "Publish the standalone HTML and contract links without a documentation build dependency.",
+      "source": "src/kin_tools/consolidate/public_export/templates/docs/.nojekyll",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "difference": "public-contract",
+      "public": "docs/CONTRACTS.md",
+      "public_sha256": "1c12d407473f099ea1835f1e9731a6b2f7bcfaff7e35da8c8f8837c28a7e8841",
+      "reason": "Ingestion, provider, substrate and acceptance contracts precede runtime export.",
+      "source": "src/kin_tools/consolidate/public_export/templates/docs/CONTRACTS.md",
+      "source_sha256": "1c12d407473f099ea1835f1e9731a6b2f7bcfaff7e35da8c8f8837c28a7e8841"
+    },
+    {
+      "difference": "public-flow-copy",
+      "public": "docs/memory-flow.html",
+      "public_sha256": "cfe0cca32d63877eaa60957598b7a1fc241783c476e0206c4824e86b11e9e552",
+      "reason": "Neutral standalone explanation of the public architecture; no private infrastructure or personal archive is published.",
+      "source": "src/kin_tools/consolidate/public_export/templates/docs/memory-flow.html",
+      "source_sha256": "cfe0cca32d63877eaa60957598b7a1fc241783c476e0206c4824e86b11e9e552"
+    },
+    {
+      "difference": "public-governance",
+      "public": ".github/ISSUE_TEMPLATE/bug.yml",
+      "public_sha256": "02301f79b345f9fcaf43a95dfd1cd4835dc477d8f318472b82eef28d1127ffaf",
+      "reason": "Structured operating-system, backend and redacted installer diagnostics.",
+      "source": "src/kin_tools/consolidate/public_export/templates/.github/ISSUE_TEMPLATE/bug.yml",
+      "source_sha256": "02301f79b345f9fcaf43a95dfd1cd4835dc477d8f318472b82eef28d1127ffaf"
+    },
+    {
+      "difference": "public-governance",
+      "public": ".github/labels.json",
+      "public_sha256": "f68292b8cfd72e2aebb5b1adb3cbb1c94b5f2ef82c36e164db7a5373e3ce8f23",
+      "reason": "Declarative labels; publishing automation must apply them explicitly.",
+      "source": "src/kin_tools/consolidate/public_export/templates/.github/labels.json",
+      "source_sha256": "f68292b8cfd72e2aebb5b1adb3cbb1c94b5f2ef82c36e164db7a5373e3ce8f23"
+    }
+  ],
+  "omissions": [
+    {
+      "reason": "Runtime export waits for public ingestion, secret/provider and substrate adapters; no installable engine is claimed by this bootstrap.",
+      "source": "src/kin_tools/consolidate"
+    },
+    {
+      "reason": "Private keyring resolution is replaced with environment or explicitly selected public secret-file configuration.",
+      "source": "src/kin_tools/shared/credentials.py"
+    },
+    {
+      "reason": "Private transcript maintenance is not exported; a minimal verified ingestion adapter is required.",
+      "source": "src/kin_tools/transcript"
+    },
+    {
+      "reason": "Legacy memory CLI/storage is not exported; graph entities and identity remain part of the future public engine.",
+      "source": "src/kin_tools/memory"
+    },
+    {
+      "reason": "Legacy facts CLI and whole-repository bundle builder are not exported.",
+      "source": "src/kin_tools/facts"
+    },
+    {
+      "reason": "Selected lifecycle hooks must be pinned and exported with neutral config; no deployed hooks or state are copied.",
+      "source": "external-hooks"
+    }
+  ],
+  "phase": "documentation-only-not-installable",
+  "schema_version": 1,
+  "source_revision": "d64f443688761c10c90cb2e41a435ab73517c753",
+  "source_revision_scope": "base commit; listed file hashes identify the exported bytes"
+}

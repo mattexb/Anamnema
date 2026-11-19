@@ -1,0 +1,40 @@
+name: Bug report
+description: Report a reproducible problem with redacted diagnostics
+title: "[Bug]: "
+labels: [bug, needs-triage]
+body:
+  - type: markdown
+    attributes:
+      value: "Security or personal-data exposure: use SECURITY.md, not this form. Do not attach transcripts, credentials, identity files or people cards."
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+    validations:
+      required: true
+  - type: input
+    id: operating-system
+    attributes:
+      label: Operating system and version
+    validations:
+      required: true
+  - type: dropdown
+    id: backend
+    attributes:
+      label: Where the notes model runs
+      options: [vulkan, cuda, api]
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Synthetic reproduction and expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: installer-output
+    attributes:
+      label: Installer or operation output, with secrets and private paths removed
+      render: text
+    validations:
+      required: true

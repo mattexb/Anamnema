@@ -1,0 +1,11 @@
+[
+  {"name": "bug", "color": "c62828", "description": "Behavior differs from the documented contract"},
+  {"name": "needs-triage", "color": "757575", "description": "Awaiting maintainer assessment"},
+  {"name": "installation", "color": "00695c", "description": "Installer or setup problem"},
+  {"name": "documentation", "color": "1565c0", "description": "Documentation correction"},
+  {"name": "backend:vulkan", "color": "2e7d32", "description": "Vulkan inference path"},
+  {"name": "backend:cuda", "color": "558b2f", "description": "CUDA path, later target"},
+  {"name": "backend:api", "color": "00838f", "description": "Configured model API path"},
+  {"name": "upstream-port-needed", "color": "ad1457", "description": "Public fix awaits private-source port or recorded exception"},
+  {"name": "owner-decision", "color": "6a1b9a", "description": "Requires repository owner decision"}
+]
