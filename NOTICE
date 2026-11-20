@@ -1,0 +1,14 @@
+Anamnema includes transcript-reading and input-sanitization code adapted from
+Tencent Hy-Memory (MemHub), Copyright (C) 2026 Tencent, under Apache-2.0.
+
+Upstream: https://github.com/Tencent-Hunyuan/Hy-Memory
+
+The source attribution and original upstream file paths are retained in
+src/anamnema/memhub_parsing.py. This file is copied from the reviewed source
+with explicit container casts and equivalent typed loops for strict typing.
+Unused tool-rendering helpers are omitted, and the harness scan limit comes
+from public configuration. Retained parsing/sanitization grammar is unchanged.
+Anamnema integration is separate.
+
+The Apache-2.0 license is included in LICENSE. This notice does not imply
+endorsement by Tencent.

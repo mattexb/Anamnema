@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "names": {
+    "owner": "Owner",
+    "agent": "Assistant",
+    "sent": "Sent"
+  },
+  "chunk_characters": 12000,
+  "chunk_tokens": 3600,
+  "letters_per_token": 4,
+  "letter_pattern": "[^\\W\\d_]",
+  "space_pattern": "\\s",
+  "numbered_pattern": "(?m)^\\s*(\\d{1,2})\\.\\s",
+  "disagree_pattern": "\\bdisagree\\w*\\s+(?:on|with)\\s+([\\d,\\s]+(?:and\\s+\\d+)?)",
+  "agree_pattern": "(?<!dis)\\bagree\\w*\\s+(?:on|with)\\s+([\\d,\\s]+(?:and\\s+\\d+)?)",
+  "numbers_pattern": "\\d+",
+  "minimum_items": 2,
+  "max_notes": 7,
+  "note_characters": 350,
+  "minimum_note_characters": 20,
+  "max_rows_per_note": 8,
+  "nearest_rows": 3,
+  "note_word_pattern": "[a-z0-9][a-z0-9_.-]{3,}",
+  "owner_decision_pattern": "\\b{owner}\\b[^.]{0,40}\\b(decid|rul|reject|approv|chose|ordered|requir)",
+  "answer_characters_per_token": 3,
+  "note_overhead_tokens": 60,
+  "answer_overhead_tokens": 50,
+  "model_options": {
+    "temperature": 1.0,
+    "top_p": 0.95,
+    "top_k": 64,
+    "min_p": 0.0,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  }
+}

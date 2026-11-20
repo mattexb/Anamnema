@@ -1,37 +1,143 @@
-# Verification And Release
+# Anamnema Verification And Commits
 
-This first checkpoint is documentation-only. It is not an application release.
-The public branch is `main`. Do not publish runtime code by passing docs-only
-checks or describe unexercised installation/backend/substrate paths as supported.
+This project-owned procedure governs work here. Read it fully before staging.
+It must not be overwritten by the old source-project template. The published
+checkpoint is documentation-only, not a working application release.
 
-## Documentation Checkpoint
+## Hard Boundaries
 
-1. Inspect the exact staged tree. No runtime code, private source, conversation,
-   credential, identity file, database, generated local state or private report.
-2. Check README status, scope, engineering/testing discipline, current structure
-   and substrate support against the contents actually committed.
-3. Verify relative links, full Apache-2.0 text, public governance and private
-   security-report guidance. Ensure public tracker entries explain the copy.
-4. Open the standalone flow at desktop and mobile sizes. Check all eight stages,
-   expanded passages, keyboard operation, no horizontal text overflow and no
-   private names/addresses. The chart represents the intended public copy.
-5. Scan the staged contents and resulting commit for secrets and private data.
-   An allowlist and a short name-pattern filter are not a complete secrets audit.
-6. After explicit publication authorization, verify the repository's public URL,
-   hosted flow link, issue form, labels, Discussions and private reporting.
+1. KinTools is read-only: no edits to code, tests, config, docs, generated files
+   or history. Read/copy reviewed source; neutralize it inside Anamnema. Do not
+   use checks or formatters that write into the source tree. Leave earlier edits
+   there untouched, including Elian's own earlier changes.
+2. A bug or gap found in KinTools stops the affected work. Record evidence here
+   and discuss the possible fix with Matteo. No source fix, silent workaround or
+   automatic carry-back; an Anamnema grant does not authorize source changes.
+3. Local commits only until the whole agreed code is present and verified.
+   No push, remote branch/tag, release, publication or deployment. Matteo must
+   explicitly reopen publication and provide fresh push authorization later.
+4. System installation, deployed hook changes and live database/transcript
+   mutations require separate authorization. Tests use synthetic records,
+   temporary state and explicitly disposable databases.
+5. The local plan records decisions and open questions. Discuss unresolved
+   installation choices before implementing them. Internal handoff context is
+   not part of the public distribution or documentation site.
 
-## Runtime Release Gates
+## Ownership And Branches
 
-Future runtime contributions must include synthetic tests, appropriate focused
-and integration checks, and full lint/type/test gates before release. Prove
-ingest -> extract -> store -> recall -> source -> correction/card using isolated
-stores, including failures and replay. Verify native substrate hooks and a clean
-Linux VM with an API notes model. Test installer dry-run and actual selected
-backend; an unimplemented backend must fail visibly. Update README, flow and
-difference tracker in the same commit as each behavioral change.
+Inspect `git status --short --branch` and the complete diff before editing or
+staging. Own explicit paths; preserve unrelated work. One writer owns a worktree;
+parallel writers need separate worktrees and an agreed integration procedure.
 
-Public fixes are carried back manually to the private working source against
-the tracker and regenerated. Publication must preserve third-party licences and
-notices, scan built artifacts and history, and report skipped or unavailable
-checks rather than calling them passed. Security, licensing, personal-data and
-direction questions go to the repository owner before public action.
+`main` currently holds the published documentation checkpoint. Implementation
+uses local `feature/<scope>` or `fix/<scope>` branches; declare the transition in
+README before starting. Do not switch another writer's worktree or invent shared
+integration/release lines. A handoff gives exact branch, commit, uncommitted
+paths, checks/results, unresolved issues and next action.
+
+No force-push, rewritten shared history, destructive cleanup, broad staging or
+hook bypass. A guard refusal is a stopping condition, not a reason to bypass it.
+
+## Gates
+
+Run focused checks while iterating and full relevant gates once at a coherent
+checkpoint. Record exact commands/results and unavailable evidence. Required
+gate failure or unexpected skipping blocks the corresponding commit/release;
+silence does not accept a finding.
+
+### Every Commit
+
+- Review the complete intended diff and exact staged tree, including new files.
+- Run `git diff --check` and `git diff --cached --check`.
+- Update affected contracts, help, README, flow and difference tracker. Verify
+  relative links, source/output hashes and appropriate third-party notices.
+- Exclude credentials, personal fixtures, native conversations, identity files,
+  databases, logs, local handoff plans and private runtime assumptions. Approved
+  signed accounts/artwork do not authorize unrelated personal disclosures.
+- Scan files before committing with `gitleaks dir --no-banner .`; scan the
+  resulting commit with `gitleaks git --no-banner --log-opts=-1 .`. Missing tools
+  or scan failures are reported and block completion, not silently skipped.
+
+### Documentation
+
+- Preserve full Apache-2.0 text, contribution/security guidance and truthful
+  tested-versus-planned scope. Signed accounts change only with author approval.
+- For layout changes, check GitHub-compatible rendering on desktop light/dark
+  and mobile: images load, keyboard expansion works, no overlap/page overflow.
+- Keep README and standalone flow passages synchronized. Check all stages and
+  expanded passages on desktop and mobile when the flow changes.
+- Prose-only changes do not require unrelated engine tests. Report that no
+  runtime behavior was exercised; docs checks are not engine-readiness evidence.
+
+### Code And Configuration
+
+- Follow applicable engineering standards: small reusable modules, validated
+  configuration, visible failures and no secret-bearing output.
+- Test the actual changed path, including relevant failures, interruption,
+  replay/idempotency, source attribution and ownership. Keep databases disposable;
+  no fallback to a real store or source-project credentials.
+- At a module checkpoint run its full tests, lint, type and package checks in
+  Anamnema's own declared environment. At final integration run all application
+  gates once. Passing private-source tests does not prove the neutralized copy.
+- The first setup foundation's test/lint/type/build commands are declared in
+  [docs/SETUP.md](docs/SETUP.md) and pyproject.toml. Expand them as modules arrive;
+  absent commands are unfinished work, never a passing gate.
+- Prove imports, packaged resources and child commands resolve without private
+  modules, settings or home hosts. A CLI help test alone is not operational proof.
+
+### Installer And Claude
+
+- Prove dry-run makes no writes, package/service changes or hook edits.
+- Test prerequisites, unsupported OS/backend, unavailable/locked keyring,
+  non-destructive settings merge, partial failure and repeat/resume behavior.
+- Exercise installed `anamnema` outside the source checkout and the actual Claude
+  lifecycle: delivery, capture, identity/read gates and compaction continuity.
+  Mocked hook payloads do not prove native registration or final-message capture.
+- Default to localhost. Test the service's own access tokens and record ownership
+  independently of any optional proxy. Unsupported paths fail explicitly.
+
+## Local Commit Procedure
+
+1. Complete applicable gates and record evidence in project-local notes.
+2. Obtain a fresh explicit local `kin-commit` grant. Do not request `--push`
+   during this phase. Check session, expiry, count and repository/branch scope;
+   stop on refusal, expiry or exhaustion. Earlier grants cannot be reused.
+3. Stage explicit paths in a separate `git add -- <paths>` call. Never use
+   `git add .`, `git add -A` or force-add ignored private plans.
+4. Review `git diff --cached` and staged whitespace. Refuse unrelated/private data.
+5. Make one coherent Conventional Commit per granted commit. End its body with:
+
+   ```text
+   Signed-by: <author>
+   Commit-mode: direct
+   ```
+
+6. Scan the resulting commit. Record hash/subject, gate results, unresolved
+   findings and final `git status --short --branch`.
+7. Leave it local. A checkpoint is not a release/version or permission to push.
+
+## Gates Before Publication
+
+When the whole agreed code is in, demonstrate:
+
+1. Native import -> verified archive -> extraction -> storage -> search ->
+   original source -> correction -> updated card/briefing, retaining the trace.
+2. Failure, interruption, replay, malformed replies, unavailable dependencies
+   and mixed-assistant access with isolated data; not only mocked success.
+3. Native Claude continuity and complete operation/nightly commands.
+4. End-to-end single-machine Linux setup, including the reviewed clean-VM API
+   notes-model test. Only tested backend/platform paths count as supported.
+5. Full application gates, inspected wheel/archive contents, and installation
+   without a private checkout, credentials, hosts or machine runner.
+6. Reviewed copy provenance, repeatable transforms and retained third-party
+   licences/model terms. Do not overwrite project-owned policy or local records.
+7. Current README/flow, measured-versus-estimated hardware information and final
+   artifact/history privacy scans. State skipped/unavailable checks honestly.
+8. Release evidence naming exact commit/artifact checksums, results, unresolved
+   issues and Matteo's decision on any nonblocking issue. Escalate security,
+   licensing, personal-data and direction questions before public action.
+
+Only after Matteo explicitly reopens publication and authorizes push may the
+accepted commit be published. Then verify public URLs, hosted flow, issue form,
+labels/topics, Discussions and private reporting. Do not create a release or
+compatibility claim before the relevant acceptance evidence exists.

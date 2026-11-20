@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "substrate": "claude",
+  "backend": "vulkan",
+  "target": {
+    "system": "Linux",
+    "distribution": "debian",
+    "version": "13",
+    "mode": "native",
+    "python_minimum": [3, 14]
+  },
+  "paths": {
+    "config": "~/.config/anamnema",
+    "data": "~/.local/share/anamnema",
+    "state": "~/.local/state/anamnema",
+    "models": "~/.local/share/anamnema/models"
+  },
+  "services": {
+    "archive": {"host": "127.0.0.1", "port": 27017},
+    "graph": {"host": "127.0.0.1", "port": 7687},
+    "encoder": {"host": "127.0.0.1", "port": 18090},
+    "reranker": {"host": "127.0.0.1", "port": 18093},
+    "notes": {"host": "127.0.0.1", "port": 18083}
+  },
+  "keyring": {
+    "provider": "secret-service",
+    "namespace": "anamnema",
+    "executable": "secret-tool"
+  },
+  "requirements": {
+    "common": ["claude"],
+    "vulkan": ["vulkaninfo"],
+    "api": []
+  }
+}

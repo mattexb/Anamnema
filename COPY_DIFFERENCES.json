@@ -1,18 +1,18 @@
 {
   "files": [
     {
-      "difference": "public-policy",
+      "difference": "project-owned-neutralization",
       "public": ".gitignore",
-      "public_sha256": "25094d2f63893180fcf0fa14c1dff1bd0fe2cca2d44789b097cb6902b5adbb11",
-      "reason": "Keep credentials, databases, logs and generated environments out of public history.",
+      "public_sha256": "c803676e29b3daf3c3fc9439f80f859badbf812663a385e7f12b93e2c47b2f74",
+      "reason": "Project-owned exclusions for development caches and test coverage artifacts. Retain the original source hash for provenance; never overwrite from that template.",
       "source": "src/kin_tools/consolidate/public_export/templates/.gitignore",
       "source_sha256": "25094d2f63893180fcf0fa14c1dff1bd0fe2cca2d44789b097cb6902b5adbb11"
     },
     {
-      "difference": "public-template",
+      "difference": "project-owned-neutralization",
       "public": "README.md",
-      "public_sha256": "0960bd44220fe39395490c09fffbcaa80dbc38e4eb7bfb03f4354a8ff8b83691",
-      "reason": "Reader-first introduction with owner-requested, individually approved first-person accounts and an integrated public flow.",
+      "public_sha256": "18e9ddeb1603bc0f66646819e4f3cb789763bcdd27df468d5d642650de0fc8ad",
+      "reason": "Project-owned development status, setup contract, branch policy and single-project scope. Retain the original source hash for provenance; never overwrite from that template.",
       "source": "src/kin_tools/consolidate/public_export/templates/README.md",
       "source_sha256": "0960bd44220fe39395490c09fffbcaa80dbc38e4eb7bfb03f4354a8ff8b83691"
     },
@@ -57,10 +57,10 @@
       "source_sha256": "aec02784e9851c863c1e72bce524c45825c06543cf6cdf4ffd599c30dab88cc6"
     },
     {
-      "difference": "public-verification",
+      "difference": "project-owned-neutralization",
       "public": "SHIP.md",
-      "public_sha256": "b6a992d8a2954ad98deee43a21397beb2562a697300880724c7613bdb75c4dbe",
-      "reason": "Docs-only checks are separated from future runtime release evidence.",
+      "public_sha256": "167d8b236fc8f1a2479e00de62745cde0e701e966c879e5ee8472b603b78f032",
+      "reason": "Project-owned local gates and commit policy; source read-only and publication held. Retain the original source hash for provenance; never overwrite from that template.",
       "source": "src/kin_tools/consolidate/public_export/templates/SHIP.md",
       "source_sha256": "b6a992d8a2954ad98deee43a21397beb2562a697300880724c7613bdb75c4dbe"
     },
@@ -73,10 +73,10 @@
       "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
-      "difference": "public-contract",
+      "difference": "project-owned-neutralization",
       "public": "docs/CONTRACTS.md",
-      "public_sha256": "1c12d407473f099ea1835f1e9731a6b2f7bcfaff7e35da8c8f8837c28a7e8841",
-      "reason": "Ingestion, provider, substrate and acceptance contracts precede runtime export.",
+      "public_sha256": "485da3a05c60b2b1e0115a6cbff2fb9dc5ca67ea792413aac8f31e8802e3364c",
+      "reason": "Project-owned updated contract: neutralized importer/keyring, tested models and Claude-first extenders. Retain the original source hash for provenance; never overwrite from that template.",
       "source": "src/kin_tools/consolidate/public_export/templates/docs/CONTRACTS.md",
       "source_sha256": "1c12d407473f099ea1835f1e9731a6b2f7bcfaff7e35da8c8f8837c28a7e8841"
     },
@@ -103,6 +103,625 @@
       "reason": "Declarative labels; publishing automation must apply them explicitly.",
       "source": "src/kin_tools/consolidate/public_export/templates/.github/labels.json",
       "source_sha256": "f68292b8cfd72e2aebb5b1adb3cbb1c94b5f2ef82c36e164db7a5373e3ce8f23"
+    },
+    {
+      "difference": "project-owned-setup-foundation",
+      "public": "pyproject.toml",
+      "public_sha256": "b9dbba62649fa09b119bf6c9e2979e364db75307d924e88347f64406eed0a016",
+      "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
+      "source": "project:pyproject.toml",
+      "source_sha256": "b9dbba62649fa09b119bf6c9e2979e364db75307d924e88347f64406eed0a016"
+    },
+    {
+      "difference": "project-owned-setup-foundation",
+      "public": "uv.lock",
+      "public_sha256": "6936bf1369ce47d1f95742b721ee9a1c1a435731eca41b3607c24dfe0f833e41",
+      "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
+      "source": "project:uv.lock",
+      "source_sha256": "6936bf1369ce47d1f95742b721ee9a1c1a435731eca41b3607c24dfe0f833e41"
+    },
+    {
+      "difference": "project-owned-setup-foundation",
+      "public": "src/anamnema/__init__.py",
+      "public_sha256": "4154e3f424394dfd601d09756eaddc76e4721659069cd7a02f499bd7e2378c28",
+      "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
+      "source": "project:src/anamnema/__init__.py",
+      "source_sha256": "4154e3f424394dfd601d09756eaddc76e4721659069cd7a02f499bd7e2378c28"
+    },
+    {
+      "difference": "project-owned-setup-foundation",
+      "public": "src/anamnema/__main__.py",
+      "public_sha256": "e293544e746fa3e812d3fc483d5d9edaf5e2eb3d063170e2fad2984ac85a5f3e",
+      "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
+      "source": "project:src/anamnema/__main__.py",
+      "source_sha256": "e293544e746fa3e812d3fc483d5d9edaf5e2eb3d063170e2fad2984ac85a5f3e"
+    },
+    {
+      "difference": "project-owned-setup-foundation",
+      "public": "src/anamnema/cli.py",
+      "public_sha256": "9fcd3be36a0e232b0d1ba58cc6839a035e17d3d701d1d9abdd6e0a82bab204a7",
+      "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
+      "source": "project:src/anamnema/cli.py",
+      "source_sha256": "9fcd3be36a0e232b0d1ba58cc6839a035e17d3d701d1d9abdd6e0a82bab204a7"
+    },
+    {
+      "difference": "project-owned-setup-foundation",
+      "public": "src/anamnema/setup_config.py",
+      "public_sha256": "1933aaf2f4fed4d11d7e3acaf9c9aa2edf7f3c9388487eb2b236031b27f0472e",
+      "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
+      "source": "project:src/anamnema/setup_config.py",
+      "source_sha256": "1933aaf2f4fed4d11d7e3acaf9c9aa2edf7f3c9388487eb2b236031b27f0472e"
+    },
+    {
+      "difference": "project-owned-setup-foundation",
+      "public": "src/anamnema/setup_plan.py",
+      "public_sha256": "c9a7534fb9d6714c2b87c422d022dfa2446e277ab334c63e5209c47ccb1c269a",
+      "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
+      "source": "project:src/anamnema/setup_plan.py",
+      "source_sha256": "c9a7534fb9d6714c2b87c422d022dfa2446e277ab334c63e5209c47ccb1c269a"
+    },
+    {
+      "difference": "project-owned-setup-foundation",
+      "public": "src/anamnema/config/setup.json",
+      "public_sha256": "d5bc793a666dc334121746b1b30bd136d78137e633e8243015ba31041c02e8f8",
+      "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
+      "source": "project:src/anamnema/config/setup.json",
+      "source_sha256": "d5bc793a666dc334121746b1b30bd136d78137e633e8243015ba31041c02e8f8"
+    },
+    {
+      "difference": "project-owned-setup-foundation",
+      "public": "tests/test_setup.py",
+      "public_sha256": "831d297e648c4956762f77bbf4522c7bbbe7e768d062bfef19ec97bd2045ad24",
+      "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
+      "source": "project:tests/test_setup.py",
+      "source_sha256": "831d297e648c4956762f77bbf4522c7bbbe7e768d062bfef19ec97bd2045ad24"
+    },
+    {
+      "difference": "project-owned-setup-foundation",
+      "public": "docs/SETUP.md",
+      "public_sha256": "5e0fcc4600f2cf26b76d19263ec60d1d1c8f64d68f3783ece33b0ecfbcd1da7e",
+      "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
+      "source": "project:docs/SETUP.md",
+      "source_sha256": "5e0fcc4600f2cf26b76d19263ec60d1d1c8f64d68f3783ece33b0ecfbcd1da7e"
+    },
+    {
+      "difference": "project-owned-setup-wizard",
+      "public": "src/anamnema/setup_choices.py",
+      "public_sha256": "228c58a737b270c4aceeaa44ad99c8f1de659c36808748fb7ceeeca339f0f4fd",
+      "reason": "Anamnema-owned nonsecret wizard, safe answer persistence, manual guide or isolated tests; no original source modification.",
+      "source": "project:src/anamnema/setup_choices.py",
+      "source_sha256": "228c58a737b270c4aceeaa44ad99c8f1de659c36808748fb7ceeeca339f0f4fd"
+    },
+    {
+      "difference": "project-owned-setup-wizard",
+      "public": "src/anamnema/setup_answers.py",
+      "public_sha256": "66ed81aff05afd6a3299f8eb3e8883c7c7b94ebb250d2f63ec939d4df3f3d235",
+      "reason": "Anamnema-owned nonsecret wizard, safe answer persistence, manual guide or isolated tests; no original source modification.",
+      "source": "project:src/anamnema/setup_answers.py",
+      "source_sha256": "66ed81aff05afd6a3299f8eb3e8883c7c7b94ebb250d2f63ec939d4df3f3d235"
+    },
+    {
+      "difference": "project-owned-setup-wizard",
+      "public": "src/anamnema/setup_wizard.py",
+      "public_sha256": "ebc825702568faca014a8ab22e3821e331329ed2fafe21df9050fa92a6177be1",
+      "reason": "Anamnema-owned nonsecret wizard, safe answer persistence, manual guide or isolated tests; no original source modification.",
+      "source": "project:src/anamnema/setup_wizard.py",
+      "source_sha256": "ebc825702568faca014a8ab22e3821e331329ed2fafe21df9050fa92a6177be1"
+    },
+    {
+      "difference": "project-owned-setup-wizard",
+      "public": "src/anamnema/config/wizard.json",
+      "public_sha256": "5120873302d0301137c5d3658b84e3c338ca318927a1f513763d398d94f442e0",
+      "reason": "Anamnema-owned nonsecret wizard, safe answer persistence, manual guide or isolated tests; no original source modification.",
+      "source": "project:src/anamnema/config/wizard.json",
+      "source_sha256": "5120873302d0301137c5d3658b84e3c338ca318927a1f513763d398d94f442e0"
+    },
+    {
+      "difference": "project-owned-setup-wizard",
+      "public": "src/anamnema/guides/keyring.md",
+      "public_sha256": "755562628fcd7823d27679cd7c17f564e24775c8d3f3c6252cc9cb9d44e1ce2c",
+      "reason": "Anamnema-owned nonsecret wizard, safe answer persistence, manual guide or isolated tests; no original source modification.",
+      "source": "project:src/anamnema/guides/keyring.md",
+      "source_sha256": "755562628fcd7823d27679cd7c17f564e24775c8d3f3c6252cc9cb9d44e1ce2c"
+    },
+    {
+      "difference": "project-owned-setup-wizard",
+      "public": "docs/KEYRING.md",
+      "public_sha256": "66f11bb2dbd8afe092dfa7bfcf46d046f93a2e2bcfc210e6a9a42e2b8a109c25",
+      "reason": "Anamnema-owned nonsecret wizard, safe answer persistence, manual guide or isolated tests; no original source modification.",
+      "source": "project:docs/KEYRING.md",
+      "source_sha256": "66f11bb2dbd8afe092dfa7bfcf46d046f93a2e2bcfc210e6a9a42e2b8a109c25"
+    },
+    {
+      "difference": "project-owned-setup-wizard",
+      "public": "tests/test_wizard.py",
+      "public_sha256": "62a9b5dc525170be5e0b5c309bba2d1895ac5c19420ef30a8f8c9e627ad9ef0f",
+      "reason": "Anamnema-owned nonsecret wizard, safe answer persistence, manual guide or isolated tests; no original source modification.",
+      "source": "project:tests/test_wizard.py",
+      "source_sha256": "62a9b5dc525170be5e0b5c309bba2d1895ac5c19420ef30a8f8c9e627ad9ef0f"
+    },
+    {
+      "difference": "project-owned-archive",
+      "public": "docs/ARCHIVE.md",
+      "public_sha256": "9e6b8c1d7120ba7543fb87a4d8db2dcbad685a1643fe0c75f80ab2e138725ad3",
+      "reason": "Anamnema-owned archive policy, CLI integration, documentation or synthetic/disposable-store tests; no private runtime dependency.",
+      "source": "project:docs/ARCHIVE.md",
+      "source_sha256": "9e6b8c1d7120ba7543fb87a4d8db2dcbad685a1643fe0c75f80ab2e138725ad3"
+    },
+    {
+      "additional_sources": [],
+      "difference": "neutralized-archive-copy",
+      "public": "src/anamnema/archive_access.py",
+      "public_sha256": "4239a34d1679820f62d73ae8a6f39483a069d37a36c071bce2d3ce88adccfffb",
+      "reason": "Neutralized Secret Service service/entry/field lookup reused for archive URI and optional model bearer, with configured public namespace and selectors. Reject/contain encoding failures; no private credential fallback or values. Explicit localhost Mongo target and secret-safe diagnostics.",
+      "source": "src/kin_tools/keyring/store.py",
+      "source_revision": "90db14380c6b565551e4bdc0eb108687a21f7e20",
+      "source_sha256": "6da176a8875f8e585d50927a39c5129267f33a38093c56a6cae1bba189abbe3e"
+    },
+    {
+      "additional_sources": [
+        {
+          "source": "src/kin_tools/transcript/preservation/repository.py",
+          "source_revision": "90db14380c6b565551e4bdc0eb108687a21f7e20",
+          "source_sha256": "b39bc70c8d571d042bbd6bd86dd103697965171ebd2949b49e17e6ffaca80c91"
+        }
+      ],
+      "difference": "neutralized-archive-copy",
+      "public": "src/anamnema/archive_codec.py",
+      "public_sha256": "c94a3aaba9ef1a593e8312c717c8131d1d479a99d8d1d16f75009f677e868b9c",
+      "reason": "Lossless compression is retained with bounded decompression and BSON-size failure; no private artifact paths or silent truncation.",
+      "source": "src/kin_tools/transcript/preservation/envelope.py",
+      "source_revision": "90db14380c6b565551e4bdc0eb108687a21f7e20",
+      "source_sha256": "92bf86ec72c2793893d0be23fd8f7eca7256f931286b237b9e2671a6eccd6f00"
+    },
+    {
+      "additional_sources": [],
+      "difference": "neutralized-archive-copy",
+      "public": "src/anamnema/archive_models.py",
+      "public_sha256": "e42c1c2c2bd9e9e80434c276f503a49cad47e0b0caa980b2acb01388bd6266ac",
+      "reason": "Content/time identity retained, with explicit instance, substrate and kind ownership; native UUID alone is not unique. Public envelope nests untouched source rather than adding private _kin fields.",
+      "source": "src/kin_tools/transcript/preservation/identity.py",
+      "source_revision": "90db14380c6b565551e4bdc0eb108687a21f7e20",
+      "source_sha256": "455df673753ec9bff245ccdc2c562b9bf2f757c89205bfeaed01386f1d9f48d9"
+    },
+    {
+      "additional_sources": [],
+      "difference": "neutralized-archive-copy",
+      "public": "src/anamnema/archive_mongo.py",
+      "public_sha256": "cf0b3bb2699b8a65b34952f4351bd9a0fd93ab8c6300a0945ecb054e9ccc4066",
+      "reason": "Set-on-insert and read-back retained; public collections, scoped content identities, typed checksum recomputation and completed receipts. New public schema is not a private database migration.",
+      "source": "src/kin_tools/transcript/preservation/repository.py",
+      "source_revision": "90db14380c6b565551e4bdc0eb108687a21f7e20",
+      "source_sha256": "b39bc70c8d571d042bbd6bd86dd103697965171ebd2949b49e17e6ffaca80c91"
+    },
+    {
+      "difference": "project-owned-archive",
+      "public": "src/anamnema/config/archive.json",
+      "public_sha256": "635622249c5a07a8a1bab99ae14f87dd4106abc606b6d05a1b287444cd5675d2",
+      "reason": "Anamnema-owned archive policy, CLI integration, documentation or synthetic/disposable-store tests; no private runtime dependency.",
+      "source": "project:src/anamnema/config/archive.json",
+      "source_sha256": "635622249c5a07a8a1bab99ae14f87dd4106abc606b6d05a1b287444cd5675d2"
+    },
+    {
+      "difference": "project-owned-archive",
+      "public": "src/anamnema/import_cli.py",
+      "public_sha256": "902eafeaac67d0599bf9949b4e45ca8ccb07893626977e158fe82a0858bfc3fa",
+      "reason": "Anamnema-owned archive policy, CLI integration, documentation or synthetic/disposable-store tests; no private runtime dependency.",
+      "source": "project:src/anamnema/import_cli.py",
+      "source_sha256": "902eafeaac67d0599bf9949b4e45ca8ccb07893626977e158fe82a0858bfc3fa"
+    },
+    {
+      "difference": "project-owned-archive",
+      "public": "src/anamnema/ingest_config.py",
+      "public_sha256": "9e18372fdab63c58909927b535a6d4412644c5c7be6d54b7ecc57a70a42d3b6d",
+      "reason": "Anamnema-owned archive policy, CLI integration, documentation or synthetic/disposable-store tests; no private runtime dependency.",
+      "source": "project:src/anamnema/ingest_config.py",
+      "source_sha256": "9e18372fdab63c58909927b535a6d4412644c5c7be6d54b7ecc57a70a42d3b6d"
+    },
+    {
+      "difference": "project-owned-archive",
+      "public": "src/anamnema/substrates/__init__.py",
+      "public_sha256": "3c6f6d89bdb7f5b6a0ecd231a0059fc0dde484fba708bd7ebb5068281d23727e",
+      "reason": "Anamnema-owned archive policy, CLI integration, documentation or synthetic/disposable-store tests; no private runtime dependency.",
+      "source": "project:src/anamnema/substrates/__init__.py",
+      "source_sha256": "3c6f6d89bdb7f5b6a0ecd231a0059fc0dde484fba708bd7ebb5068281d23727e"
+    },
+    {
+      "additional_sources": [
+        {
+          "source": "src/kin_tools/transcript/preservation/parser.py",
+          "source_revision": "90db14380c6b565551e4bdc0eb108687a21f7e20",
+          "source_sha256": "ff6de85ff37c01a5cd5b78367ae66eb8800d297326c17206d2f2707cdbaf90c0"
+        }
+      ],
+      "difference": "neutralized-archive-copy",
+      "public": "src/anamnema/substrates/base.py",
+      "public_sha256": "4683c7c09b723ebc156fbcbace79bfc365952696b250f0856551298493ce75be",
+      "reason": "Neutralized numbered JSONL reader from the corrected source; shared bounded reading and physical provenance without native Claude field literals.",
+      "source": "src/kin_tools/transcript/parsers/jsonl.py",
+      "source_revision": "90db14380c6b565551e4bdc0eb108687a21f7e20",
+      "source_sha256": "7db66e793e1dfd7a3d4543edade2ce469ca8824385ab3f06c4d248673b852e77"
+    },
+    {
+      "additional_sources": [
+        {
+          "source": "src/kin_tools/transcript/preservation/policies/helpers.py",
+          "source_revision": "90db14380c6b565551e4bdc0eb108687a21f7e20",
+          "source_sha256": "53e7090f30b58cc339037562709674c41423f9324cf717d0a5acf234afbced49"
+        }
+      ],
+      "difference": "neutralized-archive-copy",
+      "public": "src/anamnema/substrates/claude.py",
+      "public_sha256": "5753c7892f3f170529e218ee8a409738e1dea08767e4e3a7b1881125127df385",
+      "reason": "Claude classification remains an extender; original rows retained, configurable native schema, other substrates deferred.",
+      "source": "src/kin_tools/transcript/preservation/policies/claude.py",
+      "source_revision": "90db14380c6b565551e4bdc0eb108687a21f7e20",
+      "source_sha256": "607d29e1005944f78d3fda9bb6acc35c8d8c875e9caf7612076ff5168d5da5f6"
+    },
+    {
+      "difference": "project-owned-archive",
+      "public": "tests/conftest.py",
+      "public_sha256": "359faefbe094fa736143db0482a652cbcd39da5d7e25ebf5d9c639b073764d47",
+      "reason": "Anamnema-owned archive policy, CLI integration, documentation or synthetic/disposable-store tests; no private runtime dependency.",
+      "source": "project:tests/conftest.py",
+      "source_sha256": "359faefbe094fa736143db0482a652cbcd39da5d7e25ebf5d9c639b073764d47"
+    },
+    {
+      "difference": "project-owned-archive",
+      "public": "tests/test_archive_access.py",
+      "public_sha256": "fa9913f8148736eaf88eafbf17f38bac847930d104817ea2399717cc9b2abd6e",
+      "reason": "Anamnema-owned archive policy, CLI integration, documentation or synthetic/disposable-store tests; no private runtime dependency.",
+      "source": "project:tests/test_archive_access.py",
+      "source_sha256": "fa9913f8148736eaf88eafbf17f38bac847930d104817ea2399717cc9b2abd6e"
+    },
+    {
+      "difference": "project-owned-archive",
+      "public": "tests/test_archive_config.py",
+      "public_sha256": "267c9aa83fcfd8ab62a13610faeefb599edcd0c241d50bc873dd66c222b65915",
+      "reason": "Anamnema-owned archive policy, CLI integration, documentation or synthetic/disposable-store tests; no private runtime dependency.",
+      "source": "project:tests/test_archive_config.py",
+      "source_sha256": "267c9aa83fcfd8ab62a13610faeefb599edcd0c241d50bc873dd66c222b65915"
+    },
+    {
+      "difference": "project-owned-archive",
+      "public": "tests/test_archive_failures.py",
+      "public_sha256": "94c50a92c98faf171b3526483f0fd9de74451f96589b422de4bb85a564ce0879",
+      "reason": "Anamnema-owned archive policy, CLI integration, documentation or synthetic/disposable-store tests; no private runtime dependency.",
+      "source": "project:tests/test_archive_failures.py",
+      "source_sha256": "94c50a92c98faf171b3526483f0fd9de74451f96589b422de4bb85a564ce0879"
+    },
+    {
+      "difference": "project-owned-archive",
+      "public": "tests/test_ingestion.py",
+      "public_sha256": "16e170075eb99358dc6f155a7e530761cf5b883f38748944b2a4ae0a98146081",
+      "reason": "Anamnema-owned archive policy, CLI integration, documentation or synthetic/disposable-store tests; no private runtime dependency.",
+      "source": "project:tests/test_ingestion.py",
+      "source_sha256": "16e170075eb99358dc6f155a7e530761cf5b883f38748944b2a4ae0a98146081"
+    },
+    {
+      "additional_sources": [
+        {
+          "source": "src/kin_tools/consolidate/readers/claude.py",
+          "source_revision": "7fe50bff22c336afe678c489c65d751d6be53374",
+          "source_sha256": "528c597366c8a31a3d2d4491735b6da8ffefb83aedce847725a8f35189627196"
+        }
+      ],
+      "difference": "project-owned-processing-preparation",
+      "public": "src/anamnema/processing.py",
+      "public_sha256": "9930e0630fa1ebdd940fe4a8ea9b34433dfdbe6abac4c2614230e18767c75496",
+      "reason": "Adapt summary/closing partition semantics to public records in captured source order rather than timestamp-only ranges; validate closing references and ownership, keep open tails and source attribution. Model execution/reuse remains unimplemented.",
+      "source": "project:src/anamnema/processing.py",
+      "source_sha256": "9930e0630fa1ebdd940fe4a8ea9b34433dfdbe6abac4c2614230e18767c75496"
+    },
+    {
+      "difference": "project-owned-processing-preparation",
+      "public": "src/anamnema/process_cli.py",
+      "public_sha256": "48e154a84fb5648a16bb15523858c5db9a2e2fc5293a1ff36f5ddbf10f60e3e3",
+      "reason": "Shared read-only preparation over common records; no model, database writes or private configuration. Preview does not claim archive verification or extracted notes.",
+      "source": "project:src/anamnema/process_cli.py",
+      "source_sha256": "48e154a84fb5648a16bb15523858c5db9a2e2fc5293a1ff36f5ddbf10f60e3e3"
+    },
+    {
+      "difference": "project-owned-processing-preparation",
+      "public": "tests/test_processing.py",
+      "public_sha256": "e86e4a055671ca178425da0acaf19d9c5c6140c4169cfd638cbdc250275be007",
+      "reason": "Shared read-only preparation over common records; no model, database writes or private configuration. Preview does not claim archive verification or extracted notes.",
+      "source": "project:tests/test_processing.py",
+      "source_sha256": "e86e4a055671ca178425da0acaf19d9c5c6140c4169cfd638cbdc250275be007"
+    },
+    {
+      "difference": "project-owned-processing-preparation",
+      "public": "docs/PROCESSING.md",
+      "public_sha256": "1ff8e4f6bcf2ed1d9f44d05c15b8c3dc76da53d44cf4bb45253a2257b961f9ee",
+      "reason": "Shared read-only preparation over common records; no model, database writes or private configuration. Preview does not claim archive verification or extracted notes.",
+      "source": "project:docs/PROCESSING.md",
+      "source_sha256": "1ff8e4f6bcf2ed1d9f44d05c15b8c3dc76da53d44cf4bb45253a2257b961f9ee"
+    },
+    {
+      "difference": "project-owned-processing-input",
+      "public": "NOTICE",
+      "public_sha256": "a6cd4be08edf7ee439dccff058234f1510fa16ea56da69a4e68f30539346f176",
+      "reason": "Public processing-input policy, attribution or synthetic tests; no private runtime dependency.",
+      "source": "project:NOTICE",
+      "source_sha256": "a6cd4be08edf7ee439dccff058234f1510fa16ea56da69a4e68f30539346f176"
+    },
+    {
+      "additional_sources": [],
+      "difference": "neutralized-processing-input",
+      "public": "src/anamnema/binding.py",
+      "public_sha256": "48159e682b4901ff78f63a00ae8ee73cc882a925fc0ace76285f3f609ba227fe",
+      "reason": "Preserve explicitly named agreements/rejections and unresolved items. Configured grammar; gender-neutral code interpretation labels, never owner quotations.",
+      "source": "src/kin_tools/consolidate/binding.py",
+      "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+      "source_sha256": "b56a5bded785d6707ed3e0e7e6bfdf5d07dcd13258de652d16ea2873930522c6"
+    },
+    {
+      "additional_sources": [],
+      "difference": "neutralized-processing-input",
+      "public": "src/anamnema/chunks.py",
+      "public_sha256": "8c6363dfef7eb949bc72f4ae8805b7aba05266ebaa1f182d583f973418a145ae",
+      "reason": "Preserve labelled source-linked character/token-estimate chunking, but refuse an oversized single row visibly instead of preparing an out-of-bounds call or truncating it.",
+      "source": "src/kin_tools/consolidate/notes.py",
+      "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+      "source_sha256": "929a5bf08d4562271426f73d2a4a544b7272a56ccc42a3498c8b85b2affe1c2c"
+    },
+    {
+      "additional_sources": [
+        {
+          "source": "src/kin_tools/consolidate/notes.py",
+          "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+          "source_sha256": "929a5bf08d4562271426f73d2a4a544b7272a56ccc42a3498c8b85b2affe1c2c"
+        }
+      ],
+      "difference": "neutralized-processing-input",
+      "public": "src/anamnema/config/notes.json",
+      "public_sha256": "f1df16f38f438597d48df02685d6c7a908df9264cdebeac1b4e7420bae24a258",
+      "reason": "Retain tested chunk limits and model options as nonsecret data with neutral speaker labels and configured binding/schema limits. No model execution or alternative-model support is implied.",
+      "source": "src/kin_tools/consolidate/config/default_config.json",
+      "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+      "source_sha256": "13e1dd3e2a7c0188a97872e16898fc84509609b6597973417f35af2c69ead5a3"
+    },
+    {
+      "additional_sources": [],
+      "difference": "neutralized-processing-input",
+      "public": "src/anamnema/config/speech.json",
+      "public_sha256": "38cc5f74459fa107d3c86fd71cc65305817074fc566b7122e19933f6cb7378ee",
+      "reason": "Reviewed Claude/filter subset including decoded PNG cutting, neutral public artifact/read markers, no private names/hosts/room service or source commentary.",
+      "source": "src/kin_tools/consolidate/config/default_config.json",
+      "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+      "source_sha256": "13e1dd3e2a7c0188a97872e16898fc84509609b6597973417f35af2c69ead5a3"
+    },
+    {
+      "additional_sources": [],
+      "difference": "neutralized-processing-input",
+      "public": "src/anamnema/memhub_parsing.py",
+      "public_sha256": "5105d0981eaab4f05d02eff7e938e734ca04735c8eb941041f829ddd5fb08ad9",
+      "reason": "Retained Tencent MemHub grammar/sanitization with copyright attribution and Apache-2.0 NOTICE. Public adaptation adds explicit types, configurable harness scan limit and omits unused tool-rendering helpers.",
+      "source": "src/kin_tools/consolidate/memhub_parsing.py",
+      "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+      "source_sha256": "0614ee51d152f5c4fe6b9545f3ba84f7c68417d04de56c97da43866e9f375880"
+    },
+    {
+      "difference": "project-owned-processing-input",
+      "public": "src/anamnema/notes_policy.py",
+      "public_sha256": "c4eae11955486b0cfa3ee24e3f109e1857ae9abe904575e4f791647b8152051b",
+      "reason": "Public processing-input policy, attribution or synthetic tests; no private runtime dependency.",
+      "source": "project:src/anamnema/notes_policy.py",
+      "source_sha256": "c4eae11955486b0cfa3ee24e3f109e1857ae9abe904575e4f791647b8152051b"
+    },
+    {
+      "additional_sources": [
+        {
+          "source": "src/kin_tools/consolidate/redact.py",
+          "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+          "source_sha256": "30c6268914e970d8f0382d821edb6c53e2aef14ca11e0f0b0ff6e6fe3b457035"
+        },
+        {
+          "source": "src/kin_tools/consolidate/marked.py",
+          "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+          "source_sha256": "c12b1f2a287580c4a61ab41ca10c2c52fcb67659e1b15a99b78fdb38df5c56fe"
+        }
+      ],
+      "difference": "neutralized-processing-input",
+      "public": "src/anamnema/speech.py",
+      "public_sha256": "14a6eb2a9c55ea38c9384a74195b2f31fd9d510ee5c312752c8c62f214853b3d",
+      "reason": "Adapt spoken filtering and masking over common public source records; exact raw archive remains intact, stable source-sequence row numbering and changed-row counts.",
+      "source": "src/kin_tools/consolidate/spoken.py",
+      "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+      "source_sha256": "8ce7aef5cba7d208e269be954ec8a4c2cc5dddc8e09f6be9d5d3ca1b6da5d03c"
+    },
+    {
+      "difference": "project-owned-processing-input",
+      "public": "src/anamnema/speech_policy.py",
+      "public_sha256": "3ba2ee663cb2c848bbddb42ffb8771bee3fa9f088827c8d76bebb706ba41a9dd",
+      "reason": "Public processing-input policy, attribution or synthetic tests; no private runtime dependency.",
+      "source": "project:src/anamnema/speech_policy.py",
+      "source_sha256": "3ba2ee663cb2c848bbddb42ffb8771bee3fa9f088827c8d76bebb706ba41a9dd"
+    },
+    {
+      "additional_sources": [],
+      "difference": "neutralized-processing-input",
+      "public": "src/anamnema/substrates/claude_speech.py",
+      "public_sha256": "5f9a9b98528b5e7fc79c4bf2aa26b4b4ff575f8cfef368803007c4233da3325c",
+      "reason": "Claude-only translation excludes tools/thinking/meta/sidechains and unknown native roles. No arbitrary outgoing tool-call text promotion; public approved-delivery integration remains unfinished.",
+      "source": "src/kin_tools/consolidate/readers/claude.py",
+      "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+      "source_sha256": "528c597366c8a31a3d2d4491735b6da8ffefb83aedce847725a8f35189627196"
+    },
+    {
+      "additional_sources": [
+        {
+          "source": "src/kin_tools/consolidate/spoken.py",
+          "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+          "source_sha256": "8ce7aef5cba7d208e269be954ec8a4c2cc5dddc8e09f6be9d5d3ca1b6da5d03c"
+        }
+      ],
+      "difference": "neutralized-processing-input",
+      "public": "src/anamnema/substrates/speech_base.py",
+      "public_sha256": "a9e6e62ff9fd4941fdbcf528363b556a0e9004e892f0406bb9dfe958f6c2d30c",
+      "reason": "Shared speech preparation owns filtering and source references; native translation remains a subclass responsibility.",
+      "source": "src/kin_tools/consolidate/readers/base.py",
+      "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+      "source_sha256": "4b06b50d53138bb0631b8edee5933c0f3e2bd3bf255dd520dd8ceb810911e19a"
+    },
+    {
+      "difference": "project-owned-processing-input",
+      "public": "tests/test_chunks.py",
+      "public_sha256": "245e9f7a72f4e4e319a35bcdc9ed086c9f312f56324ed6c4c8349237995ac9d4",
+      "reason": "Public processing-input policy, attribution or synthetic tests; no private runtime dependency.",
+      "source": "project:tests/test_chunks.py",
+      "source_sha256": "245e9f7a72f4e4e319a35bcdc9ed086c9f312f56324ed6c4c8349237995ac9d4"
+    },
+    {
+      "difference": "project-owned-processing-input",
+      "public": "tests/test_memhub_parsing.py",
+      "public_sha256": "3d290669d40249abc089708274a35e5800297b3a8f58877a19dd21131666aece",
+      "reason": "Public processing-input policy, attribution or synthetic tests; no private runtime dependency.",
+      "source": "project:tests/test_memhub_parsing.py",
+      "source_sha256": "3d290669d40249abc089708274a35e5800297b3a8f58877a19dd21131666aece"
+    },
+    {
+      "difference": "project-owned-processing-input",
+      "public": "tests/test_speech.py",
+      "public_sha256": "6b6db5292cbd820fd04c9bed44a5734512365241ce408ba9dc17ee022f171f54",
+      "reason": "Public processing-input policy, attribution or synthetic tests; no private runtime dependency.",
+      "source": "project:tests/test_speech.py",
+      "source_sha256": "6b6db5292cbd820fd04c9bed44a5734512365241ce408ba9dc17ee022f171f54"
+    },
+    {
+      "additional_sources": [],
+      "difference": "neutralized-note-extraction",
+      "public": "src/anamnema/config/extraction.json",
+      "public_sha256": "85a4611c36ac228db6f25ea2d6fbff1232ee97c61c3e3b37af6b2cddae5b0e81",
+      "reason": "Retain reviewed timeout/pacing defaults; add explicit transport/file bounds, public result collections, native routes and optional credential selectors. No hosts, tokens or private runners are copied.",
+      "source": "src/kin_tools/consolidate/config/default_config.json",
+      "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+      "source_sha256": "13e1dd3e2a7c0188a97872e16898fc84509609b6597973417f35af2c69ead5a3"
+    },
+    {
+      "additional_sources": [],
+      "difference": "neutralized-note-extraction",
+      "public": "src/anamnema/config/notes_prompt.txt",
+      "public_sha256": "10f41532289943db89c4f5440b0a49af41a8b5b78ab745c3bc2ebbce8b11bbbb",
+      "reason": "Reviewed source template with neutral configured labels. Package text-file LF is removed by render, preserving the source template payload without its absent final LF. Legacy sent/tool wording is retained; current public filtering does not promote arbitrary tools.",
+      "source": "src/kin_tools/consolidate/config/notes_prompt.txt",
+      "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+      "source_sha256": "563119eaace5074e8d35e0357b0b164c80cd827412edc38752174214ab50d31e"
+    },
+    {
+      "difference": "project-owned-note-extraction",
+      "public": "src/anamnema/extraction_config.py",
+      "public_sha256": "3dda8c46c1334e7dc23e6dc74d2b4df02c1079d78193fe9c2020f62ef5d345e7",
+      "reason": "Anamnema-owned explicit extraction integration/configuration or synthetic HTTP/disposable-Mongo tests; no private runtime dependency.",
+      "source": "project:src/anamnema/extraction_config.py",
+      "source_sha256": "3dda8c46c1334e7dc23e6dc74d2b4df02c1079d78193fe9c2020f62ef5d345e7"
+    },
+    {
+      "additional_sources": [],
+      "difference": "neutralized-note-extraction",
+      "public": "src/anamnema/extraction_store.py",
+      "public_sha256": "ac94ab235fb7b991661bc5fd8fdb79a18ad80cbc6e928ec76003262de194fc1c",
+      "reason": "Adapt incremental chunk/attempt storage to immutable insert-once public result identities, independent output/source read-back and complete nonsecret attempt provenance. Private replace-in-place chunk schema is not migrated.",
+      "source": "src/kin_tools/consolidate/archive.py",
+      "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+      "source_sha256": "bfb6f042533a193d5ee635c874d575777d8a7445beca8c7d41747241cdaba03a"
+    },
+    {
+      "additional_sources": [
+        {
+          "source": "src/kin_tools/consolidate/pacing.py",
+          "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+          "source_sha256": "c99e3c0458d672f6f518e2cb6f7d1d4c8e30326e1a060cc54feec4dcedacd82b"
+        }
+      ],
+      "difference": "neutralized-note-extraction",
+      "public": "src/anamnema/extractor.py",
+      "public_sha256": "bf2dadda93264f9f82ce42c1c7b0e38ae0ea617bbae28e91506edde563dd5fe3",
+      "reason": "Retain incremental extraction, cached success, end-of-window retry, pacing and slow-worker stop. Public checkpoint is one worker, explicit nonzero failures, interruption records and no secret-bearing raw error logging; parallel workers/downstream semantic stages remain pending.",
+      "source": "src/kin_tools/consolidate/extract.py",
+      "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+      "source_sha256": "0c488334e6d45e53d58ab4d798ce8727a40ba2f8d6cccc2593d0501335537d33"
+    },
+    {
+      "additional_sources": [],
+      "difference": "neutralized-note-extraction",
+      "public": "src/anamnema/llama_provider.py",
+      "public_sha256": "a73710233ffcd31b9b711aa1d2b18f2728058928eff79727f87d4df9480a40c8",
+      "reason": "Neutralized localhost native llama.cpp calls and exact template/tokenizer preflight. Direct bounded HTTP disables implicit proxy/redirect/fallback; explicit stable model-file hash/path and reported metadata are checked during execution. Optional bearer comes only from configured keyring lookup.",
+      "source": "src/kin_tools/consolidate/llama.py",
+      "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+      "source_sha256": "54d1325ebfe2d63b8db89d05ee8f4862e7f78ef0e4f0b4f6b321ffba6e35bef5"
+    },
+    {
+      "additional_sources": [
+        {
+          "source": "src/kin_tools/consolidate/notes_prompt.py",
+          "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+          "source_sha256": "e4c614acd92535e0fa7bacce0d80280c11a632fe72b54cb9d64407a47cd4203c"
+        },
+        {
+          "source": "src/kin_tools/consolidate/extract.py",
+          "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+          "source_sha256": "0c488334e6d45e53d58ab4d798ce8727a40ba2f8d6cccc2593d0501335537d33"
+        }
+      ],
+      "difference": "neutralized-note-extraction",
+      "public": "src/anamnema/notes_request.py",
+      "public_sha256": "89a384f2338deaf1b17e79d03499054fa56eda95d878c74a924e3690c6086eca",
+      "reason": "Reviewed prompt/options/schema method, with local strict schema and complete full-length model/prompt/request/policy fingerprints retaining the request-options fix. Scheduling is excluded; public scope/input identity is separate. Prompt data is snapshotted per process, preserving the source lifetime behavior and preventing mid-run file changes from escaping the fingerprint.",
+      "source": "src/kin_tools/consolidate/notes.py",
+      "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+      "source_sha256": "929a5bf08d4562271426f73d2a4a544b7272a56ccc42a3498c8b85b2affe1c2c"
+    },
+    {
+      "additional_sources": [],
+      "difference": "neutralized-note-extraction",
+      "public": "src/anamnema/notes_response.py",
+      "public_sha256": "18c9c1d9ad4d328568dc86e02c4d87d8cc9e8141872bf6f4fda39cc6a6f7162b",
+      "reason": "Strict local response limits and typed citations, sanitized output before persistence, explicit owner source and nearest-row candidate flags. Structural validation does not establish semantic truth; no unfiltered model reply is saved.",
+      "source": "src/kin_tools/consolidate/notes.py",
+      "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
+      "source_sha256": "929a5bf08d4562271426f73d2a4a544b7272a56ccc42a3498c8b85b2affe1c2c"
+    },
+    {
+      "difference": "project-owned-note-extraction",
+      "public": "src/anamnema/process_apply.py",
+      "public_sha256": "3ce4457c46f93f40fe492b7be5d4029281d99b1a6725a6620b7e69ec7b9dd64b",
+      "reason": "Anamnema-owned explicit extraction integration/configuration or synthetic HTTP/disposable-Mongo tests; no private runtime dependency.",
+      "source": "project:src/anamnema/process_apply.py",
+      "source_sha256": "3ce4457c46f93f40fe492b7be5d4029281d99b1a6725a6620b7e69ec7b9dd64b"
+    },
+    {
+      "difference": "project-owned-note-extraction",
+      "public": "tests/extraction_fixtures.py",
+      "public_sha256": "75dedd16a85e3f3fad768612317462186f90c95277fad8a5d941a0fdccc62723",
+      "reason": "Anamnema-owned explicit extraction integration/configuration or synthetic HTTP/disposable-Mongo tests; no private runtime dependency.",
+      "source": "project:tests/extraction_fixtures.py",
+      "source_sha256": "75dedd16a85e3f3fad768612317462186f90c95277fad8a5d941a0fdccc62723"
+    },
+    {
+      "difference": "project-owned-note-extraction",
+      "public": "tests/test_extraction.py",
+      "public_sha256": "e24b00b4f6a7a8989b8ce86b0c7278157fcfbe1e9d19eb11ce7308b0b8231f22",
+      "reason": "Anamnema-owned explicit extraction integration/configuration or synthetic HTTP/disposable-Mongo tests; no private runtime dependency.",
+      "source": "project:tests/test_extraction.py",
+      "source_sha256": "e24b00b4f6a7a8989b8ce86b0c7278157fcfbe1e9d19eb11ce7308b0b8231f22"
+    },
+    {
+      "difference": "project-owned-note-extraction",
+      "public": "tests/test_llama_provider.py",
+      "public_sha256": "0dd9aac965ef5e5954d0e553ef09fc42cc4ca8e2d19d45ac0ab012642a68bd07",
+      "reason": "Anamnema-owned explicit extraction integration/configuration or synthetic HTTP/disposable-Mongo tests; no private runtime dependency.",
+      "source": "project:tests/test_llama_provider.py",
+      "source_sha256": "0dd9aac965ef5e5954d0e553ef09fc42cc4ca8e2d19d45ac0ab012642a68bd07"
+    },
+    {
+      "difference": "project-owned-note-extraction",
+      "public": "tests/test_notes_response.py",
+      "public_sha256": "250d3e7ae7a2070fbc9c579ef0f09e71b9a99115d1d9e71ebdf68ac18f45c116",
+      "reason": "Anamnema-owned explicit extraction integration/configuration or synthetic HTTP/disposable-Mongo tests; no private runtime dependency.",
+      "source": "project:tests/test_notes_response.py",
+      "source_sha256": "250d3e7ae7a2070fbc9c579ef0f09e71b9a99115d1d9e71ebdf68ac18f45c116"
     }
   ],
   "omissions": [
@@ -111,11 +730,11 @@
       "source": "src/kin_tools/consolidate"
     },
     {
-      "reason": "Private keyring resolution is replaced with environment or explicitly selected public secret-file configuration.",
+      "reason": "Private credential fallback excluded; public archive uses neutralized Secret Service lookup. No entries or private configuration are included.",
       "source": "src/kin_tools/shared/credentials.py"
     },
     {
-      "reason": "Private transcript maintenance is not exported; a minimal verified ingestion adapter is required.",
+      "reason": "Reviewed Claude file preservation is neutralized in the listed archive files. Unrelated trim/delete/maintenance and other substrates remain excluded.",
       "source": "src/kin_tools/transcript"
     },
     {
@@ -131,8 +750,17 @@
       "source": "external-hooks"
     }
   ],
-  "phase": "documentation-only-not-installable",
+  "phase": "source-linked-note-extraction-semantic-processing-pending",
+  "planned_differences": [
+    {
+      "public_value": "",
+      "reason": "Public configuration must contain no personal boot-file destination. Require an explicit instance-owned destination before identity writes; apply neutralization in Anamnema only, never by changing the live private default. No identity runtime/config file is exported yet.",
+      "setting": "names.identity_file",
+      "source": "src/kin_tools/consolidate/config/default_config.json",
+      "status": "pending-identity-module-export"
+    }
+  ],
   "schema_version": 1,
   "source_revision": "d64f443688761c10c90cb2e41a435ab73517c753",
-  "source_revision_scope": "base commit; listed file hashes identify the exported bytes"
+  "source_revision_scope": "Original documentation copy base; per-file source_revision pins later reviewed archive origins. Original source hashes are retained; project: denotes Anamnema-owned implementation. No private checkout is required at runtime."
 }

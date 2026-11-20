@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "claude": {
+    "type_key": "type",
+    "message_key": "message",
+    "content_key": "content",
+    "sidechain_key": "isSidechain",
+    "meta_key": "isMeta",
+    "assistant_type": "assistant",
+    "harness_scan_characters": 2000,
+    "user_types": [
+      "user"
+    ],
+    "text_block_type": "text",
+    "artifact_marker_pattern": "\\[anamnema-artifact:[^\\]]*\\]",
+    "peer_prefix": "Another Claude session sent a message:",
+    "injected_prefixes": [
+      "<task-notification>",
+      "<local-command-stdout>",
+      "<local-command-stderr>",
+      "<local-command-caveat>",
+      "Stop hook feedback:",
+      "Base directory for this skill:",
+      "[Image: source:",
+      "This session is being continued from a previous conversation"
+    ],
+    "tool_placeholders": [
+      "[tool_use]",
+      "[tool_result]"
+    ]
+  },
+  "owner_noise_prefixes": [
+    "<command-name>",
+    "/compact",
+    "[Request interrupted"
+  ],
+  "owner_envelopes": [
+    "\\[ROOM RESPONSE GUIDANCE\\]\\n(?:- .*(?:\\n|$))+",
+    "\\[CONVERSATION SINCE YOUR LAST REPLY\\]\\n",
+    "\\[YOUR TASK\\]\\n[\\s\\S]*$",
+    "\\[ATTACHED IMAGE INPUTS\\]\\n.*(?:\\n|$)",
+    "\\s*<-- TRIGGER",
+    "<svg\\b[\\s\\S]*?</svg>",
+    "```[\\s\\S]*?```",
+    "\ufffdPNG\\r?\\n\\u001a\\n[\\s\\S]*?(?:IEND[\\s\\S]{0,4}|$)"
+  ],
+  "owner_room_turn": "^\\[\\d+\\] [^\\n]*? \\((?P<who>[a-z]+)\\): ",
+  "owner_room_speaker": "human",
+  "agent_envelopes": [
+    "^\\s*(?:ANAMNEMA_READ_V1 \\S+\\s*)+$",
+    "^\\s*[A-Z]+_COMPACTION_SNAPSHOT_READ_V1 .*$"
+  ],
+  "marked_lines": [
+    "fact",
+    "mistake",
+    "learned_lesson"
+  ],
+  "marked_pattern": "^\\s*(?:[-*]\\s+)?(?P<marker>[a-z_]+)(?:\\((?P<entity>(?:[^()]|\\([^()]*\\))+)\\))?:\\s*(?P<text>\\S.*?)\\s*$",
+  "fence_pattern": "^\\s*(```|~~~)",
+  "quote_pattern": "^\\s*>",
+  "secret_word_pattern": "(?<![\\w/.=-])[A-Za-z0-9!@#$%^&*+_-]{8,}(?![\\w/.=(-])",
+  "secret_symbol_pattern": "[!@#$%^&*+]",
+  "secret_minimum_characters": 20,
+  "secret_mask": "[secret]"
+}

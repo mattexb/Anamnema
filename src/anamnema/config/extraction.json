@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "timeout_seconds": 900.0,
+  "slow_chunk_seconds": 180.0,
+  "pause_every": 8,
+  "pause_seconds": 45.0,
+  "max_response_bytes": 4194304,
+  "max_request_bytes": 4194304,
+  "max_model_bytes": 137438953472,
+  "hash_block_bytes": 1048576,
+  "chunks_collection": "notes_chunks",
+  "attempts_collection": "extraction_attempts",
+  "props_path": "/props",
+  "chat_path": "/v1/chat/completions",
+  "template_path": "/apply-template",
+  "tokenize_path": "/tokenize",
+  "model_keyring_entry": null,
+  "model_keyring_field": null
+}

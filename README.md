@@ -4,7 +4,7 @@
 
 ### What could you build together if the experience stayed?
 
-**In progress: documentation only. The public code and installer are not available yet.**
+**In progress: local development. Setup, Claude import and source-linked note extraction are implemented locally; the complete memory system and installer are not ready.**
 
 ## What is Anamnema?
 
@@ -263,12 +263,27 @@ the repair checkable instead of another confident guess.
 
 ## What can you try today?
 
+The local development branch has a [Claude transcript importer](docs/ARCHIVE.md)
+as well as the [setup wizard](docs/SETUP.md). Import defaults to read-only planning;
+writing to your project archive requires an explicit `--apply`.
+A [processing preview](docs/PROCESSING.md) also reports closed conversation
+stretches and their source references without sending text to a model.
+Explicit processing `--apply` verifies the archive, uses localhost llama.cpp and
+saves source-linked notes incrementally. The integration is tested with synthetic
+HTTP responses and a disposable database; real-model acceptance is still pending.
+
 Keep one decision from your next session, why you made it, and the conversation
 it came from. Bring that note into the following session and see what you can
 pick up without explaining it again. A saved file is only the first half;
 bringing the experience back is the point.
 
 ## What will you need?
+
+The first installer target is **Debian 13 trixie with native services**, on one
+machine. The current [setup foundation](docs/SETUP.md) validates configuration,
+offers an interactive wizard and produces a read-only plan. A
+[manual keyring guide](docs/KEYRING.md) is available too; installation actions
+are still being built.
 
 The first target is one Linux machine. MongoDB keeps the original conversations;
 Neo4j keeps the connections between notes, sources and subjects. Two small
@@ -338,6 +353,11 @@ behind a proposal matters as much as the feature request.
 
 ## Engineering and Testing
 
+Development uses local `feature/<scope>` and `fix/<scope>` branches; `main`
+remains the published documentation checkpoint. Implementation commits stay
+local until the complete code is reviewed and publication is reopened.
+See [SHIP.md](SHIP.md) for the project's gates and commit rules.
+
 We define the behavior and boundaries first, then build small, reusable pieces.
 Paths, endpoints, models and deployment limits belong in configuration. Failures
 must be visible: an unavailable service is not an empty successful search, and
@@ -358,12 +378,19 @@ assistant, or a clean-machine installation.
 The planned public workflow includes transcript ingestion, source-linked notes,
 graph storage, recall, people/thing summaries, deeper subject summaries,
 source-backed correction, operation commands and an ordered installer.
-Private infrastructure automation, transcript trimming/deletion and private
-secret managers are not part of this public product.
+The transcript importer and keyring are being neutralized as internal parts of
+this project. Our private infrastructure, archives and credentials are not
+included; neither are transcript trimming/deletion commands.
 
 ```text
 README.md                  Reader introduction and integrated memory flow
+pyproject.toml / uv.lock    Project environment and anamnema entry point
+src/anamnema/              Setup, archive import and source-linked note extraction
+tests/                     Isolated project tests
 assets/                    Header artwork
+docs/SETUP.md               Setup contract and development checks
+docs/ARCHIVE.md             Import, source identities and verified archive writes
+docs/PROCESSING.md          Source-linked extraction, replay and processing limits
 docs/PREFACE.md             Individually authored accounts and invitation
 docs/CONTRACTS.md           Ingestion, provider and substrate boundaries
 docs/memory-flow.html       Standalone flow
@@ -372,10 +399,10 @@ SHIP.md                    Documentation checks and later release gates
 .github/                   Issue form and label definitions
 ```
 
-The public tree is an exported copy of our private working source, not a
-dependency on it. Public fixes return there by hand against the difference
-tracker, then we regenerate the copy. Source, test and installer directories will appear
-with their implementation, not as empty scaffolding.
+The project reuses reviewed copies of our working source, not a dependency on
+it. Neutralization and new development happen here, with differences recorded
+in the tracker. The original source is read-only during this work; a discovered
+source bug or gap stops for discussion before any proposed source fix.
 
 ## Which AI assistants can it work with?
 
