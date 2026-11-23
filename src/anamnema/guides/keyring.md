@@ -1,8 +1,9 @@
 # Manual Keyring Setup
 
-This guide covers a Debian 13 desktop user's Secret Service keyring. Package
-availability and command behavior were checked against official documentation;
-this is not a completed clean-VM or unattended-service acceptance test.
+This guide covers a Debian 13 desktop user's Secret Service keyring, the store
+Anamnema keeps its credentials in. Package names and commands follow the official
+Debian and GNOME documentation; the unlocked login keyring was exercised on a
+clean Debian 13 machine. Unlocking before login is not supported.
 
 ## Prepare Your Own Account
 
@@ -43,25 +44,26 @@ can print secrets. See Debian's [secret-tool manual](https://manpages.debian.org
 
 Desktop login can unlock the login keyring through the user's authentication
 session; [GNOME documents that mechanism](https://wiki.gnome.org/Projects/GnomeKeyring/Pam).
-This does not prove access before login or from a system service. Enabling
+Access before login or from a system service is not supported. Enabling
 background services alone is not a secure unlock method. Do not edit PAM merely
 to follow this guide or remove the keyring password to make a nightly job run.
 
 The wizard records who should run each component and whether work must continue
-while logged out. Headless/unattended unlock still needs a reviewed, tested
-recipe. Selecting manual or guided setup does not certify that access works.
-Archive import now looks up its URI using `service=anamnema`,
-`entry=archive/mongodb`, `field=uri` by default. To create that item manually:
+while logged out; `anamnema install` refuses `run_when_logged_out: true`.
+Archive import looks up its URI using `service=anamnema`, `entry=archive/mongodb`,
+`field=uri` by default. `anamnema install` creates that item itself; create it
+by hand only to import into a MongoDB you set up yourself:
 
 ```sh
 secret-tool store --label='Anamnema archive' service anamnema entry archive/mongodb field uri
 ```
 
 Enter the URI at the terminal's password prompt. This entry belongs to your own
-account and project namespace, never a private/shared source-project namespace.
+account and the project namespace.
+
 ### Anamnema Commands
 
-The application can now store and verify one item without printing its value:
+The application can store and verify one item without printing its value:
 
 ```sh
 anamnema keyring put --entry archive/mongodb --field uri --confirm-replace --apply
@@ -85,11 +87,19 @@ protocol; they are not trimmed. Do not place real values in shell arguments,
 history, files or logs to feed that input. The optional setup `keyring.policy`
 is an absolute path to nonsecret value/attribute limits and label policy.
 
-Tests use a temporary fixture executable, not a real unlocked keyring. Native
-Secret Service acceptance, account creation and automatic/unattended unlock
-remain unfinished. No private index, credential file, SSH helper or remote
-credential-copy command is included. Do not put credentials in setup answers
-as a substitute.
+No credential file, SSH helper or remote credential-copy command exists. Never
+put credentials in setup answers.
+
+### Credentials the installer needs
+
+Before `anamnema install --apply`, store one bearer token (a shared secret each
+request must carry) per local service: `encoder/local`, `reranker/local`,
+`memory/local` and `notes/local`, field `token`. Each is 33 to 126 characters
+without spaces and without a trailing newline. The [setup guide](https://github.com/mattexb/Anamnema/blob/main/docs/SETUP.md)
+shows the exact commands. The entry and field names must match the search,
+extraction and service files. The installer creates the database credentials
+itself: `archive/mongodb:uri`, `archive/mongodb-admin:password`,
+`graph/local:username` and `graph/local:password`.
 
 ### Launch A Program With Keyring Credentials
 
@@ -97,7 +107,7 @@ An explicit program can receive credentials in its environment rather than its
 command line:
 
 ```sh
-anamnema keyring run --apply --secret LLAMA_API_KEY=models/notes:token -- /absolute/path/to/llama-server --host 127.0.0.1
+anamnema keyring run --apply --secret LLAMA_API_KEY=notes/local:token -- /absolute/path/to/llama-server --host 127.0.0.1
 ```
 
 Each `--secret` is an `ENV=ENTRY:FIELD` reference, not a value. The wrapper

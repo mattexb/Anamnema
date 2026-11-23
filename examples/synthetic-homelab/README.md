@@ -29,7 +29,7 @@ anamnema import --file examples/synthetic-homelab/session.jsonl \
 ```
 
 `--closed` says the session is finished; the importer adds the closing record itself. Add
-`--apply` to copy it into your archive once your setup is configured.
+`--apply` to copy it into your archive once the installation is complete ([setup guide](../../docs/SETUP.md)).
 
 ## Regenerate it
 

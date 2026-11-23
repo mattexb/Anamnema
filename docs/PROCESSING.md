@@ -12,7 +12,7 @@ kwargs and structured-output options, not messages alone. The pinned native
 [server implementation](https://github.com/ggml-org/llama.cpp/blob/5aeac37a3/tools/server/server-context.cpp#L5194)
 uses the chat parser for `/apply-template` as well as generation. This matters
 when an option such as `enable_thinking` changes the rendered prompt. The
-setup backend must currently be Vulkan; API/CUDA remain explicitly unavailable.
+setup backend must be `vulkan` or `cpu`; `api` and `cuda` are refused.
 HTTP responses and connections are both closed on rejection or size-bound
 failure; cleanup does not depend on garbage collection or a persistent connection.
 
@@ -39,8 +39,8 @@ failures produce a nonzero result, never a successful empty extraction. Reuse
 revalidates saved output/provenance and never silently repairs corruption.
 Attempt records retain safe per-chunk failure events and unresolved chunk IDs,
 including HTTP status or schema/timeout category, without raw response bodies.
-Only one worker is in scope for this bounded execution checkpoint; parallel
-workers and complete operation scheduling remain later work.
+One worker processes a window's chunks, one after another; the nightly run and
+the batch commands in [OPERATIONS.md](OPERATIONS.md) schedule the windows.
 
 ## Commands
 
@@ -64,15 +64,15 @@ and processing so their source references match. There is no automatic session-c
 
 `--speech-config` and `--notes-config` select complete nonsecret filtering and
 chunk/binding policies instead of packaged defaults. Their fingerprints appear
-in the report. Model options in the notes policy preserve the tested baseline;
-this preview does not call a model or establish support for alternative models.
+in the report. The notes policy's `model_options` are the sampling options sent
+with every request; the preview itself calls no model.
 
 `--config` selects the complete setup/keyring/local-service configuration.
 `--extraction-config` selects complete execution limits, pacing, native model
 routes and result collection names. Results/attempt collections must be distinct
-from the transcript archive. MongoDB must already contain verified copies, and
-llama.cpp must already be running on the setup's localhost notes endpoint. This
-command does not install either service. Missing/locked keyring, unmatched model,
+from the transcript archive. MongoDB must already contain verified copies and
+the notes llama.cpp must be running on the setup's localhost notes endpoint;
+`anamnema install` provides both, `process` installs neither. Missing/locked keyring, unmatched model,
 missing source and failed requests are errors, not empty successful notes.
 
 Model authentication is optional for the local endpoint. If needed, configure
@@ -80,8 +80,8 @@ both `model_keyring_entry` and `model_keyring_field` in extraction settings and
 store that token in the project's keyring namespace using the manual guide.
 Only its selector belongs in JSON; the token is sent as a bearer header, never
 in arguments, logs, saved manifests or reuse identity. Credential-like keys in
-request options are refused. Real Secret Service unlock is a separate acceptance
-gate; automated tests use only a fixture lookup executable.
+request options are refused. The token is read from the logged-in user's unlocked
+keyring; automated tests use a fixture lookup executable.
 
 The model file must remain stable, regular and nonsymlink. Its path must match
 the server-reported path; its full hash, build and generation metadata define
@@ -136,10 +136,10 @@ proof that arbitrary malicious instructions can be detected.
 
 Genuine assistant self-note lines are removed from model input to avoid duplicate
 extraction; fenced/quoted examples remain examples. The originals stay archived.
-Native self-note capture itself still belongs to lifecycle integration and is
-not activated by this preview. A separately delivered message inside a tool call
-is not promoted to speech here; extraction of approved outgoing-message text
-needs a reviewed public delivery contract. Arbitrary tool results never qualify.
+Marked self-notes are captured by `capture` (below), which the installed Stop hook
+queues at the end of every turn. A message delivered inside a tool call is not
+treated as speech, outgoing-message text is not extracted, and tool results
+never qualify.
 
 MemHub's host-envelope and credential sanitization is retained with attribution
 in NOTICE, followed by the source password-shape masking heuristic. This is not
@@ -187,8 +187,8 @@ invent a compaction boundary: retain exact source IDs and report cited-only,
 partial context. Source display must retain genuine marked lines in that case.
 Dry-run and empty capture make no secret, model or store calls. Explicit apply
 archives/verifies source, embeds without a notes-model call, stores and places.
-Automatic lesson/card chaining and native turn-end scheduling remain separate
-integration work; this contract does not declare them complete.
+Lessons and cards are built by the nightly run ([OPERATIONS.md](OPERATIONS.md));
+the installed Stop hook queues turn-end capture (`capture-events`).
 
 `--last-turn`, mutually exclusive with `--whole`, selects dialogue after the latest
 native user prompt or latest compaction boundary. Tool-result rows, meta turns
@@ -230,8 +230,7 @@ invalid closing references and malformed input. Execution tests run the actual
 CLI against a disposable MongoDB and a synthetic HTTP llama.cpp protocol fixture,
 including source verification, two chunks, replay, changed options, interruption,
 slow-worker shutdown, malformed replies, context overflow, identity changes and
-corrupt saved notes. Separate disposable-guest acceptance exercised native
-services and Claude events, plus real Gemma inference on an existing GPU host
-through an attested loopback tunnel. The synthetic window produced six notes,
-passed storage/replay and completed finishing and source-backed correction.
-This does not establish model quality, GPU setup or general hardware performance.
+corrupt saved notes. On a clean Debian 13 machine, with native services, Claude
+Code events and a real Gemma 4 12B notes model reached through an attested
+loopback tunnel, one synthetic window produced six notes, passed storage and
+replay, and completed the finishing run and a source-backed correction.

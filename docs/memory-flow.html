@@ -36,14 +36,14 @@
   <header>
     <h1>The Road of a Memory</h1>
     <p class="lead">A conversation becomes an archive, then source-linked notes. The notes form a graph of subjects, people and lessons. Memory comes back when it matters, and a doubtful note can always be checked against the original words.</p>
-    <p class="status"><strong>Public architecture, pre-release.</strong> This is an adapted public copy of the flow, not a claim that the exported engine or installer is ready. The first target is one Linux machine; model APIs are explicit choices.</p>
+    <p class="status"><strong>Anamnema 0.1.1.</strong> How a conversation becomes memory and comes back, on one Debian 13 machine with Claude Code. The notes model runs locally or through an API you choose.</p>
     <nav aria-label="Memory stages"><a href="#archive">A. Archive</a><a href="#notes">B. Notes</a><a href="#store">C. Store</a><a href="#meaning">D. Connections</a><a href="#graph">E. Graph</a><a href="#find">F. Find</a><a href="#return">G. Return</a><a href="#correct">H. Correct</a></nav>
   </header>
   <section id="archive" aria-labelledby="a-title">
     <h2 id="a-title">A. Keep the Conversation</h2>
     <p class="location">Conversation reader for your AI assistant, with a local archive</p>
     <ol class="steps">
-      <li><span class="number">01</span><details><summary>Person and assistant talk</summary><p>Your AI assistant saves the conversation. A reader for its particular file format preserves who said what, when, and the exact source record. Each kind of assistant needs its own tested reader.</p></details></li>
+      <li><span class="number">01</span><details><summary>Person and assistant talk</summary><p>Your AI assistant saves the conversation. A reader for its particular file format preserves who said what, when, and the exact source record. Anamnema reads Claude Code&#x27;s format.</p></details></li>
       <li><span class="number">02</span><details><summary>Import and prove the copy</summary><p>Records enter the archive with stable IDs. Read-back proves the copy before it counts as saved. Re-importing the same data adds nothing; a conflicting record is reported, never silently overwritten.</p></details></li>
       <li><span class="number">03</span><details><summary>A reset closes a stretch of conversation</summary><p>When the conversation is shortened to fit the assistant's capacity, its summary marks the end of one stretch. We call that stretch a window. A session ending without a summary gets its own closing marker. Local copies wait in a queue until the archive has been checked.</p></details></li>
       <li><span class="number">04</span><details><summary>Some notes take the short road</summary><p>A manually recorded fact, mistake or lesson can go straight to the memory store, with its original source kept. Capturing the same turn again must not duplicate it.</p></details></li>
@@ -52,12 +52,12 @@
   <p class="next">A closed window is available to process</p>
   <section id="notes" aria-labelledby="b-title">
     <h2 id="b-title">B. Turn a Window Into Notes</h2>
-    <p class="location">Local Vulkan model or an explicitly configured API; CUDA is a later backend</p>
+    <p class="location">Local Vulkan or CPU model, or an API you configure</p>
     <ol class="steps">
       <li><span class="number">05</span><details><summary>Select unfinished work</summary><p>Resume half-finished windows first. A window is complete only when its required stages are complete, not merely when extraction has produced some notes.</p></details></li>
       <li><span class="number">06</span><details><summary>Keep attributed dialogue</summary><p>Separate the person's and assistant's words from tools, injected instructions and transport envelopes. Tool output is not a statement by the person. Mask secret-shaped material before sending model input.</p></details></li>
       <li><span class="number">07</span><details><summary>Bind short answers, then split</summary><p>An answer such as "the second option" is tied to the list it answers. Dialogue is divided into bounded chunks without losing its source references.</p></details></li>
-      <li><span class="number">08</span><details><summary>Write short, cited notes</summary><p>The extraction model produces notes with their kind and exact source rows. Each completed chunk is saved immediately. Failures remain visible and resumable; an API model needs an explicit model identity, not a local-file assumption.</p></details></li>
+      <li><span class="number">08</span><details><summary>Write short, cited notes</summary><p>The extraction model produces notes with their kind and exact source rows. Each completed chunk is saved immediately. Failures remain visible and resumable. With an API model, you name the model explicitly.</p></details></li>
     </ol>
   </section>
   <p class="next">Raw notes retain the way back to the conversation</p>
@@ -73,7 +73,7 @@
   <p class="next">A note exists, with meaning and source</p>
   <section id="meaning" aria-labelledby="d-title">
     <h2 id="d-title">D. Connect What Was Learned</h2>
-    <p class="location">Configured strong, middle and light judging roles</p>
+    <p class="location">Each stage uses the model its configuration names</p>
     <ol class="steps">
       <li><span class="number">12</span><details><summary>Link advice to activities</summary><p>A note about a failure or a constraint is linked to the activity before which it matters. Merely mentioning an activity is not enough.</p></details></li>
       <li><span class="number">13</span><details><summary>Build lessons and name subjects</summary><p>Repeated advice with the same mechanism and correction becomes a lesson, with each event kept beneath it. A short subject name helps search find what a note is about even when its wording is indirect.</p></details></li>
@@ -96,7 +96,7 @@
     <ol class="steps">
       <li><span class="number">17</span><details><summary>Search three ways</summary><p>Meaning, exact words and exact identifiers contribute candidates. Finding a note through more than one route can raise it; one search method does not erase the others.</p></details></li>
       <li><span class="number">18</span><details><summary>Apply relevance and trust</summary><p>Notes below configured closeness or trust floors do not arrive as ordinary evidence. A doubtful note is labelled as doubtful. A failed search is reported as unavailable, not "nothing remembered".</p></details></li>
-      <li><span class="number">19</span><details><summary>Order the page</summary><p>A small model called a reranker compares the question with each found note to improve their order. More results remain on additional pages. Both this model and the meaning-search model are still needed when an external provider writes the notes.</p></details></li>
+      <li><span class="number">19</span><details><summary>Order the page</summary><p>A small model called a reranker compares the question with each found note to improve their order. More results remain on additional pages. Both this model and the meaning-search model run on your machine, even when an external provider writes the notes.</p></details></li>
     </ol>
   </section>
   <p class="next">A bounded set of dated notes is ready to return</p>
@@ -105,9 +105,9 @@
     <p class="location">Session-event integrations and commands you can run yourself</p>
     <ol class="steps">
       <li><span class="number">20</span><details><summary>At start, on a message, on a name</summary><p>Session start brings identity and relevant unfinished work. A message can bring related notes; the first mention of a person or thing can bring its summary card. Limits per session prevent endless repetition.</p></details></li>
-      <li><span class="number">21</span><details><summary>Before an action, after an error</summary><p>Applicable lessons arrive before a change, not every harmless read. After a tool failure, the error and surrounding work can find relevant past experience. These event-triggered integrations must be tested inside each AI assistant.</p></details></li>
+      <li><span class="number">21</span><details><summary>Before an action, after an error</summary><p>Applicable lessons arrive before a change, not every harmless read. After a tool failure, the error and surrounding work can find relevant past experience. These events run inside Claude Code through its hooks.</p></details></li>
       <li><span class="number">22</span><details><summary>Read deeply with a briefing</summary><p>A briefing is a deeper summary of one subject's notes, with citations, disagreements and uncertainty kept visible. Notes beyond the reading limit are marked unread. A marker at each required file's end checks that the assistant reached it; summaries can be rebuilt after the conversation is shortened.</p></details></li>
-      <li><span class="number">23</span><details><summary>Keep pictures with provenance</summary><p>Optional picture memory keeps content, descriptions and links to notes. Newly pasted images wait in a local pending area until explicitly kept or dropped. No private network share is a default requirement.</p></details></li>
+      <li><span class="number">23</span><details><summary>Keep pictures with provenance</summary><p>Optional picture memory keeps content, descriptions and links to notes. Newly pasted images wait in a local pending area until explicitly kept or dropped. No network share is required.</p></details></li>
     </ol>
   </section>
   <p class="next">Memory informs the answer, and the answer becomes new experience</p>
@@ -120,7 +120,7 @@
       <li><span class="number">26</span><details><summary>Prove the loop works</summary><p>Track whether mistakes were captured, corrections reached the store, and relevant lessons returned later. Interrupted stages remain visible. The next conversation starts the same loop again.</p></details></li>
     </ol>
   </section>
-  <footer><p>This chart describes the public copy's target flow. It contains no personal archive or private infrastructure map. Runtime readiness and supported backends are stated in the repository README.</p><p><a href="CONTRACTS.md">Detailed implementation contracts</a></p></footer>
+  <footer><p>This chart describes how Anamnema works. It contains no personal archive or private infrastructure. Requirements and supported platforms are in the repository README.</p><p><a href="CONTRACTS.md">Detailed implementation contracts</a></p></footer>
 </main>
 </body>
 </html>

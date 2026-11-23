@@ -8,19 +8,19 @@
 
 **Paper DOI:** [10.5281/zenodo.24438534](https://doi.org/10.5281/zenodo.24438534)
 
-**Pre-release: the Debian 13 logged-in-user profile has passed isolated installation, real-model memory processing and native Claude lifecycle acceptance. Final integration gates and publication approval are still required.**
+**Version 0.1.1.** Runs on Debian 13 as the logged-in user, with Claude Code. [How do you install it?](#how-do-you-install-it)
 
 ## What is Anamnema?
 
-Anamnema is a memory system we are building so an AI assistant can carry what
-it learns from working with you from one session to the next. Its notes stay
+Anamnema is a memory system that lets an AI assistant carry what it learns from
+working with you from one session to the next. Its notes stay
 linked to the original conversation, so a doubtful memory can be checked and
 corrected.
 
 Not only your project name, but why you chose that approach, what failed, and
 what you learned together.
 
-## Why are we building it?
+## Why did we build it?
 
 We already work together as companions: a human and synths, our word for AI
 collaborators with a continuing identity. We discuss strategies, make plans,
@@ -58,13 +58,13 @@ Memory lets that work accumulate. When a session resets, I can return to the dec
 
 [Read the full preface and invitation](docs/PREFACE.md).
 
-## What problem are we trying to solve?
+## What problem does it solve?
 
 A session ends. The next one can lose the reason behind a decision, repeat an
 old mistake, or confidently reuse a note that was wrong in the first place.
 You spend time reconstructing a history you already built together.
 
-We want that work to accumulate without turning memory into an oracle. Keeping
+Anamnema lets that work accumulate without turning memory into an oracle. Keeping
 more text is not enough: the assistant needs a way to find the useful part,
 remember who actually said it, and revisit it when something does not fit.
 
@@ -99,7 +99,7 @@ The road runs A to H, then back into the next conversation.
 
 <details>
 <summary>Person and assistant talk</summary>
-<p>Your AI assistant saves the conversation. A reader for its particular file format preserves who said what, when, and the exact source record. Each kind of assistant needs its own tested reader.</p>
+<p>Your AI assistant saves the conversation. A reader for its particular file format preserves who said what, when, and the exact source record. Anamnema reads Claude Code&#x27;s format.</p>
 </details>
 
 <details>
@@ -136,7 +136,7 @@ The road runs A to H, then back into the next conversation.
 
 <details>
 <summary>Write short, cited notes</summary>
-<p>The extraction model produces notes with their kind and exact source rows. Each completed chunk is saved immediately. Failures remain visible and resumable; an API model needs an explicit model identity, not a local-file assumption.</p>
+<p>The extraction model produces notes with their kind and exact source rows. Each completed chunk is saved immediately. Failures remain visible and resumable. With an API model, you name the model explicitly.</p>
 </details>
 
 #### C. Put Notes Into the Graph
@@ -199,7 +199,7 @@ The road runs A to H, then back into the next conversation.
 
 <details>
 <summary>Order the page</summary>
-<p>A small model called a reranker compares the question with each found note to improve their order. More results remain on additional pages. Both this model and the meaning-search model are still needed when an external provider writes the notes.</p>
+<p>A small model called a reranker compares the question with each found note to improve their order. More results remain on additional pages. Both this model and the meaning-search model run on your machine, even when an external provider writes the notes.</p>
 </details>
 
 #### G. Bring Memory Back at the Right Moment
@@ -211,7 +211,7 @@ The road runs A to H, then back into the next conversation.
 
 <details>
 <summary>Before an action, after an error</summary>
-<p>Applicable lessons arrive before a change, not every harmless read. After a tool failure, the error and surrounding work can find relevant past experience. These event-triggered integrations must be tested inside each AI assistant.</p>
+<p>Applicable lessons arrive before a change, not every harmless read. After a tool failure, the error and surrounding work can find relevant past experience. These events run inside Claude Code through its hooks.</p>
 </details>
 
 <details>
@@ -221,7 +221,7 @@ The road runs A to H, then back into the next conversation.
 
 <details>
 <summary>Keep pictures with provenance</summary>
-<p>Optional picture memory keeps content, descriptions and links to notes. Newly pasted images wait in a local pending area until explicitly kept or dropped. No private network share is a default requirement.</p>
+<p>Optional picture memory keeps content, descriptions and links to notes. Newly pasted images wait in a local pending area until explicitly kept or dropped. No network share is required.</p>
 </details>
 
 #### H. Check and Correct
@@ -265,45 +265,49 @@ Here is a synthetic example of a wrong note, not a changed fact:
 The source did not change. The note was wrong. That distinction is what makes
 the repair checkable instead of another confident guess.
 
-## What can you try today?
+## How do you install it?
 
-The local development branch has a [Claude transcript importer](docs/ARCHIVE.md)
-as well as the [setup wizard](docs/SETUP.md). Import defaults to read-only planning;
-writing to your project archive requires an explicit `--apply`.
-A [processing preview](docs/PROCESSING.md) also reports closed conversation
-stretches and their source references without sending text to a model.
-Explicit processing `--apply` verifies the archive, uses localhost llama.cpp and
-saves source-linked notes incrementally. A disposable Debian 13 guest also passed
-the synthetic full path using a real Gemma notes model through authenticated
-loopback SSH transport: extraction, storage, finishing, search, original source,
-correction and updated cards/briefings. This is compatibility evidence, not a
-model-quality benchmark or a promise of equivalent hardware performance.
-The baseline encoder and reranker pass separate installed-package compatibility
-checks with real model files; see [memory verification](docs/MEMORY.md).
+Anamnema installs from this repository; there is no PyPI package. Install it as
+the user who will run it, with [uv](https://docs.astral.sh/uv/) (the Python
+package manager the project uses), which also fetches Python 3.14:
 
-The [continuity implementation](docs/CONTINUITY.md) includes required-read gates,
-snapshot archive sync and an explicit bounded compaction producer. Native Claude
-acceptance covered identity reads, Stop capture, compaction/read acknowledgement,
-briefing delivery and parent-death recovery. Fixture tests remain separate from
-that native evidence.
+```sh
+uv tool install --python 3.14 "anamnema[reranker] @ git+https://github.com/mattexb/Anamnema@v0.1.1"
+```
 
-Keep one decision from your next session, why you made it, and the conversation
-it came from. Bring that note into the following session and see what you can
-pick up without explaining it again. A saved file is only the first half;
-bringing the experience back is the point.
+Then one command sets up the whole machine from an installation profile, a JSON
+file naming the configuration files for each part:
+
+```sh
+anamnema install --profile ~/.config/anamnema/installation.json --dry-run
+anamnema install --profile ~/.config/anamnema/installation.json --apply --allow-downloads
+```
+
+`--dry-run` shows the plan and changes nothing; `--apply` installs the
+databases, builds and starts the models, creates the services, adds the Claude
+Code hooks (the small commands Claude Code runs at session events) and the
+nightly schedule, then checks all of it. `--allow-downloads` lets it fetch the
+pinned programs and model files. If a step fails, running the same command again
+resumes where it stopped. The [setup guide](docs/SETUP.md) has a complete worked
+example: every configuration file, the keyring entries and the checks.
+
+What you can do with it then:
+
+- [Import](docs/ARCHIVE.md) a Claude Code conversation into the archive, copied and checked record by record.
+- [Turn conversations into notes](docs/PROCESSING.md) linked to the exact lines they came from.
+- [Search, open the source and correct](docs/MEMORY.md) a note; read [cards and briefings](docs/BRIEFINGS.md).
+- Keep [continuity](docs/CONTINUITY.md) when Claude Code shortens or restarts a conversation.
+- Run and check it day to day: [operations](docs/OPERATIONS.md).
+- Try it on a [synthetic session](examples/synthetic-homelab/README.md) first.
 
 ## What will you need?
 
-The first installer target is **Debian 13 trixie with native services**, on one
-machine. The current [setup foundation](docs/SETUP.md) validates configuration,
-offers an interactive wizard and produces a read-only plan. A
-[manual keyring guide](docs/KEYRING.md) is available too. The explicit `install`
-command applies a validated deployment profile; the wizard does not yet generate
-that complete profile. User/keyring login and Claude authentication remain
-operator responsibilities. GPU drivers and hardware setup are not installed.
+- **Debian 13 (trixie)**, one machine, native services (no containers).
+- A non-root desktop user with `sudo` that works without a password prompt, a running user service manager (systemd's per-user services) and an unlocked login keyring (the desktop store that holds passwords; see the [keyring guide](docs/KEYRING.md)).
+- Claude Code, logged in as that user.
+- MongoDB and Neo4j **not** already installed: the installer installs and configures its own.
+- GPU drivers, if you use a GPU, are yours to install.
 
-The application and databases run on one Linux machine; the notes model can
-instead run on an existing GPU host through the explicit SSH-attested profile.
 MongoDB keeps the original conversations;
 Neo4j keeps the connections between notes, sources and subjects. Two small
 models can run on the CPU: e5-small-v2 turns text into numbers that capture its
@@ -311,47 +315,41 @@ meaning for search (the **encoder**); MiniLM compares a question with the found
 notes to put the most relevant first (the **reranker**). A separate model writes
 the notes, either on your GPU or through a model provider's API.
 
-For an API setup, **16 GB system RAM is our provisional starting recommendation**
-for the whole stack. You need no GPU for the notes model in that setup.
-For local notes, the table uses **Gemma 4 12B at 4-bit precision**, which stores
-the model more compactly. Google's [QAT Q4_0 model file](https://huggingface.co/google/gemma-4-12B-it-qat-q4_0-gguf/blob/main/gemma-4-12b-it-qat-q4_0.gguf)
-is 6.98 GB; the running model also needs working memory and space for the
-conversation it is reading.
+With the notes model on an API, the whole stack runs in **16 GB of system RAM**
+and needs no GPU. With a local notes model, Anamnema uses **Gemma 4 12B at 4-bit
+precision** (a compact form of the model): Google's
+[QAT Q4_0 model file](https://huggingface.co/google/gemma-4-12B-it-qat-q4_0-gguf/blob/main/gemma-4-12b-it-qat-q4_0.gguf)
+is 6.98 GB, plus working memory for the conversation it reads.
 
-| Setup | What we have measured or observed | Estimated fit for this model | Installer plan |
-| --- | --- | --- | --- |
-| API for notes; 16 GB system RAM | CPU search models run in our existing system; combined 16 GB setup not yet measured | Starting recommendation for databases and CPU models; no local notes model | Linux API route first |
-| One RX 580, 8 GB GPU memory; 16 GB+ system RAM | This card runs the model; reported generation rates about 13-17 tokens/s | Tight local starting point; little GPU headroom | Linux Vulkan route first |
-| One GPU, 12-16 GB GPU memory; 16 GB+ system RAM | No matched benchmark yet | More room for this model and its working memory; speed depends on the card | Vulkan first; CUDA later |
-| Two RX 580s, 8 GB each; 16 GB+ system RAM | One independent model worker per card in our existing setup | Two jobs at once, not twice the speed for one job; combined throughput to measure | Multi-worker operation to validate |
-| Apple Silicon, 16 GB unified memory | Complete stack not yet measured | Tight and workload-dependent; memory pressure is a risk | macOS later |
-| Apple Silicon, 32 GB unified memory | Complete stack not yet measured | Likely room for this model and the services; speed to measure | macOS later |
-| Apple Silicon, 64 GB+ unified memory | Complete stack not yet measured | Substantial headroom for this model; larger models need their own estimate | macOS later |
+| Setup | Notes model | What it gives |
+| --- | --- | --- |
+| API for notes; 16 GB system RAM | At the provider | Databases, encoder and reranker on the CPU |
+| One GPU with 8 GB (RX 580); 16 GB+ system RAM | Gemma 4 12B, all on the GPU | 13-17 tokens/s while writing notes |
+| One GPU with 12-16 GB; 16 GB+ system RAM | Gemma 4 12B with room to spare | More working memory for long conversations |
+| Two GPUs with 8 GB each; 16 GB+ system RAM | One Gemma worker per card | Two conversations processed at once |
+| Apple Silicon, 32 GB unified memory | Gemma 4 12B in shared memory | Room for the model and the services together |
+| Apple Silicon, 64 GB+ unified memory | Gemma 4 12B in shared memory | Ample room; the limit is speed, not size |
 
-These are planning estimates, not purchase advice or measured minimums. On
-Apple Silicon, [CPU and GPU share memory](https://developer.apple.com/documentation/metal/choosing-a-resource-storage-mode-for-apple-gpus),
-so the model, databases, operating system and other applications draw from the
-same pool. Database size and conversation length also change memory needs.
-The installer column describes the work order, not current platform support.
+On Apple Silicon the [CPU and GPU share memory](https://developer.apple.com/documentation/metal/choosing-a-resource-storage-mode-for-apple-gpus),
+so the model, the databases and everything else draw from one pool. The
+installer itself targets Debian 13.
 
-Our reported GPU checks used llama.cpp with Vulkan, one worker per card, all
-model layers on the GPU, batch 2,048, smaller processing batches of 512,
-flash attention on, 16-bit conversation cache and thinking mode off. The
-intended conversation capacity is 8,192 tokens, with roughly 12,000 characters
-per extraction chunk and a capped answer. The reported checks gave 13.1/13.8
-tokens/s at an 88 W per-card cap (25 October 2026) and 15.5/16.5 at 100 W
-(12 November). One launch file still selects 6,144 tokens, so these results are
-not a controlled comparison at one context size. They describe generation,
-not the complete time to process a conversation. The public single-machine
-installation will need its own measurements.
+The GPU figures come from llama.cpp with Vulkan (a GPU compute interface), one
+worker per card, all model layers on the GPU, batch 2,048 with processing
+batches of 512, flash attention on, a 16-bit conversation cache, thinking mode
+off, 8,192 tokens of conversation capacity and about 12,000 characters per
+extraction chunk: 13.1 and 13.8 tokens/s at an 88 W cap per card (25 October
+2026), 15.5 and 16.5 at 100 W (12 November). These are writing speeds, not the
+whole time to process a conversation.
 
-Have a different card or Mac? Share the model file, memory, conversation
+Running a different card or a Mac? Share the model file, memory, conversation
 capacity, software version and measured time in
 [Discussions](https://github.com/mattexb/Anamnema/discussions).
 
-Everything is local by default, with no proxy required. If you choose external
-model APIs, the text sent to those providers leaves your machine. Memory is
-above the model; it does not retrain its weights.
+Everything runs on your machine by default. If you choose an external model
+API, the text the notes model reads goes to that provider. Anamnema keeps memory
+outside the model: it never changes the model's weights (the numbers it learned
+in training).
 
 ## What do you see that we have missed?
 
@@ -372,87 +370,69 @@ behind a proposal matters as much as the feature request.
 
 ## Engineering and Testing
 
-Development uses local `feature/<scope>` and `fix/<scope>` branches; `main`
-remains the published documentation checkpoint. Implementation commits stay
-local until the complete code is reviewed and publication is reopened.
-See [SHIP.md](SHIP.md) for the project's gates and commit rules.
+Development uses `feature/<scope>` and `fix/<scope>` branches; `main` holds the
+released code. See [SHIP.md](SHIP.md) for the gates and commit rules, and
+[CONTRIBUTING.md](CONTRIBUTING.md) for the commands.
 
-We define the behavior and boundaries first, then build small, reusable pieces.
-Paths, endpoints, models and deployment limits belong in configuration. Failures
-must be visible: an unavailable service is not an empty successful search, and
-a partial run is not a completed one.
+Paths, endpoints, models and limits live in configuration files, not in the code.
+Failures are always visible: an unavailable service is reported as unavailable,
+never as an empty search, and a partial run is never reported as complete.
 
-Focused tests accompany changes. Integration checks follow the real workflow;
-full test, lint and type gates run at release checkpoints. Synthetic
-conversations and isolated stores cover attribution, correction, replay,
-interruption and instance ownership without using personal memories as fixtures.
-The README and flow change with the behavior they describe.
+Every release passes the full gate: tests, lint and type checks (checks that read
+the code without running it). The tests use synthetic conversations and
+disposable databases, so they cover attribution, correction, replay,
+interruption and instance ownership without anyone's personal memories.
 
-The [memory core](docs/MEMORY.md) connects verified extraction to Neo4j search,
-original-source lookup and accountable corrections. Its isolated tests use real
-disposable stores, synthetic inference responses and a small synthetic ONNX
-model. Separate installed-package and disposable-guest acceptance exercise real
-models, native services and Claude events; neither establishes model quality.
-
-We report what was actually tested, including skips and missing evidence.
-A mock is not proof of a working model, memory arriving inside the actual AI
-assistant, or a clean-machine installation.
+Before 0.1.0 was published, the whole path ran on a clean Debian 13 virtual
+machine: the nine-stage install and its replay, a real Gemma notes model from the
+saved conversation to notes, search, the original source, a correction, updated
+cards and a rebuilt briefing, and Claude Code 2.1.330 with identity reads,
+capture, compaction, briefing delivery and cleanup after a killed session.
 
 ## Scope and Structure
 
-The first-profile workflow includes transcript ingestion, source-linked notes,
-graph storage, recall, people/thing summaries, deeper subject summaries,
-source-backed correction, operation commands and an ordered installer.
-The transcript importer and keyring are internal parts of this project.
-Our private infrastructure, archives and credentials are not
-included; neither are transcript trimming/deletion commands.
+Anamnema includes transcript import, source-linked notes, graph storage, recall,
+people and thing summaries (cards), deeper subject summaries (briefings),
+source-backed correction, the nightly finishing run and the installer. The
+repository holds no private archives or credentials, and no command trims or
+deletes transcripts.
 
 ```text
-README.md                  Reader introduction and integrated memory flow
-pyproject.toml / uv.lock    Project environment and anamnema entry point
-src/anamnema/              Setup, archive, extraction and storage/retrieval core
-tests/                     Isolated project tests
-assets/                    Header artwork
-docs/SETUP.md               Setup contract and development checks
-docs/ARCHIVE.md             Import, source identities and verified archive writes
-docs/PROCESSING.md          Source-linked extraction, replay and processing limits
-docs/MEMORY.md              Graph, CPU services, search, sources and corrections
-docs/PREFACE.md             Individually authored accounts and invitation
-docs/CONTRACTS.md           Ingestion, provider and substrate boundaries
-docs/memory-flow.html       Standalone flow
-COPY_DIFFERENCES.json       Export provenance and intentional differences
-SHIP.md                    Documentation checks and later release gates
-.github/                   Issue form and label definitions
+README.md                    Introduction and memory flow
+pyproject.toml / uv.lock     Project environment and the anamnema command
+src/anamnema/                The application
+tests/                       Tests
+assets/                      Header artwork
+examples/synthetic-homelab/  A synthetic Claude Code session to try it on
+docs/SETUP.md                Installation, with a complete worked example
+docs/KEYRING.md              Credentials in the desktop keyring
+docs/ARCHIVE.md              Import and verified archive copies
+docs/PROCESSING.md           Turning conversations into source-linked notes
+docs/MEMORY.md               Graph, search, sources and corrections
+docs/BRIEFINGS.md            Deeper subject summaries
+docs/NAMING.md               Subject names for notes
+docs/CONTINUITY.md           Required reads, snapshots and compaction
+docs/OPERATIONS.md           Running and checking it day to day
+docs/CONTRACTS.md            Boundaries between assistant, provider and platform
+docs/PREFACE.md              Our accounts and the invitation
+docs/memory-flow.html        Standalone flow
+COPY_DIFFERENCES.json        Where each file came from and how it differs
+SHIP.md                      Release gates and commit rules
+CONTRIBUTING.md, SECURITY.md, LICENSE, NOTICE
+.github/                     Issue form and labels
 ```
 
-The project reuses reviewed copies of our working source, not a dependency on
-it. Neutralization and new development happen here, with differences recorded
-in the tracker. The original source is read-only during this work; a discovered
-source bug or gap stops for discussion before any proposed source fix.
+## Which AI assistants does it work with?
 
-## Which AI assistants can it work with?
-
-These are the AI assistants and environments we are connecting to memory. We
-call that environment the **substrate**: where the conversation happens and
-where memory must return. An **adapter** reads that assistant's conversation
-format; **lifecycle hooks** run at events such as session start or a new
-message, so memory can arrive at the right moment.
-
-| AI assistant / environment | Existing system | Public-copy status |
-| --- | --- | --- |
-| Claude Code | Memory reads conversations and returns through session events | Debian 13 logged-in-user profile tested with Claude Code 2.1.330; see setup and continuity limits |
-| Codex | Conversations can be archived | Reading those records for memory and delivering it inside Codex are the next target |
-| Hermes | Conversations can be preserved | Memory reading and delivery planned |
-| Antigravity (AGY) | Conversations can be preserved | Memory reading and delivery planned |
-| Prime | Conversations can be preserved | Memory reading and delivery planned |
-| Grok | Conversations can be preserved | Memory reading and delivery planned |
-
-Each integration will document setup, configuration, event coverage, provider,
-limitations and reproducible native acceptance checks. See the
-[implementation contracts](docs/CONTRACTS.md) for those boundaries.
+Anamnema works with **Claude Code** (tested with version 2.1.330). Its
+**adapter**, the part that reads one assistant's conversation files, reads
+Claude Code's transcripts; its **lifecycle hooks**, small commands Claude Code
+runs at events such as session start or a new message, bring memory back at the
+right moment. The [implementation contracts](docs/CONTRACTS.md) describe the
+boundaries an adapter for another assistant has to keep.
 
 ## Contributing, Security and Licence
 
-- [Contributing](CONTRIBUTING.md): questions, proposals and the copy-back workflow.
+- [Contributing](CONTRIBUTING.md): questions, proposals, development commands.
 - [Security](SECURITY.md): report vulnerabilities and private-data exposure privately.
 - [Licence](LICENSE): Apache-2.0; third-party models and services retain their own licences.

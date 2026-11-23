@@ -1,20 +1,19 @@
 # Public Memory Contracts
 
-Status: setup planning/wizard, Claude archive import, bounded localhost extraction
-and the storage/retrieval core implemented locally. Semantic processing and native lifecycle integration
-are not complete. Real baseline encoder/reranker compatibility checks pass;
-real notes-generation and installer acceptance remain pending.
-Schema version: 1. The synthetic fixtures define examples, not real conversations.
+Anamnema implements setup, Claude Code archive import, extraction, storage and
+retrieval, semantic finishing (links, cards, naming, lessons, briefings), the
+native Claude Code lifecycle and the installer. Schema version: 1. The synthetic
+fixtures are examples, not real conversations.
 
 The memory boundary is described in [MEMORY.md](MEMORY.md). The same reusable
 engine serves local commands and authenticated HTTP. Mongo owns original source
 records and saved extraction; Neo4j owns derived notes and correction history.
-The public graph schema is independent of the private deployment. A source-backed
+A source-backed
 correction never changes or deletes its archived conversations.
 
 Subject naming is described in [NAMING.md](NAMING.md): a separate representation,
-text/source-bound writes after locking, and immediate correction fallback. Its
-explicit command is not yet a complete nightly pipeline.
+text/source-bound writes after locking, and immediate correction fallback.
+`anamnema nightly` runs it.
 
 Verified window references preserve captured source order separately from
 mutable file-line positions. Source display uses the common speech reader and
@@ -27,10 +26,9 @@ own transaction, not atomic with extraction insertion. Failed placement remains
 retryable without rewriting corrected properties or re-embedding known notes.
 Topic identities cannot collide with user-supplied explicit identifier facets.
 
-One project exposes the `anamnema` command. Reuse and neutralize the existing
-transcript importer and keyring internally; users do not assemble private tools.
-The first installation target is Debian 13 trixie, native services on one machine.
-The setup planning contract and current limitations are in [SETUP.md](SETUP.md).
+One project exposes the `anamnema` command, with its own transcript importer and
+keyring tool. The installation target is Debian 13 trixie, native services on one
+machine; see [SETUP.md](SETUP.md).
 
 ## Ingestion
 
@@ -42,9 +40,8 @@ the archive but must not be promoted to human statements for extraction.
 Archive records have a stable `_id`, instance, substrate, session, kind, timestamp,
 payload digest, physical source line and the complete native source object (or
 losslessly compressed JSON). Native `uuid`, `sessionId`, `type`, `message` and
-summary flags remain inside that object without metadata overwriting them.
-This intentional public-envelope difference is documented in [ARCHIVE.md](ARCHIVE.md)
-and the tracker; it does not migrate the private archive in place.
+summary flags remain inside that object without metadata overwriting them
+([ARCHIVE.md](ARCHIVE.md)).
 Session-closing markers are separate from summaries and include the final row;
 closure currently requires explicit operator attestation, not guessed EOF.
 Room/day support, if exported, must preserve every speaker and explicit timezone.
@@ -74,16 +71,15 @@ reads secrets; explicit archive apply resolves only the configured project keyri
 
 Windows contain rows after the previous boundary up to the next boundary;
 closing markers include the last spoken record. Equal timestamps require a
-stable native sequence tie-break, never guessed chronological order. A future
-adapter cannot be declared supported by adding an enum value alone.
+stable native sequence tie-break, never guessed chronological order. Supporting
+another assistant takes its own adapter and its own acceptance run, not an enum
+value.
 
 ## Providers
 
 The setup profile selects `vulkan`, `cpu`, `cuda` or `api` for the notes model.
-CPU and Vulkan share the localhost llama.cpp transport; CPU was added for the
-small-model clean-VM acceptance profile, not as a performance claim. CUDA is
-reserved and must fail clearly until
-implemented. API selects an explicit provider, endpoint, model and revision;
+CPU and Vulkan share the localhost llama.cpp transport. `cuda` reports
+unsupported. API selects an explicit provider, endpoint, model and revision;
 there is no fallback to a named machine or private keyring entries.
 
 Extraction exposes capabilities: generation, token counting if available,
@@ -93,15 +89,13 @@ chat API endpoints. Resume identity includes provider/model revision, prompt,
 settings and chunk content, so changing a model cannot reuse incompatible notes.
 Unknown token counts must be stated and bounded by a documented input policy.
 
-Keep our tested models/settings as the baseline; researched alternatives are
-documented as untested until exercised. Do not promise generic provider support.
-Judge roles are strong/middle/light, independently configured for linking,
-merging, cards, naming and briefings. Command-line and API providers normalize
+The tested notes model is Gemma 4 12B through llama.cpp. Each model stage
+(extraction, merge, cards, lessons, naming, briefings) takes its own explicit
+model file or judge configuration. Command-line and API providers normalize
 responses to validated JSON; timeouts, rate limits, malformed responses and
 unsupported schemas fail visibly and preserve resumable work. A model error
-is not an empty successful result. The neutralized project keyring provides the
-reviewed secrets path. Its setup/unlock and unattended use must be documented;
-never distribute private entries or expose values in arguments, logs or reports.
+is not an empty successful result. Secrets come from the project keyring
+([KEYRING.md](KEYRING.md)), never from arguments, logs or reports.
 
 Encoder and reranker are independent services with declared model/dimensions,
 token limits, prefixes and indexed-result contracts. API extraction does not
@@ -114,9 +108,8 @@ are required for public remote access.
 
 One reusable substrate base contract supplies common records and normalized
 events to the shared memory core. Per-substrate extenders implement transcript
-reading and native event translation, not copies of the engine. Claude is first;
-Codex and other substrates follow later and must prove their own paths.
-Normalize session ID, project,
+reading and native event translation, not copies of the engine. Claude Code is
+the supported substrate. Normalize session ID, project,
 prompt, tool name/arguments/result and final assistant message. Development
 instructions, system/developer messages, hidden reasoning, tool results and
 transport envelopes never become attributed owner speech.
@@ -138,19 +131,14 @@ The bounded [continuity core](CONTINUITY.md) implements identity required reads,
 snapshot staging/application/acknowledgement and verified archive sync/pairing.
 The producer's explicit precompute command and bounded PreCompact stdin adapter
 generate through an explicitly configured fresh worker, then stage through the
-same journal. Fixture subprocesses test transport, failure cleanup and continuity;
-they are not native Claude/model acceptance. Real isolated archive checks and
-installed commands do not establish native registration, retrieval delivery or
-turn capture. Those integrations and actual lifecycle acceptance remain required.
+same journal. `anamnema install` registers the hooks: SessionStart, Stop,
+PreCompact, SessionEnd and UserPromptSubmit (recall and briefing refresh).
 
-## Synthetic Acceptance Flow
+## Acceptance Flow
 
-The private-source bootstrap defines synthetic scenario, Claude and Codex
-fixtures for expected statements, correction and ignored tool content. They
-will enter the public tree with the implementation and executable checks,
-not this docs-only initial commit. None uses a real person or private host.
-
-The completed implementation must prove, separately for each substrate:
+Before 0.1.0 was published, steps 1 to 7 passed on a clean Debian 13 machine with
+Claude Code 2.1.330 and a real Gemma 4 12B notes model; the failure cases of step
+8 are covered by the test suite with disposable stores:
 
 1. Import native records, compare read-back and repeat with no duplicate writes.
 2. Enumerate the compaction window and final closed stretch exactly once.
@@ -162,6 +150,4 @@ The completed implementation must prove, separately for each substrate:
 8. Show visible failure and resumable state for unavailable archive, graph/model,
    malformed responses, interrupted runs and mixed-instance access.
 
-Fixture validation is not a substitute for this workflow. Real Linux VM/API and
-native Claude installation are required for the first target. The later Codex
-acceptance timing will be reviewed separately; no Codex support is implied now.
+An adapter for another assistant has to pass the same flow with its own records.

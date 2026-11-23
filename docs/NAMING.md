@@ -19,8 +19,9 @@ Selection, storage and model generation remain separate. `GraphSearch` offers
 an explicit subject representation alongside its unchanged text default. Its
 subject word index covers text and subject, and meaning search still includes
 both original note passages and later passage pieces; the best score wins.
-Subject naming can add recall but cannot remove an original-vector match.
-The higher-level recall policy is being integrated.
+Subject naming can add recall but cannot remove an original-vector match. Search
+uses the text representation by default; the subject representation is chosen
+explicitly.
 
 ```sh
 anamnema name-notes --instance ASSISTANT --pending
@@ -37,6 +38,6 @@ context leaves that note pending with a per-note problem and does not stop healt
 notes in its batch. Each apply attempt rotates its notes behind fresh pending
 notes, including missing answers; source failures cannot starve the store. Pending
 selection excludes inactive and wrong notes. Model/encoder errors remain visible
-and leave naming pending. The
-nightly adapter is not yet wired. Source contract: KinTools 0.7.28
-(`08b2ba6`), with an additional lock-before-comparison and source-identity guard.
+and leave naming pending. `anamnema nightly` runs `name-notes --pending` for up
+to `naming_rounds` batches, after entity linking and card rebuilds. Writes lock
+the note before comparing its judged text and source identities.

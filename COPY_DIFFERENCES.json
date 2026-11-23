@@ -11,7 +11,7 @@
     {
       "difference": "project-owned-neutralization",
       "public": "README.md",
-      "public_sha256": "148893280792343063068df238f60fbaa1001f8b70347e12e1131631a2dfcff4",
+      "public_sha256": "e2998d6c0d435e665250dc66d588d546d93671e4f0088fb49f34581d910f3e92",
       "reason": "Project-owned development status, setup contract, branch policy and single-project scope. Retain the original source hash for provenance; never overwrite from that template.",
       "source": "src/kin_tools/consolidate/public_export/templates/README.md",
       "source_sha256": "0960bd44220fe39395490c09fffbcaa80dbc38e4eb7bfb03f4354a8ff8b83691"
@@ -43,7 +43,7 @@
     {
       "difference": "public-governance",
       "public": "CONTRIBUTING.md",
-      "public_sha256": "fadbe1215127d5f516c5bf731cb79bbac55be23c1dda985f8e20479ffc76b169",
+      "public_sha256": "a09d995a7b4badc18012437668ca30199a7cb905cf2c57f0fc98761f125cb48f",
       "reason": "Public contribution workflow preserves manual upstream porting and the copy rule.",
       "source": "src/kin_tools/consolidate/public_export/templates/CONTRIBUTING.md",
       "source_sha256": "fadbe1215127d5f516c5bf731cb79bbac55be23c1dda985f8e20479ffc76b169"
@@ -51,7 +51,7 @@
     {
       "difference": "public-governance",
       "public": "SECURITY.md",
-      "public_sha256": "aec02784e9851c863c1e72bce524c45825c06543cf6cdf4ffd599c30dab88cc6",
+      "public_sha256": "ad0532714bcb12913f4219b8620c8054284c04943c66a89422134023815fc2c2",
       "reason": "Private vulnerability reports must not be filed as public issues.",
       "source": "src/kin_tools/consolidate/public_export/templates/SECURITY.md",
       "source_sha256": "aec02784e9851c863c1e72bce524c45825c06543cf6cdf4ffd599c30dab88cc6"
@@ -75,7 +75,7 @@
     {
       "difference": "project-owned-neutralization",
       "public": "docs/CONTRACTS.md",
-      "public_sha256": "b380c6938817348408b3e705d194f0b1d18a01e3c3421174cb5b9d39e1d7cbe8",
+      "public_sha256": "fbcd667ea62a4685b11c89f38e3ab80d10f907fefdcd2ad578f5668f2ac9711e",
       "reason": "Project-owned updated contract: neutralized importer/keyring, tested models and Claude-first extenders. Retain the original source hash for provenance; never overwrite from that template.",
       "source": "src/kin_tools/consolidate/public_export/templates/docs/CONTRACTS.md",
       "source_sha256": "1c12d407473f099ea1835f1e9731a6b2f7bcfaff7e35da8c8f8837c28a7e8841"
@@ -83,7 +83,7 @@
     {
       "difference": "public-flow-copy",
       "public": "docs/memory-flow.html",
-      "public_sha256": "1860071691cd5c1677d9ea9ccd7f8563cb198136b16d9fe34a60511124b3ddec",
+      "public_sha256": "7914a3ecae1c3646308e00c3b8ddb723f21afd5ae70cdd7af2bf5717044a4ad7",
       "reason": "Neutral standalone explanation of the public architecture; no private infrastructure or personal archive is published.",
       "source": "src/kin_tools/consolidate/public_export/templates/docs/memory-flow.html",
       "source_sha256": "1860071691cd5c1677d9ea9ccd7f8563cb198136b16d9fe34a60511124b3ddec"
@@ -91,7 +91,7 @@
     {
       "difference": "public-governance",
       "public": ".github/ISSUE_TEMPLATE/bug.yml",
-      "public_sha256": "02301f79b345f9fcaf43a95dfd1cd4835dc477d8f318472b82eef28d1127ffaf",
+      "public_sha256": "fb86003816b5dc41075ccb92672f21140ff68f7d1bc6634914c401a439b5f533",
       "reason": "Structured operating-system, backend and redacted installer diagnostics.",
       "source": "src/kin_tools/consolidate/public_export/templates/.github/ISSUE_TEMPLATE/bug.yml",
       "source_sha256": "02301f79b345f9fcaf43a95dfd1cd4835dc477d8f318472b82eef28d1127ffaf"
@@ -99,7 +99,7 @@
     {
       "difference": "public-governance",
       "public": ".github/labels.json",
-      "public_sha256": "f68292b8cfd72e2aebb5b1adb3cbb1c94b5f2ef82c36e164db7a5373e3ce8f23",
+      "public_sha256": "c197d1702c3a640372033c8917df2fc0d4966de0c36815d276087ae2b41f7c60",
       "reason": "Declarative labels; publishing automation must apply them explicitly.",
       "source": "src/kin_tools/consolidate/public_export/templates/.github/labels.json",
       "source_sha256": "f68292b8cfd72e2aebb5b1adb3cbb1c94b5f2ef82c36e164db7a5373e3ce8f23"
@@ -107,7 +107,7 @@
     {
       "difference": "project-owned-setup-foundation",
       "public": "pyproject.toml",
-      "public_sha256": "ea83e67a31e2213a02bba7ba1253f250e9f1e4df2ae727682932267130f5cb1f",
+      "public_sha256": "0d993a84843d4526d7d74b77b0d6f76c96b829045db3bd462d0300981c37dc53",
       "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
       "source": "project:pyproject.toml",
       "source_sha256": "b9dbba62649fa09b119bf6c9e2979e364db75307d924e88347f64406eed0a016"
@@ -115,7 +115,7 @@
     {
       "difference": "project-owned-setup-foundation",
       "public": "uv.lock",
-      "public_sha256": "4e86e3c430d0b0cbd8002207839d20d21f42a48df9185b67fa3483a6608a4943",
+      "public_sha256": "82058a12a4a3bd03dc1053e86ae58e6a1bfdb2043d31ef517bb6560f1b10d3eb",
       "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
       "source": "project:uv.lock",
       "source_sha256": "6936bf1369ce47d1f95742b721ee9a1c1a435731eca41b3607c24dfe0f833e41"
@@ -139,7 +139,7 @@
     {
       "difference": "project-owned-setup-foundation",
       "public": "src/anamnema/cli.py",
-      "public_sha256": "c64766fb94a18e61686c84206eaca3b8ad2d8632aa76801c56f2557cbd338e4f",
+      "public_sha256": "a00facc6f7cd3b4a6c1b3e49abbe6b430c1b590194de1664ce73898e455c1686",
       "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
       "source": "project:src/anamnema/cli.py",
       "source_sha256": "9fcd3be36a0e232b0d1ba58cc6839a035e17d3d701d1d9abdd6e0a82bab204a7"
@@ -179,7 +179,7 @@
     {
       "difference": "project-owned-setup-foundation",
       "public": "docs/SETUP.md",
-      "public_sha256": "3fa7daa6c909c7a481bbcfbe5784ae9ca6ace9c82a3dcf6c6a719eca538aaa28",
+      "public_sha256": "5c174b383353265f33dbde96fc6fbe4ef9592c6f532a8c3a16d4bfb26a0991ee",
       "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
       "source": "project:docs/SETUP.md",
       "source_sha256": "5e0fcc4600f2cf26b76d19263ec60d1d1c8f64d68f3783ece33b0ecfbcd1da7e"
@@ -219,7 +219,7 @@
     {
       "difference": "project-owned-setup-wizard",
       "public": "src/anamnema/guides/keyring.md",
-      "public_sha256": "22432debb50a200e36c18a6a48a1ca201de8792dd12111bc6acdad434cd4ecee",
+      "public_sha256": "c0c973f52a7465de58a48176a2b061aad36e3f79322d45b797fe39d6c8a008c1",
       "reason": "Anamnema-owned nonsecret wizard, safe answer persistence, manual guide or isolated tests; no original source modification.",
       "source": "project:src/anamnema/guides/keyring.md",
       "source_sha256": "755562628fcd7823d27679cd7c17f564e24775c8d3f3c6252cc9cb9d44e1ce2c"
@@ -227,7 +227,7 @@
     {
       "difference": "project-owned-setup-wizard",
       "public": "docs/KEYRING.md",
-      "public_sha256": "66f11bb2dbd8afe092dfa7bfcf46d046f93a2e2bcfc210e6a9a42e2b8a109c25",
+      "public_sha256": "c6b6f49f0499e04000dce7abb1065917a7ab8b9877b794389abc84fba0e51f69",
       "reason": "Anamnema-owned nonsecret wizard, safe answer persistence, manual guide or isolated tests; no original source modification.",
       "source": "project:docs/KEYRING.md",
       "source_sha256": "66f11bb2dbd8afe092dfa7bfcf46d046f93a2e2bcfc210e6a9a42e2b8a109c25"
@@ -243,7 +243,7 @@
     {
       "difference": "project-owned-archive",
       "public": "docs/ARCHIVE.md",
-      "public_sha256": "9e6b8c1d7120ba7543fb87a4d8db2dcbad685a1643fe0c75f80ab2e138725ad3",
+      "public_sha256": "208c45f5e0d4e2b202f2e55e611d2f294f8bb8c7b8d4cf07c22ec4d080053b77",
       "reason": "Anamnema-owned archive policy, CLI integration, documentation or synthetic/disposable-store tests; no private runtime dependency.",
       "source": "project:docs/ARCHIVE.md",
       "source_sha256": "9e6b8c1d7120ba7543fb87a4d8db2dcbad685a1643fe0c75f80ab2e138725ad3"
@@ -268,7 +268,7 @@
       ],
       "difference": "neutralized-archive-copy",
       "public": "src/anamnema/archive_codec.py",
-      "public_sha256": "c94a3aaba9ef1a593e8312c717c8131d1d479a99d8d1d16f75009f677e868b9c",
+      "public_sha256": "763c84329b565610352a7b50a458086c927e722844862c9fa6faba2ac5db54fd",
       "reason": "Lossless compression is retained with bounded decompression and BSON-size failure; no private artifact paths or silent truncation.",
       "source": "src/kin_tools/transcript/preservation/envelope.py",
       "source_revision": "90db14380c6b565551e4bdc0eb108687a21f7e20",
@@ -288,7 +288,7 @@
       "additional_sources": [],
       "difference": "neutralized-archive-copy",
       "public": "src/anamnema/archive_mongo.py",
-      "public_sha256": "cf0b3bb2699b8a65b34952f4351bd9a0fd93ab8c6300a0945ecb054e9ccc4066",
+      "public_sha256": "dec5d9010eda75fe37c1db934a0c839731fadd0e91d5e6a3f3f9ed215fce9667",
       "reason": "Set-on-insert and read-back retained; public collections, scoped content identities, typed checksum recomputation and completed receipts. New public schema is not a private database migration.",
       "source": "src/kin_tools/transcript/preservation/repository.py",
       "source_revision": "90db14380c6b565551e4bdc0eb108687a21f7e20",
@@ -432,7 +432,7 @@
     {
       "difference": "project-owned-processing-preparation",
       "public": "docs/PROCESSING.md",
-      "public_sha256": "48c4b32d3bcc75b06abe9ec11daff5ad22ca8ef12c876c52004662b7527e2a68",
+      "public_sha256": "885b481397a3b7e2281d1ab0447045e3e76491e9be86e1ab0fd11e05c0093870",
       "reason": "Shared read-only preparation over common records; no model, database writes or private configuration. Preview does not claim archive verification or extracted notes.",
       "source": "project:docs/PROCESSING.md",
       "source_sha256": "1ff8e4f6bcf2ed1d9f44d05c15b8c3dc76da53d44cf4bb45253a2257b961f9ee"
@@ -611,7 +611,7 @@
     {
       "difference": "project-owned-note-extraction",
       "public": "src/anamnema/extraction_config.py",
-      "public_sha256": "3dda8c46c1334e7dc23e6dc74d2b4df02c1079d78193fe9c2020f62ef5d345e7",
+      "public_sha256": "322a35a25f59fbe4dc6d30f712fa49a7eb1b0e06bcbbc20e0fb2da0fd2c28dba",
       "reason": "Anamnema-owned explicit extraction integration/configuration or synthetic HTTP/disposable-Mongo tests; no private runtime dependency.",
       "source": "project:src/anamnema/extraction_config.py",
       "source_sha256": "3dda8c46c1334e7dc23e6dc74d2b4df02c1079d78193fe9c2020f62ef5d345e7"
@@ -646,7 +646,7 @@
       "additional_sources": [],
       "difference": "neutralized-note-extraction",
       "public": "src/anamnema/llama_provider.py",
-      "public_sha256": "e3433b46da240e92ffb30ec687917d0c9ee81fc03656966b8707435380245df3",
+      "public_sha256": "b7981ea558893a1c02d2e453b72f410bf6324214069e38571bee75946eab671a",
       "reason": "Neutralized localhost native llama.cpp calls and exact template/tokenizer preflight. Direct bounded HTTP disables implicit proxy/redirect/fallback; explicit stable model-file hash/path and reported metadata are checked during execution. Optional bearer comes only from configured keyring lookup. Client-owned exact-token preflight passes the full frozen request body to /apply-template as to generation, including chat_template_kwargs and schema options; the pinned llama.cpp 5aeac37a3 endpoint uses the shared chat parser. This repairs the public generate(body) contract; the source helper keeps its messages-only API; scoped source inspection found no internal callers. It is not changed. Tests prove both false rejection and missed overflow before the correction, plus request snapshot stability. No real-model/GPU acceptance is inferred. The public bounded HTTP transport explicitly closes HTTPResponse on status/size failures as well as the connection. Four real-HTTP negative controls demonstrate the old response ownership leak and the corrected deterministic cleanup, without GC timing or warning suppression.",
       "source": "src/kin_tools/consolidate/llama.py",
       "source_revision": "ad30da3ac1e1e2eff06e85772ed899c1191a9030",
@@ -726,7 +726,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "docs/MEMORY.md",
-      "public_sha256": "842d4cb390105bb1027194e76918735e95dafebe080a2854f5c1b9e541ef0d41",
+      "public_sha256": "159475e8905347b0aed2d1a07469b1ad75a882ba41c0e91dd8fc715284d94f00",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:docs/MEMORY.md",
       "source_sha256": "7712e8f926bd04c7ee74d8f87604e9d8e1174a587f128a3d7a50de592a7f827f"
@@ -791,7 +791,7 @@
       ],
       "difference": "neutralized-memory-core",
       "public": "src/anamnema/graph_corrections.py",
-      "public_sha256": "e47ac9a64704b5c1a96ff93057815e93fc2b17bc3dd8642984b682312e23fcd9",
+      "public_sha256": "67ee17a7c916205b64c9c1080d0aadc688975a9c70927b0ab26d5985011ea012",
       "reason": "Preserve accountable outcomes, transactional rewrite/vectors and retained deletion checks. Public checks are scoped and fingerprinted; source references are verified by the shared engine. Group-card invalidation is conservative on all checks; full semantic rebuilding remains pending. No private detached commands are launched. Lesson persistence adds transactional dependent-lesson invalidation and retained affected lesson ids on the correction. Subject naming now adds separate public vector/fulltext indexes and passage fallback on insertion/correction; vectors remain hidden at read boundaries. Subject searches add to original passage and piece recall with best-score merging, never replace it. Provenance-only corrections invalidate settled subjects. Native naming command and guarded persistence live in separate public modules.",
       "source": "src/kin_tools/consolidate/graph.py",
       "source_revision": "80c2f591d891e767fc9dd24cee4999c39b17c5d6",
@@ -838,7 +838,7 @@
       ],
       "difference": "neutralized-topic-placement",
       "public": "src/anamnema/graph_store.py",
-      "public_sha256": "394cfb0daed4e7a46725ce134ed6aa702681025150cb5ac9d9862ac9e7a96937",
+      "public_sha256": "7ef88707d6290c61fcecad9cbb23fb9f982917e18ee9dcafc4aa80c744289526",
       "reason": "Adapt source insertion/indexes to public envelopes, complete scoped identities and local keyring connections. Preserve 0.7.12 placement marker on creation only and add the topic exemplar index. Strict schema, immutable insertion conflict and deletion replay checks remain public integration; entities and lessons remain pending. Marked capture adds optional typed provenance in the initial insertion transaction, preserving older note serialization/hashes; unwindowed notes require provenance. Shared genuine-marker detection serves capture and extraction, and verified unwindowed captures expose cited-only partial source context without inventing a window. Subject naming now adds separate public vector/fulltext indexes and passage fallback on insertion/correction; vectors remain hidden at read boundaries. Subject searches add to original passage and piece recall with best-score merging, never replace it. Provenance-only corrections invalidate settled subjects. Native naming command and guarded persistence live in separate public modules.",
       "source": "src/kin_tools/consolidate/graph.py",
       "source_revision": "17983623cb164594d8b8fffe21705339225b8c68",
@@ -847,7 +847,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/memory_cli.py",
-      "public_sha256": "ec360b60a49e04b20e3d955b78a40d267784ec13bd4b5cde2b09e0782836ea81",
+      "public_sha256": "3514fcd4aa3e737ecc71ca28001a87395a1da5a6bbef92790c32c3c6a9068128",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:src/anamnema/memory_cli.py",
       "source_sha256": "d4e57582d5501e9e10fe85555f0b88a7b81b270e5f7f835ba3502af1332b5d3c"
@@ -895,7 +895,7 @@
       ],
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/memory_loader.py",
-      "public_sha256": "9e2e54179132d6ea743599c6f7f7c52d7c6d3b056f57cc2d7022ea44de3226d2",
+      "public_sha256": "d722ac7b99c5210aeb59813c29b2f8728f3320439aa82095d840b2fa457d59fc",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:src/anamnema/memory_loader.py",
       "source_sha256": "e4dc4e6c4c32f69207f14225193748d08e965b2c6512d944090ecc9efa91de38"
@@ -954,7 +954,7 @@
       ],
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/memory_sources.py",
-      "public_sha256": "8836386f1a135db7a61e2b3fe1aec90dd0184e9ac48acd17580db18d8fec46ea",
+      "public_sha256": "9030b512e66f1e88967c2aa2963dbc40f824c0e373c0787135b71d104d9fc250",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:src/anamnema/memory_sources.py",
       "source_sha256": "6ebccb0452c17bd766a66e66f50d58890e9acc3c57fda85e834f8c31c2e46eba"
@@ -1014,7 +1014,7 @@
       ],
       "difference": "neutralized-memory-core",
       "public": "src/anamnema/search_services.py",
-      "public_sha256": "e248dc4b5b9b4019e61c21b4dc566512b2f8fbfd76e51a9a6c4df5b0cde48ee9",
+      "public_sha256": "5eed7e3a5ef5bbeeffc79263f324341549b645851399040f61150b1be46353ab",
       "reason": "Retain e5 native tokenizer trimming, prefix/dimension contracts, overlapping passages and indexed raw-logit reranking. Public direct localhost bounded HTTP requires project bearers, rejects malformed/duplicate indexes and nonfinite vectors; no private standby hosts or credentials fallback. The public bounded HTTP transport explicitly closes HTTPResponse on status/size failures as well as the connection. Four real-HTTP negative controls demonstrate the old response ownership leak and the corrected deterministic cleanup, without GC timing or warning suppression. Optional subject prefixes precede the entire original text-character slice before native token trimming; malformed subject/passage counts refuse explicitly.",
       "source": "src/kin_tools/consolidate/llama.py",
       "source_revision": "80c2f591d891e767fc9dd24cee4999c39b17c5d6",
@@ -1363,7 +1363,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/config/cards.json",
-      "public_sha256": "f2951655fc98e3ee8d3356d866bca45f63de7396733a7c26d4236332795199c3",
+      "public_sha256": "e4a4ad5a1dc861dde2df583f7b6e9ddf8c342efaf139543e36b636f040e46986",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:src/anamnema/config/cards.json",
       "source_sha256": "f2951655fc98e3ee8d3356d866bca45f63de7396733a7c26d4236332795199c3"
@@ -1403,7 +1403,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "tests/test_card_writer.py",
-      "public_sha256": "613d7e1eac210e14df6334fc4f8c4987023459f621abefa4b87b749232caa1c3",
+      "public_sha256": "8c204abfc0ab25e6d065e72e4b20f998d916b9dcaffe1433ef10d28877f3ac17",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:tests/test_card_writer.py",
       "source_sha256": "613d7e1eac210e14df6334fc4f8c4987023459f621abefa4b87b749232caa1c3"
@@ -1870,7 +1870,7 @@
       ],
       "difference": "neutralized-continuity-core",
       "public": "src/anamnema/continuity_state.py",
-      "public_sha256": "35427bd97b7e69339182147e666ffea4164a993f630ecc83b1b637a03cc337d3",
+      "public_sha256": "d26d1267ec155d5c6306a99f5f492088b020e7099315d7fdb81dec7acf7145f5",
       "reason": "Preserve source identity nonce-at-end required reads, explicit Stop acknowledgements and staged versus applied compaction semantics. A locked atomic assistant/session journal holds actual read debt, never inferred initialization or error-only gates. First observed starts, including compact, create identity reads when available; missing sources/snapshots warn visibly without synthetic Stop debt. New idle precomputes may replace unapplied snapshots; applied unread snapshots cannot be replaced. Publish acknowledged content into a separate private bounded spool before journal clearing, retaining one latest reference rather than reading/growing the full archive in every event. Migrate legacy journal spools without data loss. Quota refuses new staging, not acknowledgement/Stop, with no expiry policy. Preserve replay tokens and refuse corrupt/foreign/link-redirected managed state. Explicit identity files replace private enrichment. Native translation stays separate from archive adapters. Verified snapshot sync/pairing is implemented in separate modules. Explicit snapshot generation is implemented separately; delivery/capture, registration and native acceptance remain unfinished. Shared derived-read registration uses the same gate: immutable managed copies preserve source files, strip only trailing source read-token stamps before appending the single managed token, retain proof for identical cleaned outstanding bodies, and atomically supersede changed keyed versions. Existing double-token copies are replaced on next announcement; token-only input creates no debt. Missing or empty input creates no debt; identity capacity is reserved before first start. Unlike source stamp-in-place, public source files are not mutated. This is registration only, not briefing generation or native delivery.",
       "source": "Hooks:global/SessionStart/src/require_reads.py",
       "source_revision": "c0019f256bc6c51c7a8401fa7381f069c940ab66",
@@ -1879,7 +1879,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "docs/CONTINUITY.md",
-      "public_sha256": "e539c1ce85f48c3cd5792518cf02a24d98b6c2924cccdd9e35ad7a3c0a27df96",
+      "public_sha256": "6f92be314d1b90ebac8cd90ce8b3dda54a0d5bc03474f00b07924168d60f8cef",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:docs/CONTINUITY.md",
       "source_sha256": "54472f31b699297afbe977866268e619b2f8c7ab5c96d56391325a09b1790e0b"
@@ -1895,7 +1895,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/continuity_cli.py",
-      "public_sha256": "12345010e7fabeb9ad12c1cf15dbb00f2f742794f6e4291b88f2e4bb97e12395",
+      "public_sha256": "16a91688f4aea1f50e1c92a9a7a6f681224715588ca4a329de0208629baaaf48",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:src/anamnema/continuity_cli.py",
       "source_sha256": "281230fe98e0ddb7415cd005bf6dbc15645747565cef4dfd5161102c2b59bae2"
@@ -1903,7 +1903,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/continuity_config.py",
-      "public_sha256": "f12daa8f4bde506ea14a72b3ee9667669fc691f77e0e504fad08403c7bf0a83d",
+      "public_sha256": "3f452b9bb730360cb20bc2d4e7f61ce43098afc39926176cc24ee69deb1396a4",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:src/anamnema/continuity_config.py",
       "source_sha256": "dfefc0d59d64de79bd85a4b6f5ef76e226eb134b2456c6f5eef24c78ec400d82"
@@ -1911,7 +1911,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/substrates/claude_hooks.py",
-      "public_sha256": "b411a640cb0fb5150c1c9fef76e96defc5655e1b41e06c6aeb773266c2c1733b",
+      "public_sha256": "7d9ec4e3e2e2fc02da1d02d4513e16d3920f925bf94279aacb5a7d3587b59838",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:src/anamnema/substrates/claude_hooks.py",
       "source_sha256": "b411a640cb0fb5150c1c9fef76e96defc5655e1b41e06c6aeb773266c2c1733b"
@@ -2058,7 +2058,7 @@
       ],
       "difference": "neutralized-snapshot-producer",
       "public": "src/anamnema/snapshot_policy.py",
-      "public_sha256": "cdd084615716f8fc3f74fc3ef163a815ff7c95ca6f0b9f4b45cc95f6ab10d44c",
+      "public_sha256": "8f77e6d2585743506afcca6a8ba95d65c01ee9a769659ccb1755793b81b24d7f",
       "reason": "Port independently reviewed and landed Hooks8d23cfe UTF-8 actual-marker byte fitting, joining-newline accounting, newest-first capped files and fresh worker generation. Reuse public speech attribution/sanitization while retaining explicit self-correction lines; do not copy private Recognition/database or identity enrichment. Strict explicit worker deployment replaces private executable/settings lookup. Add stable bounded transcript reads, native-session/cwd validation, bounded combined output/deadline, owned process-group cleanup and private temporary inputs outside managed cleanup. Network/model work holds no session lock; validated output stages through existing ownership/quota/applied protections. CLI precompute and PreCompact stdin share this core; no automatic registration, live settings changes or native/model acceptance claim. Fixed worker CLI security guard constants are interface constraints, not deployment preferences; operational values/native fields live in producer policy. Producer peer review corrected two port-only defects: directory arguments precede fixed options and an explicit end-of-options marker protects the final prompt from variadic options; JSONL framing splits only at LF, preserving raw Unicode separators inside JSON strings. Regression fixtures model variadic consumption and serialize raw Unicode, with both original failures reproduced before correction. Inherited user permission rules are not an input-only OS sandbox; no confinement/native acceptance is inferred.",
       "source": "Hooks:global/PreCompact/src/create_compaction_snapshot.py",
       "source_revision": "8d23cfe8713fe2f529bff227fe4523b8ed2fccf1",
@@ -2100,7 +2100,7 @@
       ],
       "difference": "neutralized-snapshot-producer",
       "public": "src/anamnema/snapshot_worker.py",
-      "public_sha256": "853e17665e924bca2102cd945912c330f23cf3c125da702c95c03d88f8093610",
+      "public_sha256": "5583df49877a85945d06dc9e4718825944989ac273df4c5b166e930c3e161e43",
       "reason": "Port independently reviewed and landed Hooks8d23cfe UTF-8 actual-marker byte fitting, joining-newline accounting, newest-first capped files and fresh worker generation. Reuse public speech attribution/sanitization while retaining explicit self-correction lines; do not copy private Recognition/database or identity enrichment. Strict explicit worker deployment replaces private executable/settings lookup. Add stable bounded transcript reads, native-session/cwd validation, bounded combined output/deadline, owned process-group cleanup and private temporary inputs outside managed cleanup. Network/model work holds no session lock; validated output stages through existing ownership/quota/applied protections. CLI precompute and PreCompact stdin share this core; no automatic registration, live settings changes or native/model acceptance claim. Fixed worker CLI security guard constants are interface constraints, not deployment preferences; operational values/native fields live in producer policy. Shared NativeJudge additionally feeds bounded stdin with nonblocking selector writes while draining both outputs, preserving prompt privacy and preventing duplex pipe deadlock. Default snapshot workers retain DEVNULL stdin.",
       "source": "Hooks:global/PreCompact/src/create_compaction_snapshot.py",
       "source_revision": "8d23cfe8713fe2f529bff227fe4523b8ed2fccf1",
@@ -2121,7 +2121,7 @@
       ],
       "difference": "neutralized-snapshot-producer",
       "public": "src/anamnema/snapshot_producer.py",
-      "public_sha256": "5f7aa0ffd8cc243f00130e7820feaa6ca5fe9e1b3e817821bd93f62fbb66cac9",
+      "public_sha256": "9b67ba2877a13dc091594993a88e9e16d6d80f51f9d653f277a1d02127bd6dae",
       "reason": "Port independently reviewed and landed Hooks8d23cfe UTF-8 actual-marker byte fitting, joining-newline accounting, newest-first capped files and fresh worker generation. Reuse public speech attribution/sanitization while retaining explicit self-correction lines; do not copy private Recognition/database or identity enrichment. Strict explicit worker deployment replaces private executable/settings lookup. Add stable bounded transcript reads, native-session/cwd validation, bounded combined output/deadline, owned process-group cleanup and private temporary inputs outside managed cleanup. Network/model work holds no session lock; validated output stages through existing ownership/quota/applied protections. CLI precompute and PreCompact stdin share this core; no automatic registration, live settings changes or native/model acceptance claim. Fixed worker CLI security guard constants are interface constraints, not deployment preferences; operational values/native fields live in producer policy. Producer peer review corrected two port-only defects: directory arguments precede fixed options and an explicit end-of-options marker protects the final prompt from variadic options; JSONL framing splits only at LF, preserving raw Unicode separators inside JSON strings. Regression fixtures model variadic consumption and serialize raw Unicode, with both original failures reproduced before correction. Inherited user permission rules are not an input-only OS sandbox; no confinement/native acceptance is inferred.",
       "source": "Hooks:global/PreCompact/src/create_compaction_snapshot.py",
       "source_revision": "8d23cfe8713fe2f529bff227fe4523b8ed2fccf1",
@@ -2193,7 +2193,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "tests/test_snapshot_producer.py",
-      "public_sha256": "cc2194364c2dfa88eea6850d57a03b7a512464a636d08c8ad36f1732d4af7737",
+      "public_sha256": "416f345c901e112b2632251713c7ae4d86eec90f45e20b703dd050a190911375",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:tests/test_snapshot_producer.py",
       "source_sha256": "aee021bbbb07e83674209aa8fd5b6a747ed91b05257d1158b3677353795d6701"
@@ -2566,7 +2566,7 @@
       "additional_sources": [],
       "difference": "neutralized-naming-briefing-core",
       "public": "src/anamnema/briefing_render.py",
-      "public_sha256": "124fd2fd70829f7aefc0fc47b2065ca9770bf28091cfc1f96dd40b1ec75fb365",
+      "public_sha256": "4356efcf6528c4c0f37ace2c1e67c06147bbf8ae5711a72aa7f9d2b4c3ca4df8",
       "reason": "Pure whole-claim deterministic overflow with source priority, protected contradictions/open points, separate review and explicit oversized pages. Optional model-condense integration is held on the source shared-citation claim-loss finding.",
       "source": "src/kin_tools/consolidate/briefing.py",
       "source_revision": "7ea685a3d0208c71dfec2b06b257d11b44e58625",
@@ -2582,7 +2582,7 @@
       ],
       "difference": "neutralized-naming-briefing-core",
       "public": "src/anamnema/briefing_select.py",
-      "public_sha256": "dbf6a222ba12d5c173f7455a2bd6bf3658d4b2c80160ab466899eaa0503658ed",
+      "public_sha256": "9010a23e054d07d12034e325ba948d63f779718488b787748ed819a05a18f3f2",
       "reason": "Owned typed group/concept/note enumeration, route deduplication and direct/concept/group read priority from briefing_reach. Public concepts follow lesson episodes; bound overflow refuses rather than silently truncating. No model, foreign selectors or private source pointers.",
       "source": "src/kin_tools/consolidate/graph.py",
       "source_revision": "7ea685a3d0208c71dfec2b06b257d11b44e58625",
@@ -2623,7 +2623,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/judge_config.py",
-      "public_sha256": "241ab3357a5d9909b9534db6c0e8789503e103c04d804764733eb45c215457d2",
+      "public_sha256": "c0ee9552f060615cf97a3559feefd922c1dae171c74a5527977be36d38836198",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:src/anamnema/judge_config.py",
       "source_sha256": "4f41102cab388bc043f69ea8b2a3f4f6c4efd14400e579a43c1fbe86370206bf"
@@ -2631,7 +2631,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/native_judge.py",
-      "public_sha256": "7b238a0a62076ca0f62132bf35332614eb69ad5f0133b57e416d603104c8ac4d",
+      "public_sha256": "5d1497258f72474898660dcc6d25dedb71f82c6802edddec1dfb00b13e8e29cc",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:src/anamnema/native_judge.py",
       "source_sha256": "d0e0eeb426414293c67f0e41747212aad46442a97880f08ee712ec2ebc35879c"
@@ -2671,7 +2671,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "tests/test_briefing_select.py",
-      "public_sha256": "c50fc305621e3dcf267966b41707a33772ac13641688a3535d21b330e8111679",
+      "public_sha256": "5c999fcad3d0de3e944d057bf576a1d0a2bff08f789afcafc3bccee0cb4d4682",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:tests/test_briefing_select.py",
       "source_sha256": "c50fc305621e3dcf267966b41707a33772ac13641688a3535d21b330e8111679"
@@ -2695,7 +2695,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "tests/test_native_judge.py",
-      "public_sha256": "84626a5d22397d4cc73c7e8ee4012dea7dba9f77ec36bf5b44218517287e1d32",
+      "public_sha256": "85c7d42b45386915dd2e64afdba4757d266c057fd5e47a5c207285416d0197fb",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:tests/test_native_judge.py",
       "source_sha256": "afe76f301eb907fef824cd181b84897e09ad0bc477ef879347db96237d614a68"
@@ -2730,7 +2730,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "docs/OPERATIONS.md",
-      "public_sha256": "cba55894eaddd8a9ccd0a94c6894d335330474c5b81f38a90565256fe4a9fa03",
+      "public_sha256": "20c1bf3d0af7e01ea2a23cef748f134a18d8288a333505c3c4d3fc9abe088218",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:docs/OPERATIONS.md",
       "source_sha256": "cba55894eaddd8a9ccd0a94c6894d335330474c5b81f38a90565256fe4a9fa03"
@@ -2746,7 +2746,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/batch_journal.py",
-      "public_sha256": "2d6badfb9cf61c3d562bf88285973dd939994ecbd9c1d82313129c2117b49a72",
+      "public_sha256": "236b441cb7611f883850bd4c9d5eec694b8793fd8c5f84b84e2a9b4b7cc38c81",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:src/anamnema/batch_journal.py",
       "source_sha256": "2d6badfb9cf61c3d562bf88285973dd939994ecbd9c1d82313129c2117b49a72"
@@ -2861,7 +2861,7 @@
       "additional_sources": [],
       "difference": "neutralized-naming-briefing-core",
       "public": "src/anamnema/naming_builder.py",
-      "public_sha256": "636e0049a82d6de2a69050ad8e59253ca4816b535efa6724fce59d418b836fa1",
+      "public_sha256": "5ef403082ef836d5375cada3703fafb897cb0b3dc1911b554bedf0643bf796fa",
       "reason": "Source-backed naming batches through verified public archive context, local model identity and separate encoder. Per-note source failures remain visible and pending without starving healthy peers. CLI previews use no infrastructure; Python judgement previews are explicitly distinct.",
       "source": "src/kin_tools/consolidate/naming.py",
       "source_revision": "08b2ba6bb8c0827b585d06417241b01af9141aa2",
@@ -2881,7 +2881,7 @@
       "additional_sources": [],
       "difference": "neutralized-naming-briefing-core",
       "public": "src/anamnema/briefing_builder.py",
-      "public_sha256": "9f0f00ce6a50f8e2e7e6863c29e1ddb3131950e1dafdb9eec1ecf0229c91048b",
+      "public_sha256": "ff08b104b6b475fa4f3fac3a469723700ac4b9fa2af2907f711f60d032e42c3c",
       "reason": "Owned typed selection, source-verified bounded labelled reads/combine through strict stdin-only NativeJudge and immutable private bundle read-back. Failed reads stay unread and failed/partial reports are not ready delivery. Model condensation remains held on the independently reproduced rejected-duplicate carries source finding.",
       "source": "src/kin_tools/consolidate/briefing.py",
       "source_revision": "7ea685a3d0208c71dfec2b06b257d11b44e58625",
@@ -2891,7 +2891,7 @@
       "additional_sources": [],
       "difference": "neutralized-naming-briefing-core",
       "public": "src/anamnema/briefing_stack.py",
-      "public_sha256": "1579302c083e1ef68e66e7562008f1c3d02f579183d902aa06df55435ed32e6a",
+      "public_sha256": "a19dde35f9f39503d297de9249bd118512f303e77dc4b95e47d297e256c5951a",
       "reason": "Preserve ready-only held-session soft/hard budget and explicit drops retaining bundles. Public locked atomic reservations precede required-read debt; interrupted replay never charges twice, drops never acknowledge debt, and the actual managed source copy is checksum-bound to the verified bundle. No silent corrupt-summary skip, private folder or native deployment assumption.",
       "source": "src/kin_tools/consolidate/ledger.py",
       "source_revision": "7ea685a3d0208c71dfec2b06b257d11b44e58625",
@@ -2900,7 +2900,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "docs/BRIEFINGS.md",
-      "public_sha256": "f2fae9967a06a290a360aa83b495432772e82fbb148a143ecf0981e5b886013f",
+      "public_sha256": "dc314661fb870292597fdfb075301f4400063c45b63b723ed248d349e0b803cf",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:docs/BRIEFINGS.md",
       "source_sha256": "f2fae9967a06a290a360aa83b495432772e82fbb148a143ecf0981e5b886013f"
@@ -2908,7 +2908,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "docs/NAMING.md",
-      "public_sha256": "f53048ce26981c854158337c2c81c0d267c8bdbef3d804d9b09d99b30a407746",
+      "public_sha256": "ca2cf844bc6f36e7ad15d8f53048447828391916999d1f5bf73b2ea17583e6d1",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:docs/NAMING.md",
       "source_sha256": "f53048ce26981c854158337c2c81c0d267c8bdbef3d804d9b09d99b30a407746"
@@ -2924,7 +2924,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "tests/test_briefing_builder.py",
-      "public_sha256": "b98fba7c212aa4d1b67174855137a274377837375df5102fb32fb9d7330295a9",
+      "public_sha256": "46586bde53b98b556486851d092bf324d4fb0d146f778618114375a1ead5a7c7",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:tests/test_briefing_builder.py",
       "source_sha256": "b98fba7c212aa4d1b67174855137a274377837375df5102fb32fb9d7330295a9"
@@ -2932,7 +2932,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "tests/test_briefing_stack.py",
-      "public_sha256": "0fda234ba9f49623021ef2c5d4428588de18ab11aceb8996dba527d749c3ced3",
+      "public_sha256": "f095323f1cd18717d13158485b15335c39dcdd1905c7431eb8f45b2dcba7266e",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:tests/test_briefing_stack.py",
       "source_sha256": "0fda234ba9f49623021ef2c5d4428588de18ab11aceb8996dba527d749c3ced3"

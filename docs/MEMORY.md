@@ -1,21 +1,20 @@
 # Memory Storage And Retrieval
 
-The storage/retrieval core and semantic finishing are implemented. Isolated real
-encoder/reranker checks and a disposable Debian 13 native installation passed;
-a synthetic full path also passed with real notes-model inference through the
-explicit remote-attestation profile. These are compatibility checks, not quality
-or hardware-performance benchmarks.
+Storage, retrieval, semantic finishing and lesson orchestration are implemented.
+On a clean Debian 13 machine with a real Gemma 4 12B notes model, the whole path
+passed: 31 archived records, one extraction call, six notes, storage, placement
+and replay, links, cards, naming, lessons and briefings, then search, source
+lookup, a correction, check replay, a card revision and a briefing replacement.
 
 Lesson orchestration is implemented. All lessons, history, concept and
 episode links, and unresolved note marks of one judgement commit together. A stop
 before commit leaves its notes pending; a lost response after commit does not
-cause normal replay to judge them again. Native lifecycle and installation
-evidence are separate from that transactional contract; see SETUP and CONTINUITY.
+cause normal replay to judge them again.
 
 ## Ownership And Stores
 
 MongoDB remains the authoritative archive and immutable extraction store.
-Neo4j is the derived memory graph. No private database migration is attempted.
+Neo4j is the derived memory graph.
 Every graph operation carries an explicit assistant instance. Notes, checks,
 groups and passage pieces use project-owned labels and stable identities.
 An existing note is never overwritten by an extraction replay. Corrections
@@ -35,13 +34,13 @@ subjects stay empty and non-searchable. The source's word-boundary length cap,
 missing-label reporting and note-first/source-only-for-disambiguation rules are
 retained. Public generation uses the same verified local model transport and
 configured non-thinking JSON request as extraction/lessons, with strict boolean
-answers and credential masking. Pure judge implementation is in progress;
-persistence is held for the source owner's confirmed concurrent-correction fix.
-Naming must never mark corrected text named using a judgement of its old text.
+answers and credential masking. `anamnema name-notes` writes judged subjects only
+after locking the note and comparing the exact judged text and sources
+([NAMING.md](NAMING.md)), so corrected text is never marked named using a
+judgement of its old text.
 
-Shadow subject vectors/word search will preserve text-only note vectors and
-owner-scoped retrieval; unnarrated notes retain a text-only fallback. This is
-existing source functionality, not a new semantic feature or a quality claim.
+Subject vectors and word search keep the text-only note vectors and owner-scoped
+retrieval; notes without a subject use the text-only fallback.
 
 The storage/retrieval source baseline is KinTools 0.7.10; topic placement follows
 the reviewed 0.7.12 fix. Preserve separate query/passage
@@ -50,7 +49,6 @@ retrieval, reciprocal-rank fusion, similarity and trust floors, priority as a
 tie-breaker, count-and-text-budget pagination and explicit reranker degradation.
 The CPU encoder remains llama.cpp e5-small-v2 Q8_0 (384 dimensions, query/passage
 prefixes, 512-token limit). The CPU reranker is MiniLM L6 ONNX, raw logits.
-Synthetic tests prove contracts, not model quality or performance.
 
 Owner-filtered candidate searches follow the reviewed 0.7.15 fix: grow the
 global index budget until enough owned results are found or the index is
@@ -163,17 +161,14 @@ the assistant instance. Replay must preserve corrections, trust and status;
 deleted notes must not be resurrected. Notes predating the marker are not
 silently backfilled. Repeat judging/occurrences remain a separate semantic stage.
 
-Use real disposable Neo4j and MongoDB with synthetic conversations. Prove
-insert/replay/conflict, meaning/word/id retrieval, exact original-source lookup,
-correction/replay/history/deletion and ownership rejection. Test connection
-outages and rollback rather than returning an empty search on failure.
-The installed package must work without KinTools imports or private config.
+Tests run against disposable Neo4j and MongoDB with synthetic conversations:
+insert, replay and conflict, meaning, word and identifier retrieval, exact
+original-source lookup, correction, history, deletion, ownership rejection,
+connection outages and rollback; a failure is never returned as an empty search.
 
-The service must enforce its own assistant token on every data route; an
-optional proxy is never the authentication boundary. Encoder/reranker servers
-and their validated configuration belong to the product, not just their clients.
-Full M4 completion also requires these services, integration with the extraction
-store and correction-dependent semantic stages. A graph helper alone is not M4.
+The service enforces its own assistant token on every data route; an optional
+proxy is never the authentication boundary. The encoder and reranker servers and
+their validated configuration are part of Anamnema.
 
 ## Commands
 
@@ -223,9 +218,8 @@ is reported as pending derived work and dirty cards are not served as current.
 With an explicit `--lesson-model-file`, checks also attempt lesson rebuilding.
 Outages leave visible pending results, and replay retries only derived work.
 
-Repeat processing is under active integration, not accepted yet. Its policy is
-`config/merge.json`, selected with `store --merge-config`; enable it explicitly
-and select `--merge-model-file` for the verified local llama.cpp judge. It uses
+Repeat comparison is off by default (`config/merge.json`, `"enabled": false`).
+Turn it on with your own policy file through `store --merge-config` and select `--merge-model-file` for the verified local llama.cpp judge. It uses
 the notes listener and bounded transport policy, with its own prompt/options
 identity. Missing model selection is an error, not an implicit fallback.
 `anamnema unmerge --instance ASSISTANT --note OCCURRENCE_ALIAS --reason REASON`
@@ -271,7 +265,7 @@ If generation fails, retrying the identical correction retries the rebuild but
 never adds another trust/usefulness vote. A concurrent source change refuses
 stale generated output rather than overwriting the newer revision.
 
-Development lesson commands are `build-lessons --note NOTE` (repeat `--note` for
+Lesson commands are `build-lessons --note NOTE` (repeat `--note` for
 a bounded batch) or `build-lessons --lesson LESSON` (explicit rebuild), with
 `--lesson-model-file MODEL_FILE`. `lesson --lesson LESSON` reads current content.
 Normal builds skip committed episode/unresolved decisions without model or encoder
@@ -282,13 +276,11 @@ supplies activity scope for admission. `--lessons-config` selects complete polic
 including the concept vocabulary, evidence categories, event minimum and external
 system map; none are taken from a private workspace. `check`/`serve` may select
 the same lesson model explicitly. A missing model never becomes an implicit call.
-The lesson answer reserve is 4,096 tokens; the baseline notes model reports an
-8,192-token context, so reserving that entire context for the answer would make
-every nonempty prompt fail. Sampling/template defaults match notes extraction,
-including `enable_thinking: false`. The native tokenizer still checks the complete
-templated prompt plus reserve exactly; batch/candidate/source limits are maxima,
-not a promise that their maximum contents fit. Oversized requests fail visibly
-and require explicit policy adjustment, never silent clipping of notes/lessons.
+The lesson answer reserve is 4,096 tokens, inside the notes model's 8,192-token
+context. Sampling and template defaults match notes extraction, including
+`enable_thinking: false`. The native tokenizer checks the complete templated
+prompt plus the reserve exactly; a request that does not fit fails visibly and
+needs a smaller batch or a policy change, never silent clipping.
 
 `lesson-against --lesson LESSON --note NOTE --condition CONDITION --reason REASON`
 records the learner's source-backed counterexample nomination. It verifies actual
@@ -302,8 +294,7 @@ admission, without removing the lesson's audit/history.
 The configured `/v1/lessons` route accepts strict `read`, `build`, `rebuild` or
 `against` operations under the service's own bearer. Historical access is a JSON
 boolean, never a truthy string. Build-only `rejudge` is a strict JSON boolean too.
-Source/model outages and stale concurrent reads fail explicitly. These local
-development operations do not imply the native delivery lifecycle is complete.
+Source/model outages and stale concurrent reads fail explicitly.
 
 All commands have their own `--help`. `--config` selects the setup document;
 `--archive-config`, `--memory-config`, `--search-config`, `--retrieval-config`
@@ -336,7 +327,7 @@ instance/proxy headers cannot select another assistant. The authenticated
 enforces request/response byte bounds, per-token rates, bounded in-flight work,
 graph transaction timeouts and separate model-call timeouts. Errors do not echo
 request bodies, secret values or database exception details. HTTP is restricted
-to localhost; remote TLS/forwarding is separate future setup work.
+to localhost.
 
 `anamnema serve-reranker --model-dir MODEL_DIRECTORY --service-config SERVICE.json`
 starts the bundled ONNX implementation on setup's reranker port. Install the
@@ -352,8 +343,7 @@ the [Q8_0 GGUF](https://huggingface.co/ggml-org/e5-small-v2-Q8_0-GGUF), and
 [MiniLM L6](https://huggingface.co/cross-encoder/ms-marco-MiniLM-L6-v2).
 Their licences remain their own; Anamnema's Apache licence does not replace
 model terms. No weights are bundled. Changing encoder model/prefix/dimensions
-requires a reviewed re-embedding/rebuild, not silent reuse of an existing index.
-The client validates vector shape and finite values, not resident weight identity.
+requires a re-embedding and rebuild, never silent reuse of an existing index.
 
 The verified baseline encoder file is `e5-small-v2-q8_0.gguf`, SHA256
 `afdfb5c342d2efc2a051c426dd1d00913495d5f2bbceaea100d2f3892aa31cbc`, present in
@@ -365,9 +355,7 @@ Its `tokenizer.json` SHA256 is
 `d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66`; its
 `special_tokens_map.json` SHA256 is
 `3c3507f36dff57bce437223db3b3081d1e2b52ec3e56ee55438193ecb2c94dd6`.
-Both tokenizer files were checked against that pinned upstream revision.
-These pins identify verified file bytes, not the original download or conversion
-history. A bundle retaining `onnx/model.onnx` needs that relative filename in the
+Both tokenizer files were checked against that pinned upstream revision. A bundle retaining `onnx/model.onnx` needs that relative filename in the
 reranker configuration; no rename or flattening of the supplied bundle is needed.
 
 ## Briefing Evidence Contract
@@ -395,9 +383,8 @@ limit instead of silently truncating. Unresolved selectors stay explicit.
 
 The renderer moves whole claims to further pages by the source priority order.
 Contradictions and open points remain on page one, with an oversized-page
-result when necessary. The configured size is explicitly a UTF-8 estimate,
-not measured model tokens. File generation, native delivery and stack budgets
-are not all accepted from ledger/render tests alone.
+result when necessary. The configured size is a UTF-8 estimate, not
+measured model tokens. Contract and commands: [BRIEFINGS.md](BRIEFINGS.md).
 
 `BriefFiles` writes private, immutable, content-addressed bundles. Every page and
 the separate review file is fsynced before a manifest commits the bundle. Reads
@@ -405,7 +392,7 @@ verify the owner, manifest identity, exact configured filenames and all file
 hashes. A stop before the manifest leaves an uncommitted build; identical replay
 can finish it without rewriting existing pages. Corruption is refused, not
 silently overwritten. Resource bounds apply before publication and on reads.
-The bundle store does not register a required read or claim native delivery.
+`BriefFiles` only writes bundles; `briefing deliver` registers the required read.
 
 ## Independent Native Judgements
 
@@ -421,16 +408,14 @@ These arguments are validated even for policy overrides.
 Only a successful native result envelope with a nonempty reported model list
 and a strict schema-valid `structured_output` is accepted. Free-text JSON and
 error envelopes do not count as a judgement. The actual reported model names
-are retained alongside the configured model/policy fingerprint. These checks
-are protocol evidence, not proof of resident model weights or model quality.
-Fixture-process tests exercise this contract. Separate guest acceptance on the
-operator's own Claude login passed stdin/schema transport; neither user nor
-project instruction-file canary appeared in the answer. This result is specific
-to the tested CLI/profile, not proof about all future versions. Optional worker
+are retained alongside the configured model/policy fingerprint. On Claude Code
+2.1.330 on a clean Debian 13 machine, with the operator's own login, the prompt
+went in on stdin, the answer came back as structured output, and no instruction
+file leaked into it. Optional worker
 registry configuration adds the guarded launch and SessionStart recovery described
 in [CONTINUITY.md](CONTINUITY.md), including processes a dead worker left running.
 
-## Tested And Pending
+## Tests
 
 ### Source Context Contract
 
@@ -456,28 +441,21 @@ being repaired by a read. Exact raw access remains explicit.
 Tests exercise real disposable Neo4j/MongoDB, actual keyring-command routing
 through a fixture executable, and native-shaped HTTP inference fixtures. A
 generated small ONNX graph and tokenizer exercise real CPU inference and the
-authenticated reranker route; this is not a MiniLM quality/performance test.
-The private model measurements are not new Anamnema acceptance evidence.
+authenticated reranker route.
 
-Separate installed-wheel checks now exercise the pinned real e5-small-v2 Q8_0
+Installed-package checks exercise the pinned real e5-small-v2 Q8_0
 encoder with llama.cpp 5aeac37a3 and the real MiniLM L6 ONNX bundle. Synthetic
 questions/passages verify finite 384-dimensional normalized vectors, distinct
 query/passage prefixes, long-note pieces, exact token trimming, raw-logit ranking,
-and bearer refusal through actual HTTP. The isolated encoder process is stopped
-afterward; a separate read-only ARM service smoke test passes too. These are
-compatibility checks, not model-quality, latency or hardware-parity benchmarks.
-No private memory data is used and no weights are bundled.
+and bearer refusal through actual HTTP. No private memory data is used and no
+weights are bundled.
 
-The current graph implements notes, explicit identifier groups, retryable topics,
+The graph implements notes, explicit identifier groups, retryable topics,
 repeat/retelling occurrences and bounded entity-card rebuilding with accountable
 manual entity lifecycle/link decisions and atomic manual card move commands.
 Entity-link persistence, subject-name search, the nightly finishing chain and
-the explicit native installer are implemented and exercised. Native session
-delivery is covered by the separate lifecycle acceptance. Source
-context now retains the source algorithm's speaker-turn and citation-first text
+the native installer are implemented and exercised. Source context retains the source algorithm's speaker-turn and citation-first text
 budgets, with an additional bounded raw-record scan and explicit partial status.
-These copy differences are intentional at this checkpoint and
-must not be described as complete parity.
 
 Neo4j search uses the source's Cypher 25 `SEARCH` syntax. The test image is
 2026.10 Community; full-text `SEARCH` requires 2026.09 or later, as documented

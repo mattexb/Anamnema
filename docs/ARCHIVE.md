@@ -1,15 +1,14 @@
 # Conversation Archive
 
-The first adapter reads Claude JSONL; the reusable `SubstrateAdapter` base owns
-the bounded file-reading/provenance loop. A substrate extends classification,
-not Mongo writes or memory processing. Native event translation arrives in M5;
-no other assistant integration is claimed by this module.
+The adapter reads Claude Code's JSONL transcripts; the reusable
+`SubstrateAdapter` base owns the bounded file-reading and provenance loop. An
+adapter for another assistant extends classification, not MongoDB writes or memory
+processing.
 
-The method is adapted from the existing transcript importer: numbered JSONL,
-conversation/summary classification, content-derived identity, set-on-insert,
-bounded independent read-back and lossless compressed source recovery. The
-physical-line fix from source revision `90db143` is included. Sources are read
-only; no private package, credentials file, trim or machine runner is required.
+Archive records are numbered JSONL lines with conversation and summary
+classification, content-derived identity, set-on-insert writes, bounded
+independent read-back and lossless compressed source recovery. Sources are only
+read, never changed.
 
 ## Commands
 
@@ -28,8 +27,9 @@ Dry-run reports `verified: false`; it is not evidence of a saved copy.
 The input must be a regular nonsymlink UTF-8 file, within the configured byte
 limit, unchanged during reading. Blank lines retain their physical positions.
 Malformed records and missing timestamps fail before any archive connection.
-Native conversation records, summaries and tool blocks remain intact; extraction
-will distinguish dialogue from tools/instructions later, not treat tools as speech.
+Native conversation records, summaries and tool blocks remain intact;
+[extraction](PROCESSING.md) separates dialogue from tools and instructions and
+never treats a tool as speech.
 Bookkeeping types excluded by the reviewed Claude policy are counted, not hidden.
 
 `--closed` is your explicit statement that the session has ended; it does not
@@ -42,16 +42,16 @@ the flag there is no inferred closure from merely reaching the end of a file.
 
 The default database is `anamnema`. Connections accept one direct localhost
 server, no SRV lookup or proxy, and no URI database different from archive policy.
-The URI's port must match the setup's local archive endpoint. TLS/authentication
-options are carried by the explicit URI; deployment/security acceptance is later.
+The URI's port must match the setup's local archive endpoint. Authentication
+options travel in the URI; the one `anamnema install` creates authenticates as
+user `anamnema` on 127.0.0.1 with the configured port and database.
 
-The neutralized keyring lookup uses the existing three-attribute method:
-`service=anamnema`, `entry=archive/mongodb`, `field=uri`. The namespace, selectors,
-executable, bus fallback and timeout are configured. No private keyring entry or
-credential file is read. Do not use the private namespace as a shortcut.
+The keyring lookup uses three attributes: `service=anamnema`,
+`entry=archive/mongodb`, `field=uri`. The namespace, selectors, executable, bus
+fallback and timeout are configured; no credential file is read.
 
-After preparing your own account's keyring, a manual terminal entry can be made
-with the configured attributes (defaults shown):
+`anamnema install` stores that URI itself. To import into a MongoDB you set up
+yourself, make the entry by hand with the configured attributes (defaults shown):
 
 ```sh
 secret-tool store --label='Anamnema archive' service anamnema entry archive/mongodb field uri
@@ -59,7 +59,7 @@ secret-tool store --label='Anamnema archive' service anamnema entry archive/mong
 
 Enter the URI at the password prompt, never in shell arguments, setup JSON or a
 bug report. See the [keyring guide](KEYRING.md). The test suite uses a fake keyring
-executable, not real credentials; actual unlock/headless access remains untested.
+executable, never real credentials.
 
 ## Records, Replay And Proof
 
@@ -67,9 +67,7 @@ Each record has a content-derived `_id`, instance, substrate, session, kind,
 timestamp, payload digest, first physical source line and original `source`
 object. Oversized/non-BSON-native JSON uses bounded `source_lzma` instead, without
 truncation or filesystem spill. Native fields stay inside the source object so
-metadata cannot overwrite them. This public envelope intentionally differs from
-the original archive's top-level enrichment and is recorded in the tracker;
-it is not an in-place migration of a private database.
+metadata cannot overwrite them.
 
 Native UUID is retained inside the original source, but is not the unique key:
 valid branches can reuse it, and multiple rows can share a timestamp. Identity
@@ -100,9 +98,9 @@ than skipping integration tests. The fixture shuts down only its own process.
 Tests cover blank-line provenance, native UUID/time collisions, source content,
 closure, replay, cross-instance isolation, interrupted batches, corrupt content
 with an unchanged saved digest, ownership changes, compression, typed scalars,
-secret-safe keyring/driver errors and installed CLI import through the fixture.
-These are synthetic/disposable-store results, not native Claude lifecycle or
-production-keyring acceptance. Installer and complete memory-loop gates remain.
+secret-safe keyring and driver errors, and installed command import through the
+fixture. The installed archive, keyring and native Claude Code path were also
+exercised end to end on a clean Debian 13 machine ([setup](SETUP.md)).
 
 Driver behavior references: [PyMongo upserts](https://www.mongodb.com/docs/languages/python/pymongo-driver/current/crud/update/)
 and [MongoDB unique document identities](https://www.mongodb.com/docs/languages/python/pymongo-driver/current/crud/insert/).

@@ -2,12 +2,12 @@
 
 The installed `anamnema` command owns import, processing, storage, review,
 correction and recovery. `batch-window` owns archive/extract/store; `nightly`
-owns the separate finishing chain. Neither an individual successful stage nor a passing fixture
-test means the whole memory batch is finished.
+owns the separate finishing chain. A single successful stage does not mean the
+whole memory batch is finished.
 
 ## Batch Recovery
 
-The batch driver will use an explicit assistant, session, closed input and
+The batch driver uses an explicit assistant, session, closed input and
 validated deployment/profile. A job pins its input identity and ordered stage
 plan. Each stage delegates to the existing application operation rather than
 copying its memory algorithms. Status inspection and dry-run must not create
@@ -22,11 +22,12 @@ after process death is retryable, not success. Changed input/profile/stage plans
 refuse automatic resume. Job completion requires every required stage, including
 finishing and derivation, not just successful extraction.
 
-Worker execution needs bounded input/output and a whole-invocation deadline.
-The service supervisor must own descendant cleanup; standalone parent-death
-cleanup is not inferred from normal exception handling. Read-only job reports
-and nonzero failure exits must agree. The first supported driver is local;
-no private SSH runner, home host, job endpoint or distributed queue is implied.
+Worker execution has bounded input and output and a whole-invocation deadline.
+Descendant cleanup belongs to the systemd service's control group; for Claude
+workers, the worker registry removes leftovers at the next session start (see
+[CONTINUITY.md](CONTINUITY.md)). Read-only job reports and nonzero failure exits
+agree. The driver is local: there is no SSH runner, job endpoint or distributed
+queue.
 
 The implemented `BatchJournal` persists this ordering and retained
 numeric attempt counters. It requires an immutable prepared input and verifies
@@ -34,7 +35,7 @@ that input before starting a stage and accepting its success. It must not be
 pointed at a moving native transcript tail. A per-job OS worker lock spans
 execution; separate state locks cover only atomic transitions. A stale worker
 handle cannot advance state. Attempt/metric/state/input limits are configured.
-`PreparedInputs`, `ArchiveWindow`, `WindowStages` and `BatchRunner` now connect
+`PreparedInputs`, `ArchiveWindow`, `WindowStages` and `BatchRunner` connect
 the actual archive, extraction and storage engines. The `batch-window` command
 can prepare closed windows, run/resume those three stages and inspect their
 journals without a live model or input file. Finishing stages and the complete
@@ -43,7 +44,7 @@ nightly command are separate from that window journal. A completed window job ex
 
 ### Prepared Window Inputs
 
-Batch preparation will pin one already closed conversation window per job,
+Batch preparation pins one already closed conversation window per job,
 including its exact captured record order and closure boundary. It must not
 close a live tail merely because the file currently ends. A content-addressed
 private compressed payload avoids repeatedly copying the full transcript; a
@@ -56,11 +57,10 @@ payload be removed. Later stages reconstruct the pinned records from the owning
 archive, never discover them by timestamps or today's source line positions.
 An interrupted archive stage retains its input and can replay. Missing/corrupt
 payloads or archive records are visible failures, not an empty successful batch.
-This boundary is implemented and exercised with actual disposable stores and
-HTTP fixture models. Separate disposable-guest acceptance exercised a real
-notes model through authenticated loopback SSH transport, six-note extraction,
-storage/replay, finishing, source-backed correction and card/briefing refresh.
-That synthetic compatibility run is not a quality or performance benchmark.
+Tests exercise this with real disposable stores and HTTP fixture models. On a
+clean Debian 13 machine, a real notes model reached through an authenticated
+loopback tunnel produced six notes, passed storage and replay, the finishing run,
+a source-backed correction and the card and briefing refresh.
 
 ### Window Commands
 
@@ -91,10 +91,12 @@ identity always follow pinned record IDs, not today's physical transcript lines.
 
 ## Available Capture Recovery
 
-`capture-events status` inspects pending, terminal and completed capture work.
-`retry --job ID --reason TEXT --apply` retries a repaired terminal input;
-`--accept-config-change` clones it under the current profile while preserving
-the original failed request. `archive-failure --job ID --reason TEXT --apply`
+`capture-events status --deployment FILE` inspects pending, terminal and
+completed capture work; `FILE` is the installed `capture-deployment.json`.
+`capture-events retry --deployment FILE --job ID --reason TEXT --apply` retries a
+repaired terminal input; `--accept-config-change` clones it under the current
+profile while preserving the original failed request.
+`capture-events archive-failure --deployment FILE --job ID --reason TEXT --apply`
 preserves an exact terminal version in Mongo, verifies it independently and
 then retires only that unchanged local version. The deployment's configured
 archive/keyring route is used; no credential value enters arguments or reports.
@@ -105,10 +107,9 @@ required-read debt or prevent a native session from ending.
 
 ## Manual Credentials
 
-`keyring put` and `keyring verify` are implemented with explicit apply and
-secret-safe pipes/prompts. They are not an unattended keyring unlock solution.
-See the [keyring guide](../src/anamnema/guides/keyring.md) and
-[setup contract](SETUP.md) for current limits.
+`keyring put` and `keyring verify` default to a dry run; with `--apply` the
+secret comes from a hidden prompt or `--stdin`. They store and check entries;
+they do not unlock a keyring. See the [keyring guide](../src/anamnema/guides/keyring.md).
 
 ## Nightly Finishing
 
@@ -122,16 +123,17 @@ are recorded and independent later stages continue; a failed chain exits nonzero
 Failed child diagnostics are bounded and retained only in the private run file;
 the returned/printed record reports `diagnostic_kept`, not the diagnostic text.
 Replacements are delivered through the briefing-refresh prompt hook and retain
-required-read debt. The installer supplies the user oneshot/timer, not a private
-machine runner. This does not automatically plan new transcript windows:
+required-read debt. The installer sets up the timer `anamnema-nightly.timer`:
+every day at 03:30 with up to 10 minutes of random delay, catching up after the
+machine was off (`nightly_timer.json`). Check it with
+`systemctl --user list-timers anamnema-nightly.timer`. Nightly does not automatically plan new transcript windows:
 `batch-window` remains an explicit operation over closed, prepared inputs.
 
-## Acceptance Boundary
+## Verification
 
-An installed batch must prove ordered end-to-end processing and safe replay
-after interruption on disposable data. Nightly registration, native lifecycle
-delivery, user/service/keyring policy and the clean-machine target require their
-own acceptance. Disposable-guest acceptance has exercised those paths, including
-the real-model finishing chain and subsequent source-backed correction/card and
-briefing refresh. These contracts do not authorize changing a user's live service;
-configuration and explicit apply remain required.
+`anamnema install --apply` ends with its `verify` stage: databases, models,
+services, authenticated health, hooks and timer. On a clean Debian 13 machine the
+installed system passed ordered processing, replay after interruption, nightly
+registration, the real-model finishing run, a source-backed correction and the
+card and briefing refresh. Nothing here changes a live service without a
+configuration file and an explicit `--apply`.

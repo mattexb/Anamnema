@@ -1,12 +1,12 @@
 # Claude Continuity
 
-This is the first-profile lifecycle contract. Disposable Debian 13 acceptance
-exercised installed hook registration, identity reads, final-turn capture,
-compaction, briefing delivery and guarded parent-death recovery with Claude Code
-2.1.330. Explicit snapshot archive sync and the bounded producer are implemented
-below; fixture tests alone do not establish native compatibility.
+How Anamnema keeps a Claude Code session continuous: capture at the end of each
+turn, required reads, compaction snapshots and their archive sync. On a clean
+Debian 13 machine with Claude Code 2.1.330, the installed hooks passed identity
+reads, final-turn capture, compaction, briefing delivery and cleanup after a
+killed session.
 
-## Capture Scheduling (Local Implementation)
+## Capture Scheduling
 
 Explicit capture scheduling uses a private, bounded queue separate from the
 required-read journal. A Stop payload may precede its final transcript record:
@@ -22,9 +22,9 @@ lock serializes execution while allowing new events to enqueue; network work
 must not hold the queue-journal or continuity-session lock. Death before a
 completion record leaves the request pending and replay uses the same note IDs.
 Queue ownership, native fields, paths, permissions, capacities, wait/deadline
-bounds and result history are explicit configuration. Starting or registering
-live hooks remains a separate authorization/acceptance gate. Capture outages
-must not create a required-read Stop gate.
+bounds and result history are explicit configuration. `anamnema install`
+registers the hooks and starts the watcher. A capture outage never creates a
+required-read Stop gate.
 
 `anamnema capture-events hook --deployment FILE --event stop` previews bounded
 native JSON from stdin without queue/store writes. Add `--apply` to enqueue;
@@ -69,29 +69,18 @@ archive collection. The archive uses the deployment's existing setup/keyring
 and archive database, not a separate host or credential file. This is operational
 failure preservation, not a retention/deletion policy for raw conversations.
 
-The foreground hook currently parses the bounded transcript to pin its event.
-The native registration timeout must use `hook_timeout_seconds` from queue policy,
-not a shorter unrelated default. On the development host a 300 MiB synthetic
-native transcript took 1.307 s for Stop and 1.204 s for PreCompact/End, with peak
-RSS about 445 MiB. A regression runs the real translator on that size and requires
-each event below `hook_budget_fraction` of its 10 s default timeout (half by
-default). This is a measured host result, not a hardware-independent guarantee;
-the installation acceptance gate must repeat it on the target before relying on
-the large-transcript hook bound. The disposable Debian 13 guest repeated the
-300 MiB check: Stop 1.673 s, PreCompact 1.563 s and End 1.562 s, all below its
-5 s margin within the 10 s registered timeout. Temporary files were removed;
-the parser-only check used no models, services or credentials.
+The foreground hook parses the bounded transcript to pin its event. Its
+registration timeout is `hook_timeout_seconds` from the queue policy (10 s); a
+regression test runs the real translator on a 300 MiB transcript and requires
+each event below `hook_budget_fraction` of that timeout (half by default). On a
+clean Debian 13 machine, with a 300 MiB transcript: Stop 1.67 s, PreCompact
+1.56 s, End 1.56 s.
 
-The hook does not start an unobserved child or a service. A foreground watcher
-must already be running, or an explicit drain must follow. The native installer
-starts and verifies the watcher before registering hooks; registering only a
-hook does not establish working automatic capture. The pure
-`capture_installation` assembly now produces all three hook commands and their
-matching watcher unit from the same deployment and queue policy. It uses the
-latency-tested timeout rather than an unrelated default, but execution still
-must start and verify the watcher before merging those settings. Tests invoke
-the generated commands with synthetic native input; the separate guest acceptance
-also exercised installed hooks and capture against the real stores.
+The hook starts no child and no service: the watcher
+(`anamnema capture-events drain --apply --watch`, installed as a user service)
+does the work. `capture_installation` builds all three hook commands and the
+matching watcher unit from the same deployment and queue policy, and
+`anamnema install` starts and verifies the watcher before it registers the hooks.
 
 Deployment JSON explicitly names `instance`, `state_root`, `cwd`,
 `transcript_roots` and the nonsecret setup `config`; optional `archive_config`,
@@ -119,11 +108,6 @@ source selection cannot be counted as that request's success. Process death
 before queue completion leaves pending work; idempotent insertion and placement
 handle retry after already-committed graph work. Reserved orphan atomic-write
 temporaries are recovered only under the journal lock with an explicit bound.
-
-The source is Hooks at `c0019f256bc6c51c7a8401fa7381f069c940ab66`:
-SessionStart `require_reads.py` and `inject_compaction_snapshot.py`, Stop
-`check_required_reads.py` and `acknowledge_compaction_snapshot.py`. No private
-identity files, Recognition enrichment or handoff catalogue are copied.
 
 ## State And Ownership
 
@@ -188,9 +172,7 @@ fresh obligation even if its body is unchanged.
 
 ### Producer Port Contract
 
-The public producer port is pinned to Hooks
-`8d23cfe8713fe2f529bff227fe4523b8ed2fccf1`, independently verified against the
-reviewed source digest. It will use the existing speech attribution/sanitization
+The producer uses the speech attribution and sanitization
 boundary, reset dialogue at the native compaction boundary, preserve explicitly
 marked self-corrections, and omit private Recognition enrichment. Excerpts use
 the reviewed UTF-8 cut algorithm, newest-first order and configured byte/file
@@ -201,9 +183,7 @@ session lock, with bounded output/deadline and private temporary inputs removed
 on success or failure. Output must satisfy configured structural/image checks
 before staging through the existing journal; applied unread snapshots cannot
 be overwritten. Failures leave prior staged content intact. Native payload
-translation and archive classification remain separate. No native worker or live
-registration acceptance is inferred from fixture subprocesses. Separate native
-guest evidence is described below.
+translation and archive classification remain separate.
 
 An explicit snapshot-staging operation validates the configured marker and exact
 instance/session headers. Staging alone does not require a read: idle compaction
@@ -248,38 +228,20 @@ the live session lock. The producer stages through the same ownership/quota and
 applied-snapshot protections as explicit snapshot staging. The transcript is
 bounded and checked for changes before worker use, never modified or trimmed.
 Genuine marked correction lines stay in this input; private incident-store
-enrichment is absent. Native invocation and model quality are separate acceptance.
-Without an explicit worker registry, parent SIGKILL or power loss can bypass
-in-process cleanup. Catchable-failure tests alone do not establish orphan recovery.
+enrichment is absent. Without the worker `registry` configuration, a SIGKILL of
+the parent or a power loss bypasses in-process cleanup and leaves the worker and
+its input folder; with it, the next session start removes them (below).
 
-A bounded native acceptance used one fresh print worker with synthetic temporary
-files and inherited user permissions. Actual Read tool results confirmed the
-positional prompt after `--` was accepted and a synthetic file outside `--add-dir`
-was readable. SIGKILL of the transport's owning parent before the final result
-left the worker running; the independent fixture observer then reaped it and
-removed its temporary state. Diagnostic stream-JSON output, an explicit synthetic
-system prompt and empty strict MCP configuration made the evidence observable
-without private integrations. This is not normal text-mode snapshot staging,
-live registration, input confinement or automatic orphan recovery acceptance.
-
-A later disposable Debian 13 guest acceptance exercised the installed native
-registration: SessionStart required the synthetic identity read, the real
-assistant read and acknowledged it, and Stop capture reached the isolated
-graph. A real `/compact` invoked the producer, applied its snapshot at
-SessionStart, and the resumed assistant read and acknowledged it without
-remaining debt. A source-verified briefing was also built, delivered and
-acknowledged through that native session. The guest's outside-directory Read
-was denied; that result does not override the earlier permission-dependent
-observation or establish an OS sandbox. A separate native-judge canary check
-returned neither the user nor project instruction-file marker.
-
-The initial guest parent-SIGKILL probe reproduced the surviving-worker limit
-above. A later guarded native run passed: the kernel killed the real worker,
-and the next native SessionStart removed its input folder and recovery record.
-The fixture confirmed no worker, record or temporary test directory remained.
-The resumed native session also held the nightly-generated replacement briefing
-and ended with no required reads remaining; the prompt refresh hook delivered
-that replacement, rather than a manual injection by the test driver.
+On Claude Code 2.1.330 on a clean Debian 13 machine: SessionStart required the
+identity read, the assistant read and acknowledged it, and Stop capture reached
+the graph. A real `/compact` invoked the producer, the snapshot was applied at
+the next SessionStart, and the assistant read and acknowledged it with no debt
+left. A source-verified briefing was built, delivered and acknowledged. The
+native judge's answer contained no instruction-file marker. With the registry
+configured, the worker was killed together with its parent and the next
+SessionStart removed its input folder and recovery record; no worker, record or
+temporary directory remained. The nightly replacement briefing was delivered by
+the `briefing-refresh` hook, with no reads left owed.
 
 ### Registered Worker Recovery
 
@@ -338,14 +300,17 @@ read or applied snapshot remains owed. Stop before the first observed start has
 no inferred debt, allowing registration into already-running sessions. An
 identity-source failure does not prevent an available snapshot from being applied.
 Corrupt/unavailable managed state still fails visibly rather than being reset.
-Retrieval does not run in this slice and cannot cause a required-read gate.
+Retrieval does not run in these handlers and cannot cause a required-read gate.
 Retrying start after source repair creates the previously unavailable identity read.
-State paths must have no symlink ancestors; on macOS this excludes the usual
-`/tmp` and `/var` aliases. The current implementation target remains native Linux.
+State paths must have no symlink ancestors. Anamnema runs on Linux (Debian 13).
+
+`anamnema recall-hook` runs on UserPromptSubmit: it reads the native JSON on stdin
+and brings related notes into the conversation. `anamnema briefing-refresh` runs
+on the same event and delivers a rebuilt briefing ([BRIEFINGS.md](BRIEFINGS.md)).
+`anamnema install` registers both.
 
 See the [official hook protocol](https://code.claude.com/docs/en/hooks) for the
-context-only SessionStart and blocking Stop envelopes. Payload replay and installed
-CLI tests establish this bounded interface, not native lifecycle support.
+context-only SessionStart and blocking Stop envelopes.
 
 ## Snapshot Archive Sync
 

@@ -22,7 +22,7 @@ body:
     id: backend
     attributes:
       label: Where the notes model runs
-      options: [vulkan, cuda, api]
+      options: [vulkan, cpu, cuda, api]
     validations:
       required: true
   - type: textarea
