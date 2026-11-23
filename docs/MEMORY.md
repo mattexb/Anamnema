@@ -428,7 +428,7 @@ operator's own Claude login passed stdin/schema transport; neither user nor
 project instruction-file canary appeared in the answer. This result is specific
 to the tested CLI/profile, not proof about all future versions. Optional worker
 registry configuration adds the guarded launch and SessionStart recovery described
-in [CONTINUITY.md](CONTINUITY.md); arbitrary descendants still need supervision.
+in [CONTINUITY.md](CONTINUITY.md), including processes a dead worker left running.
 
 ## Tested And Pending
 

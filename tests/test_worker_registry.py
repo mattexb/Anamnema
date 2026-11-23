@@ -376,3 +376,137 @@ def test_a_folder_that_cannot_be_removed_keeps_its_record(config, monkeypatch):
     monkeypatch.undo()
     counts = sweep(config)
     assert counts.cleared == 1 and counts.folders == 1 and not folder.exists()
+
+
+ORPHANING_PARENT = """
+import os, signal, subprocess, sys
+from anamnema.worker_registry import RegistryConfig, launcher_argv, register
+config = RegistryConfig.model_validate_json(sys.argv[1])
+record = register(config, [])
+worker = "import subprocess, sys; subprocess.Popen(['/bin/sleep', sys.argv[1]])"
+process = subprocess.Popen(
+    [*launcher_argv(record), sys.executable, "-c", worker, sys.argv[2]], start_new_session=True
+)
+process.wait()
+os.kill(os.getpid(), signal.SIGKILL)
+"""
+
+
+def test_what_a_dead_worker_left_running_is_killed_at_the_next_start(config):
+    marker = f"{400 + os.getpid() % 97}.{time.time_ns() % 10**6}"
+    parent = subprocess.run(  # noqa: S603 - fixed test argv
+        [sys.executable, "-c", ORPHANING_PARENT, config.model_dump_json(), marker],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        timeout=30,
+        check=False,
+    )
+    assert parent.returncode == -signal.SIGKILL
+    leftovers = marked(marker)
+    assert len(leftovers) == 1
+    counts = sweep(config)
+    assert counts.killed == 1 and counts.cleared == 1
+    assert gone(leftovers[0]) and marked(marker) == []
+
+
+def test_a_dead_worker_with_nothing_left_signals_nothing(config, monkeypatch):
+    import anamnema.worker_sweep as worker_sweep
+
+    finished = subprocess.Popen([SLEEP, "0"], start_new_session=True)  # noqa: S603 - fixed test argv
+    start = start_time(finished.pid)
+    finished.wait()
+    sent = []
+    monkeypatch.setattr(worker_sweep, "pidfd_kill", sent.append)
+    fake_record(config, [], pid=finished.pid, start=start)
+    assert sweep(config).killed == 0 and sent == []
+
+
+def sleeper(seconds="30"):
+    return subprocess.Popen([SLEEP, seconds], start_new_session=True)  # noqa: S603 - fixed test argv
+
+
+def test_a_member_replaced_or_gone_after_the_scan_is_never_signalled(config, monkeypatch):
+    import anamnema.worker_sweep as worker_sweep
+
+    bystander = sleeper()
+    exited = sleeper("0")
+    exited_start = start_time(exited.pid)
+    exited.wait()
+    try:
+        start = start_time(bystander.pid)
+        session = bystander.pid
+        # Scanned as members, then replaced: the bystander's pid with another start time stands
+        # for a member whose pid was reused; the exited one is gone and reaped.
+        observed = [(bystander.pid, start + 1), (exited.pid, exited_start)]
+        monkeypatch.setattr(
+            worker_sweep, "session_members", lambda s: observed if s == session else []
+        )
+        monkeypatch.setattr(worker_sweep, "END_WAIT_SECONDS", 0.05)
+        counts = worker_sweep.SweepCounts()
+        assert worker_sweep.signal_member(bystander.pid, start + 1, session) == "gone"
+        assert worker_sweep.signal_member(exited.pid, exited_start, session) == "gone"
+        assert not worker_sweep.end_session(session, counts) and counts.killed == 0
+        assert bystander.poll() is None
+    finally:
+        bystander.kill()
+        bystander.wait()
+
+
+OTHER_GROUP_LEADER = """
+import subprocess, sys, time
+subprocess.Popen(["/bin/sleep", sys.argv[1]], process_group=0)
+time.sleep(60)
+"""
+
+
+def test_a_live_leader_and_its_child_in_another_group_both_end(config):
+    marker = f"{600 + os.getpid() % 97}.{time.time_ns() % 10**6}"
+    leader = subprocess.Popen(  # noqa: S603 - fixed test argv
+        [sys.executable, "-c", OTHER_GROUP_LEADER, marker],
+        start_new_session=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    try:
+        deadline = time.monotonic() + 10
+
+        def children():
+            return [p for p in marked(marker) if p != leader.pid]
+
+        while not children() and time.monotonic() < deadline:
+            time.sleep(0.02)
+        child = children()
+        assert len(child) == 1 and os.getpgid(child[0]) != leader.pid
+        assert os.getsid(child[0]) == leader.pid
+        path = fake_record(config, [], pid=leader.pid, start=start_time(leader.pid))
+        counts = sweep(config)
+        assert counts.cleared == 1 and counts.killed == 2 and not path.exists()
+        assert leader.wait(timeout=5) == -signal.SIGKILL
+        assert gone(child[0]) and marked(marker) == []
+    finally:
+        if leader.poll() is None:
+            leader.kill()
+            leader.wait()
+
+
+def test_a_session_that_cannot_be_ended_keeps_its_record(config, monkeypatch):
+    import anamnema.worker_sweep as worker_sweep
+
+    worker = sleeper()
+    try:
+
+        def refuse(fd):
+            raise PermissionError
+
+        monkeypatch.setattr(worker_sweep, "pidfd_kill", refuse)
+        monkeypatch.setattr(worker_sweep, "END_WAIT_SECONDS", 0.05)
+        path = fake_record(config, [], pid=worker.pid, start=start_time(worker.pid))
+        counts = sweep(config)
+        assert counts.failed == 1 and counts.cleared == 0 and path.exists()
+        assert worker.poll() is None
+        monkeypatch.undo()
+        assert sweep(config).cleared == 1 and worker.wait(timeout=5) == -signal.SIGKILL
+    finally:
+        if worker.poll() is None:
+            worker.kill()
+            worker.wait()

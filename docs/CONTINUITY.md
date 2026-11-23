@@ -304,9 +304,17 @@ session, and logs contain counts rather than input text.
 
 This protects registered direct workers on the tested Linux profile. The tiny
 interval between creating inputs and recording intent can still leave an
-unregistered folder after abrupt death. The sweep does not chase a process group
-whose leader has disappeared; service supervision remains responsible for
-arbitrary descendants. This is not a scan or deletion of unrelated processes.
+unregistered folder after abrupt death. The sweep ends the worker's whole
+session, including processes it started that moved to another process group or
+outlived it: the worker leads its own session, its descendants keep its PID as
+their session ID, and Linux never reassigns that number while any process
+still uses it, so every member of that session is the worker's own. Each
+member is signalled through a pidfd and only after its session, owner and
+start time are checked again, so a member PID reused after the scan is never
+hit; a worker PID now held by another process is never signalled. The record
+is released only once the session is verified empty within a bounded wait;
+otherwise it stays and the next start retries. Processes that leave the
+session with their own setsid are outside this boundary.
 
 ## Commands And Failures
 

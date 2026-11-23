@@ -2,9 +2,11 @@
 
 Only a private record of this user, within its bound, can lead to any action:
 - its parent still runs in this boot (same pid and start time): left alone, a launch in progress;
-- otherwise the worker's group is killed only if its leader still runs with the recorded start
-  time in this boot (its death signal should already have killed it); a group whose leader is
-  gone is never signalled, so a reused pid or group id is never hit;
+- otherwise the worker's whole session is ended when its leader still runs with the recorded
+  start time in this boot, or when no process holds the leader's pid any more: every member,
+  in any process group, is signalled through a pidfd checked against its observed identity, and
+  the session must be verified empty within a bounded wait; a leader pid now held by another
+  process is never signalled;
 - each folder is removed only if, at removal time, it is a real directory owned by this user
   strictly inside a configured root, reached from / without following any link (the root and
   its ancestors included) and with no parent step in its path; the record goes only once every
@@ -14,11 +16,13 @@ signalled. A foreign, oversized or unreadable record is left in place and counte
 never raises for one record; it holds the registry lock while it works.
 """
 
+import ctypes
 import logging
 import os
 import shutil
 import signal
 import stat
+import time
 from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
@@ -34,9 +38,15 @@ from anamnema.worker_registry import (
     load,
     locked,
     runs,
+    start_time,
 )
 
 LOGGER = logging.getLogger(__name__)
+END_WAIT_SECONDS = 1.0
+END_POLL_SECONDS = 0.02
+# Generic syscall numbers, the same on x86_64 and arm64; used when Python lacks the wrappers.
+PIDFD_SEND_SIGNAL = 424
+PIDFD_OPEN = 434
 
 
 @dataclass
@@ -125,19 +135,121 @@ def valid(record: dict[str, Any]) -> bool:
     )
 
 
-def clear(record: dict[str, Any], roots: Sequence[Path], counts: SweepCounts) -> bool:
-    """Kill a still-running worker of this boot, then remove the folders inside the roots.
+def identity(pid: int) -> tuple[int, int, int, str] | None:
+    """Session id, start time, owner and state of a process, None when it is gone."""
+    entry = Path(f"/proc/{pid}")
+    try:
+        fields = (entry / "stat").read_text(encoding="ascii").rsplit(")", 1)[1].split()
+        owner = entry.stat().st_uid
+        return int(fields[3]), int(fields[19]), owner, fields[0]
+    except OSError, UnicodeError, IndexError, ValueError:
+        return None
 
-    False when a folder that is ours could not be removed: the record then stays.
+
+def session_members(session: int) -> list[tuple[int, int]]:
+    """Live processes of this user in `session`, each as (pid, start time); zombies are done."""
+    members: list[tuple[int, int]] = []
+    for entry in Path("/proc").iterdir():
+        if not entry.name.isdigit():
+            continue
+        found = identity(int(entry.name))
+        if found and found[0] == session and found[2] == os.getuid() and found[3] != "Z":
+            members.append((int(entry.name), found[1]))
+    return members
+
+
+def _syscall(number: int, *arguments: int) -> int:
+    """A raw Linux syscall; a failure raises the OSError subclass its errno names."""
+    result = ctypes.CDLL(None, use_errno=True).syscall(
+        ctypes.c_long(number), *(ctypes.c_long(a) for a in arguments)
+    )
+    if result < 0:
+        code = ctypes.get_errno()
+        raise OSError(code, os.strerror(code))
+    return result
+
+
+def pidfd_open(pid: int) -> int:
+    """A descriptor pinned to the process that holds `pid` now (Linux 5.3)."""
+    if hasattr(os, "pidfd_open"):
+        return os.pidfd_open(pid)
+    return _syscall(PIDFD_OPEN, pid, 0)
+
+
+def pidfd_kill(descriptor: int) -> None:
+    """SIGKILL the pinned process, never whatever holds its pid later."""
+    if hasattr(signal, "pidfd_send_signal"):
+        signal.pidfd_send_signal(descriptor, signal.SIGKILL)
+        return
+    _syscall(PIDFD_SEND_SIGNAL, descriptor, signal.SIGKILL, 0, 0)
+
+
+def signal_member(pid: int, start: int, session: int) -> str:
+    """SIGKILL one observed member through a pidfd, so a reused pid is never hit.
+
+    The pidfd pins whatever process holds `pid` when it is opened; only if that process still
+    has the observed session, start time and owner is it signalled. "killed", "gone" (it
+    exited or the pid now names another process) or "failed".
+    """
+    try:
+        descriptor = pidfd_open(pid)
+    except ProcessLookupError:
+        return "gone"
+    except OSError:
+        return "failed"
+    try:
+        found = identity(pid)
+        if found is None or found[:3] != (session, start, os.getuid()):
+            return "gone"
+        pidfd_kill(descriptor)
+        return "killed"
+    except ProcessLookupError:
+        return "gone"
+    except OSError:
+        return "failed"
+    finally:
+        os.close(descriptor)
+
+
+def end_session(session: int, counts: SweepCounts) -> bool:
+    """Kill every member of a worker's session and verify, for a bounded time, none is left.
+
+    The worker leads its own session, so everything it started carries its pid as session id,
+    whatever process group it moved to. Linux never gives that number to a new process while any
+    process still uses it as a session id, so every member found is the worker's own.
+    """
+    deadline = time.monotonic() + END_WAIT_SECONDS
+    signalled: set[tuple[int, int]] = set()
+    while True:
+        members = session_members(session)
+        if not members:
+            return True
+        for member in members:
+            outcome = signal_member(*member, session)
+            if outcome == "failed":
+                return False
+            if outcome == "killed" and member not in signalled:
+                signalled.add(member)
+                counts.killed += 1
+        if time.monotonic() >= deadline:
+            return not session_members(session)
+        time.sleep(END_POLL_SECONDS)
+
+
+def clear(record: dict[str, Any], roots: Sequence[Path], counts: SweepCounts) -> bool:
+    """End a worker's session of this boot, then remove its folders.
+
+    The session is ended when its leader still runs with the recorded start time, or when no
+    process holds the leader's pid any more; a leader pid now held by another process is never
+    signalled. False when the session could not be verified empty or a folder that is ours
+    could not be removed: the record then stays for the next start.
     """
     pid = record["pid"]
-    if record["boot_id"] == boot_id() and runs(pid, record["start"]):
-        try:
-            os.killpg(pid, signal.SIGKILL)
-            counts.killed += 1
-        except ProcessLookupError:
-            pass
-    failed = False
+    ended = True
+    if record["boot_id"] == boot_id() and type(pid) is int:
+        if runs(pid, record["start"]) or start_time(pid) is None:
+            ended = end_session(pid, counts)
+    failed = not ended
     for name in record["folders"]:
         outcome = remove(Path(name), roots)
         counts.folders += outcome == "removed"
