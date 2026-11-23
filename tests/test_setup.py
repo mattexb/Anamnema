@@ -109,7 +109,7 @@ def test_plan_order_is_explicit_and_cannot_claim_installation() -> None:
         "schedule",
         "verification",
     ]
-    assert all(step["status"] == "not-implemented" for step in report["steps"])
+    assert all(step["status"] == "run-by-install" for step in report["steps"])
     assert report["not_checked"] and report["blockers"]
 
 
@@ -189,7 +189,7 @@ def test_apply_fails_before_any_inspection_or_config_read(
     monkeypatch.setattr(cli, "load_config", forbidden)
     assert cli.main(["setup", "--apply"]) == 2
     output = capsys.readouterr()
-    assert output.out == "" and "not implemented" in json.loads(output.err)["error"]
+    assert output.out == "" and "anamnema install" in json.loads(output.err)["error"]
 
 
 @pytest.mark.parametrize("backend,expected", [("vulkan", 0), ("cpu", 0), ("api", 0), ("cuda", 2)])
@@ -232,7 +232,7 @@ def test_installed_command_leaves_user_home_and_settings_unchanged(
         for path in home.rglob("*")
     } == before
     if "--apply" in args:
-        assert done.returncode == 2 and "not implemented" in json.loads(done.stderr)["error"]
+        assert done.returncode == 2 and "anamnema install" in json.loads(done.stderr)["error"]
     else:
         report = json.loads(done.stdout)
         assert report["mode"] == "dry-run" and report["ready_to_install"] is False

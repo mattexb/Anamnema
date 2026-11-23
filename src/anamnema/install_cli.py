@@ -63,7 +63,6 @@ def run_install(args: argparse.Namespace) -> dict[str, Any]:
             "journal_complete": state.complete,
             "stages": [stage.model_dump(mode="json") for stage in state.stages],
             "live_health_checked": False,
-            "release_ready": False,
         }
     if args.profile is None or not args.profile.is_absolute():
         raise SetupError("install requires an explicit absolute --profile")

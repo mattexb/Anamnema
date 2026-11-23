@@ -8,7 +8,7 @@
 
 **Paper DOI:** [10.5281/zenodo.24438534](https://doi.org/10.5281/zenodo.24438534)
 
-**Version 0.1.1.** Runs on Debian 13 as the logged-in user, with Claude Code. [How do you install it?](#how-do-you-install-it)
+**Version 0.2.0.** Runs on Debian 13 as the logged-in user, with Claude Code. [How do you install it?](#how-do-you-install-it)
 
 ## What is Anamnema?
 
@@ -272,7 +272,7 @@ the user who will run it, with [uv](https://docs.astral.sh/uv/) (the Python
 package manager the project uses), which also fetches Python 3.14:
 
 ```sh
-uv tool install --python 3.14 "anamnema[reranker] @ git+https://github.com/mattexb/Anamnema@v0.1.1"
+uv tool install --python 3.14 "anamnema[reranker] @ git+https://github.com/mattexb/Anamnema@v0.2.0"
 ```
 
 Then one command sets up the whole machine from an installation profile, a JSON

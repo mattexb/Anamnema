@@ -197,9 +197,9 @@ def test_failure_stops_dependents_and_retry_replays_only_the_failed_effect(
     calls.clear()
     mocked_actions(installation, monkeypatch, calls)
     report = installation.apply(allow_downloads=False)
-    assert report["complete"] is True and report["release_ready"] is False
+    assert report["complete"] is True
     assert calls[:3] == ["models", "schema", "services"]
-    assert not report["native_claude_acceptance"]
+    assert "release_ready" not in report and "native_claude_acceptance" not in report
 
 
 def test_explicit_pre_login_checkpoint_is_never_reported_as_complete(installation, monkeypatch):

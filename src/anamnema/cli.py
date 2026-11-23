@@ -74,7 +74,7 @@ def _parser() -> argparse.ArgumentParser:
     )
     mode.add_argument("--dry-run", action="store_true", help="read-only planning (the default)")
     mode.add_argument(
-        "--apply", action="store_true", help="reserved; installation is not implemented"
+        "--apply", action="store_true", help="refused: installing is `anamnema install`"
     )
     ingest = commands.add_parser("import", help="copy a Claude transcript without modifying it")
     ingest.add_argument("--file", type=Path, required=True)
@@ -178,7 +178,9 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps(run_import(args), indent=2))
             return 0
         if args.apply:
-            raise SetupError("installation is not implemented; use setup --dry-run")
+            raise SetupError(
+                "setup only plans; install with `anamnema install --profile FILE --apply`"
+            )
         if args.save and not args.wizard:
             raise SetupError("--save requires --wizard; dry-run never writes an answer file")
         if args.keyring_guide:

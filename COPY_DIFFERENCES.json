@@ -11,7 +11,7 @@
     {
       "difference": "project-owned-neutralization",
       "public": "README.md",
-      "public_sha256": "e2998d6c0d435e665250dc66d588d546d93671e4f0088fb49f34581d910f3e92",
+      "public_sha256": "e04ea93597658d959fbcdf52a9530319129e799a8f543ff762ae4fd0b74e3572",
       "reason": "Project-owned development status, setup contract, branch policy and single-project scope. Retain the original source hash for provenance; never overwrite from that template.",
       "source": "src/kin_tools/consolidate/public_export/templates/README.md",
       "source_sha256": "0960bd44220fe39395490c09fffbcaa80dbc38e4eb7bfb03f4354a8ff8b83691"
@@ -83,7 +83,7 @@
     {
       "difference": "public-flow-copy",
       "public": "docs/memory-flow.html",
-      "public_sha256": "7914a3ecae1c3646308e00c3b8ddb723f21afd5ae70cdd7af2bf5717044a4ad7",
+      "public_sha256": "7efaaedd2fd9089fc56df9691cb94370a9b0598981d54dce73054f46e3bead2d",
       "reason": "Neutral standalone explanation of the public architecture; no private infrastructure or personal archive is published.",
       "source": "src/kin_tools/consolidate/public_export/templates/docs/memory-flow.html",
       "source_sha256": "1860071691cd5c1677d9ea9ccd7f8563cb198136b16d9fe34a60511124b3ddec"
@@ -107,7 +107,7 @@
     {
       "difference": "project-owned-setup-foundation",
       "public": "pyproject.toml",
-      "public_sha256": "0d993a84843d4526d7d74b77b0d6f76c96b829045db3bd462d0300981c37dc53",
+      "public_sha256": "61f99260b7c604677d695056c621982e6f49ea8e23fc1e671512398c5ad7f341",
       "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
       "source": "project:pyproject.toml",
       "source_sha256": "b9dbba62649fa09b119bf6c9e2979e364db75307d924e88347f64406eed0a016"
@@ -115,7 +115,7 @@
     {
       "difference": "project-owned-setup-foundation",
       "public": "uv.lock",
-      "public_sha256": "82058a12a4a3bd03dc1053e86ae58e6a1bfdb2043d31ef517bb6560f1b10d3eb",
+      "public_sha256": "7a67bac0affc2f0bfc2bb3cdfe433291ddb6f2353aea715a4675229d5bbadf21",
       "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
       "source": "project:uv.lock",
       "source_sha256": "6936bf1369ce47d1f95742b721ee9a1c1a435731eca41b3607c24dfe0f833e41"
@@ -139,7 +139,7 @@
     {
       "difference": "project-owned-setup-foundation",
       "public": "src/anamnema/cli.py",
-      "public_sha256": "a00facc6f7cd3b4a6c1b3e49abbe6b430c1b590194de1664ce73898e455c1686",
+      "public_sha256": "9321a73df6d6e8704df3e8079a50813c88cec6b64bdb3c673869ac4fb8b32338",
       "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
       "source": "project:src/anamnema/cli.py",
       "source_sha256": "9fcd3be36a0e232b0d1ba58cc6839a035e17d3d701d1d9abdd6e0a82bab204a7"
@@ -155,7 +155,7 @@
     {
       "difference": "project-owned-setup-foundation",
       "public": "src/anamnema/setup_plan.py",
-      "public_sha256": "54d9f856720b8e09286796cfd499b589c37e17c64388fe893c9b0744ac5232a3",
+      "public_sha256": "4f7bd94fe501c56f12dc77af632b9af751b7767c85d3b63df564b6cd6e1f8a5a",
       "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
       "source": "project:src/anamnema/setup_plan.py",
       "source_sha256": "c9a7534fb9d6714c2b87c422d022dfa2446e277ab334c63e5209c47ccb1c269a"
@@ -171,7 +171,7 @@
     {
       "difference": "project-owned-setup-foundation",
       "public": "tests/test_setup.py",
-      "public_sha256": "e58b3335994f1fb3665daae329cae984cab5671c1e58bec24b20a57029a238c5",
+      "public_sha256": "20d11f38ca381f4e84abc4a6846c24860406c7c5c3e3492fe4b55fa797493cae",
       "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
       "source": "project:tests/test_setup.py",
       "source_sha256": "831d297e648c4956762f77bbf4522c7bbbe7e768d062bfef19ec97bd2045ad24"
@@ -179,7 +179,7 @@
     {
       "difference": "project-owned-setup-foundation",
       "public": "docs/SETUP.md",
-      "public_sha256": "5c174b383353265f33dbde96fc6fbe4ef9592c6f532a8c3a16d4bfb26a0991ee",
+      "public_sha256": "85a4aca143760aaeb0d597db77fa4959810032a371082fb4c9ecd5542be685d2",
       "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
       "source": "project:docs/SETUP.md",
       "source_sha256": "5e0fcc4600f2cf26b76d19263ec60d1d1c8f64d68f3783ece33b0ecfbcd1da7e"

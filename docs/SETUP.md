@@ -47,7 +47,7 @@ Log in to the desktop and unlock the login keyring (`secret-tool store` and
 ### 2. Install Anamnema
 
 ```sh
-uv tool install --python 3.14 "anamnema[reranker] @ git+https://github.com/mattexb/Anamnema@v0.1.1"
+uv tool install --python 3.14 "anamnema[reranker] @ git+https://github.com/mattexb/Anamnema@v0.2.0"
 anamnema setup --dry-run --backend cpu
 ```
 
@@ -370,9 +370,6 @@ are verified, never blindly replaced. Failures keep journals and installed
 files; the installer never purges a database, and receipts must not be deleted
 to force a retry.
 
-The apply report also carries two fixed fields, `native_claude_acceptance` and
-`release_ready`, always `false`; the installer does not evaluate either.
-
 ### Installation profile reference
 
 Unknown fields are rejected and values are strictly typed: seconds are written
@@ -459,9 +456,10 @@ anamnema setup --keyring-guide
 `setup` without a mode is a dry run. Its output is JSON. Exit 0 means the plan
 was produced and the prerequisite observations passed; exit 2 means a missing or
 unsupported prerequisite, invalid configuration or an unavailable operation.
-`setup` only plans: `ready_to_install` is always `false` and every entry of
-`steps` reads `not-implemented`, because installing is the job of
-`anamnema install`. `setup --apply` is refused for the same reason. `process
+`setup` only plans: `ready_to_install` is always `false`, every entry of
+`steps` reads `run-by-install`, and the blocker names the command that installs:
+`anamnema install --profile FILE --apply`. `setup --apply` is refused and points
+to the same command. `process
 --apply` accepts the `vulkan` and `cpu` backends; `cuda` reports unsupported.
 
 ### Wizard

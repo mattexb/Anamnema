@@ -369,8 +369,6 @@ class NativeInstaller:
             "completed": [stage.name for stage in state.stages if stage.complete],
             "stopped_after": through,
             "data_removed": False,
-            "native_claude_acceptance": False,
-            "release_ready": False,
             "parent_death_cleanup_configured": self.snapshot_worker.registry is not None,
         }
 

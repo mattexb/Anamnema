@@ -33,11 +33,11 @@ class Check:
 
 @dataclass(frozen=True)
 class Step:
-    """An installation stage with explicit, currently unavailable execution."""
+    """An installation stage; `setup` plans it, `anamnema install` performs it."""
 
     name: str
     purpose: str
-    status: Literal["not-implemented"] = "not-implemented"
+    status: Literal["run-by-install"] = "run-by-install"
 
 
 STEPS = (
@@ -133,7 +133,7 @@ def plan(config: SetupConfig, host: Host) -> dict[str, object]:
             "Claude hook compatibility and actual memory delivery",
         ],
         "blockers": [
-            "Installation actions and dependent memory modules are not implemented",
+            "setup only plans; installing is `anamnema install --profile FILE --apply`",
             "Service privilege/account and unattended keyring policy require review",
         ],
     }
