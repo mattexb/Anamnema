@@ -7,7 +7,14 @@ archive before model access. Dry-run makes no model calls. Apply requires an
 explicit local model file, hashes its stable bytes and checks that localhost
 llama.cpp reports that same path. Native template/tokenizer endpoints check that
 prompt plus reserved answer fits the reported context before generation. The
+preflight passes the same frozen request body as generation, including template
+kwargs and structured-output options, not messages alone. The pinned native
+[server implementation](https://github.com/ggml-org/llama.cpp/blob/5aeac37a3/tools/server/server-context.cpp#L5194)
+uses the chat parser for `/apply-template` as well as generation. This matters
+when an option such as `enable_thinking` changes the rendered prompt. The
 setup backend must currently be Vulkan; API/CUDA remain explicitly unavailable.
+HTTP responses and connections are both closed on rejection or size-bound
+failure; cleanup does not depend on garbage collection or a persistent connection.
 
 Results are saved per chunk, read back and checked independently before progress
 is counted. Reuse identity covers the full model hash, provider metadata, rendered
@@ -152,10 +159,68 @@ oversized-row exception, this public preparer refuses a single oversized row
 visibly instead of truncating it or preparing an out-of-bounds call. There is no
 model call on this failure or on any dry-run.
 
-Extraction apply now implements model calls, structural output/source checks and
-incremental verified notes. Lessons, repeat/link processing, naming, cards and
-briefings remain unfinished. Those downstream results are not implied by a
-successful extraction or this preview.
+Extraction apply implements model calls, structural output/source checks and
+incremental verified notes. Separate memory commands implement topic placement,
+repeat decisions, lessons and manual cards; they are not implied by successful
+extraction. The separate `nightly` command chains entity links, stale cards,
+naming, lessons and held-briefing rebuilding; see [OPERATIONS.md](OPERATIONS.md).
+A completed three-stage window is not, by itself, a completed finishing chain.
+
+## Marked Self-Note Capture
+
+The separate capture command takes
+only the assistant's genuine `fact:`, `mistake:` and `learned_lesson:` lines,
+outside code fences and quotes, using the same configured detector that excludes
+them from extraction. Native tool, meta, summary and sidechain records do not
+become manual notes. Text is sanitized without altering its original archive
+record. Named suffixes remain provenance, not automatic entity confirmations.
+
+Capture must verify the original archive records before graph writes and use
+stable assistant/source/ordinal identities. Replay adds no second vote or note;
+deleted notes stay deleted, and corrected notes are never rewritten or re-embedded.
+Incomplete placement uses the existing stored-vector retry path. A principle
+links to the preceding mistake in the same source message, never a guessed event.
+Configuration changes cannot silently reinterpret already captured inputs.
+
+Manual captures may have no closed conversation window, as in the source. Do not
+invent a compaction boundary: retain exact source IDs and report cited-only,
+partial context. Source display must retain genuine marked lines in that case.
+Dry-run and empty capture make no secret, model or store calls. Explicit apply
+archives/verifies source, embeds without a notes-model call, stores and places.
+Automatic lesson/card chaining and native turn-end scheduling remain separate
+integration work; this contract does not declare them complete.
+
+`--last-turn`, mutually exclusive with `--whole`, selects dialogue after the latest
+native user prompt or latest compaction boundary. Tool-result rows, meta turns
+and sidechains do not open a new turn. Non-meta injected/peer notifications,
+wrapper-only and image-only user prompts do delimit turns, as in the source;
+they do not thereby become speech or manual-note evidence.
+Without either boundary it falls back to the current
+stretch. Selection must keep the same archived-source identities as whole-file
+capture and cannot change the replay identity of a note. This selection is not
+itself native Stop scheduling or proof that the final message has been flushed.
+
+```sh
+anamnema capture --file /path/session.jsonl --instance assistant-name --session native-session
+anamnema capture --file /path/session.jsonl --instance assistant-name --session native-session --apply
+anamnema capture --file /path/session.jsonl --instance assistant-name --session native-session --whole --apply
+```
+
+The default previews only the stretch after the latest summary. `--whole` is an
+explicit backstop over the entire transcript; stable source identities prevent
+another insertion or trust vote on replay. `--capture-config` selects the complete
+marker-kind, native-session-field and capacity policy. Its catalogue must agree
+with `--speech-config`. Semantic policy changes refuse existing captures and need
+an explicit migration; changing capacity limits alone does not reinterpret notes.
+The replay identity includes only agent attribution, marker selection and text
+sanitization dependencies, not owner-only speech filtering. Origin comparisons
+validate typed values, so JSON formatting and omitted optional defaults do not
+invalidate a replay. Only LF separates message lines; Unicode line-separator
+characters within a marked line remain part of its text.
+Apply uses the configured archive, graph and encoder, not the notes model.
+Reports expose counts and note IDs, never captured text. Interrupted placement
+is retryable; insertion and origin metadata are one transaction, but the entire
+capture batch and its topic placements are not one atomic operation.
 
 ## Verification
 
@@ -165,5 +230,8 @@ invalid closing references and malformed input. Execution tests run the actual
 CLI against a disposable MongoDB and a synthetic HTTP llama.cpp protocol fixture,
 including source verification, two chunks, replay, changed options, interruption,
 slow-worker shutdown, malformed replies, context overflow, identity changes and
-corrupt saved notes. Real-model quality/performance, GPU execution, authenticated
-service installation and native Claude events remain untested acceptance gates.
+corrupt saved notes. Separate disposable-guest acceptance exercised native
+services and Claude events, plus real Gemma inference on an existing GPU host
+through an attested loopback tunnel. The synthetic window produced six notes,
+passed storage/replay and completed finishing and source-backed correction.
+This does not establish model quality, GPU setup or general hardware performance.

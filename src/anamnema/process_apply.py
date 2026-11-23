@@ -30,8 +30,8 @@ def apply(
 ) -> dict[str, JsonValue]:
     """Verify archived source first, then use explicit model identity and separate results."""
     setup = load_config(args.config)
-    if setup.backend != "vulkan":
-        raise SetupError("extraction currently supports the local Vulkan llama.cpp route only")
+    if setup.backend not in {"vulkan", "cpu"}:
+        raise SetupError("extraction supports the local CPU/Vulkan llama.cpp route only")
     config = extraction_config(args.extraction_config)
     if {config.chunks_collection, config.attempts_collection} & set(archive.collections.values()):
         raise SetupError("extraction collections must not overlap archive collections")

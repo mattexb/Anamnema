@@ -75,12 +75,13 @@ def collect(
         previous.run_when_logged_out or False,
     )
     print(
-        "User services run as your account. System services start with the machine.\n"
+        "Application user services run as your account; system services start with the machine.\n"
+        "Database/model service accounts remain separately configured.\n"
         "Neither choice automatically unlocks a keyring after reboot.",
         file=questions.output,
     )
     scope = questions.choice(
-        "Which service arrangement do you want to plan?",
+        "Which application service arrangement do you want to plan?",
         ("user", "system"),
         previous.service_scope or ("system" if logged_out else "user"),
     )
@@ -93,7 +94,12 @@ def collect(
             default_user = ""
     application = questions.account("Account for the memory application", default_user)
     if scope == "user":
-        accounts = dict.fromkeys(("application", "models", "archive", "graph"), application)
+        accounts = {
+            "application": application,
+            "models": previous.accounts.models or application,
+            "archive": previous.accounts.archive,
+            "graph": previous.accounts.graph,
+        }
     else:
         accounts = {
             "application": application,
@@ -123,7 +129,7 @@ def collect(
         file=questions.output,
     )
     backend = questions.choice(
-        "Where should the notes model run?", ("vulkan", "api", "cuda"), config.backend
+        "Where should the notes model run?", ("vulkan", "cpu", "api", "cuda"), config.backend
     )
     paths = config.paths.model_dump()
     if questions.yes("Change the proposed application folders?", False):

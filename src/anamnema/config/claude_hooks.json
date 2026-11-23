@@ -1,0 +1,8 @@
+{
+  "start_timeout_seconds": 30.0,
+  "stop_timeout_seconds": 30.0,
+  "precompact_margin_seconds": 60.0,
+  "max_settings_bytes": 1048576,
+  "max_receipt_bytes": 262144,
+  "settings_file_mode": 384
+}

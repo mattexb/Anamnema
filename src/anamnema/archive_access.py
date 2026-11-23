@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import os
-import subprocess
 from typing import Any
 
 from pymongo import MongoClient
@@ -11,6 +9,7 @@ from pymongo.errors import PyMongoError
 from pymongo.uri_parser import parse_uri
 
 from anamnema.ingest_config import ArchiveSettings
+from anamnema.secret_service import SecretService
 from anamnema.setup_config import Endpoint, SetupConfig, SetupError
 
 
@@ -21,34 +20,7 @@ def keyring_uri(setup: SetupConfig, settings: ArchiveSettings) -> str:
 
 def keyring_secret(setup: SetupConfig, settings: ArchiveSettings, entry: str, field: str) -> str:
     """Reuse service/entry/field attributes; never log command output or secret values."""
-    environment = dict(os.environ)
-    if not environment.get(settings.bus_env):
-        environment[settings.bus_env] = settings.bus_fallback.format(uid=os.getuid())
-    command = [
-        setup.keyring.executable,
-        "lookup",
-        "service",
-        setup.keyring.namespace,
-        "entry",
-        entry,
-        "field",
-        field,
-    ]
-    try:
-        result = subprocess.run(  # noqa: S603 - configured executable, fixed operation, no shell
-            command,
-            env=environment,
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            timeout=settings.keyring_timeout_seconds,
-            check=False,
-        )
-    except (OSError, UnicodeError, subprocess.TimeoutExpired) as exc:
-        raise SetupError(f"project keyring lookup failed ({type(exc).__name__})") from exc
-    if result.returncode or not result.stdout.strip():
-        raise SetupError("project credential unavailable; check keyring entry/unlock")
-    return result.stdout.strip()
+    return SecretService(setup.keyring, settings).lookup(entry, field)
 
 
 def connect(

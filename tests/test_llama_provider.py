@@ -1,8 +1,10 @@
 """Real loopback HTTP transport and model-file bounds, not a live model server."""
 
 import json
+from copy import deepcopy
 
 import pytest
+from extraction_fixtures import completion
 
 from anamnema.extraction_config import extraction_config
 from anamnema.llama_provider import LlamaProvider, hash_model
@@ -37,6 +39,44 @@ def test_optional_model_token_is_only_a_header_not_identity_or_output(model_serv
     assert token not in json.dumps(model.identity)
 
 
+@pytest.mark.parametrize("thinking", [False, True])
+def test_preflight_uses_generation_template_options_and_exact_request(
+    model_service, monkeypatch, thinking
+):
+    model_service.context = 12
+    original = model_service.response
+
+    def response(path, body):
+        if path == "/apply-template":
+            active = body.get("chat_template_kwargs", {}).get("enable_thinking", not thinking)
+            return 200, {"prompt": "long" if active else "short"}
+        if path == "/tokenize":
+            return 200, {"tokens": [1] * (10 if body["content"] == "long" else 3)}
+        return original(path, body)
+
+    monkeypatch.setattr(model_service, "response", response)
+    model_service.chat_replies.append(completion("fixture-answer"))
+    model = provider(model_service)
+    body = {
+        "model": "fixture-model",
+        "messages": [{"role": "user", "content": "fixture"}],
+        "max_tokens": 8,
+        "stream": False,
+        "temperature": 1.0,
+        "chat_template_kwargs": {"enable_thinking": thinking},
+        "response_format": {"type": "json_object"},
+    }
+    if thinking:
+        with pytest.raises(SetupError, match="exceed the model context"):
+            model.generate(body)
+        assert not model_service.calls
+    else:
+        assert model.generate(body) == "fixture-answer"
+        assert model_service.calls[-1] == body
+    templates = [data for _, path, data in model_service.requests if path == "/apply-template"]
+    assert templates == [body]
+
+
 @pytest.mark.parametrize("token", ["unsafe\r\nInjected: value", "unsafe\tvalue", "nonascii-\u0100"])
 def test_invalid_model_tokens_fail_before_transport_without_echo(model_service, token):
     with pytest.raises(SetupError, match="invalid bearer-header") as caught:
@@ -48,6 +88,33 @@ def test_invalid_model_tokens_fail_before_transport_without_echo(model_service, 
         )
     assert token not in str(caught.value)
     assert model_service.requests == []
+
+
+def test_request_snapshot_cannot_change_between_preflight_and_generation(
+    model_service, monkeypatch
+):
+    body = {
+        "messages": [{"role": "user", "content": "fixture"}],
+        "max_tokens": 20,
+        "chat_template_kwargs": {"enable_thinking": False},
+    }
+    expected = deepcopy(body)
+    original = model_service.response
+
+    def changed(path, received):
+        if path == "/apply-template":
+            body["chat_template_kwargs"]["enable_thinking"] = True
+            body["messages"][0]["content"] = "changed after preflight"
+        return original(path, received)
+
+    monkeypatch.setattr(model_service, "response", changed)
+    model_service.chat_replies.append(completion("fixture-answer"))
+    assert provider(model_service).generate(body) == "fixture-answer"
+    assert body != expected
+    assert model_service.calls[-1] == expected
+    assert [
+        received for _, path, received in model_service.requests if path == "/apply-template"
+    ] == [expected]
 
 
 @pytest.mark.parametrize(

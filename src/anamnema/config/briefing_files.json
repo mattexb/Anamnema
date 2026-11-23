@@ -1,0 +1,11 @@
+{
+  "directory_mode": 448,
+  "file_mode": 384,
+  "temporary_prefix": ".brief-",
+  "max_pages": 64,
+  "max_file_bytes": 1048576,
+  "max_bundle_bytes": 4194304,
+  "manifest_file": "manifest.json",
+  "review_file": "review.md",
+  "page_pattern": "page-{page}.md"
+}

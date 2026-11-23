@@ -55,7 +55,12 @@ STEPS = (
 
 def required_commands(config: SetupConfig) -> tuple[str, ...]:
     """List configured executables relevant to this backend, without executing them."""
-    backend = config.requirements.vulkan if config.backend == "vulkan" else config.requirements.api
+    backend = {
+        "vulkan": config.requirements.vulkan,
+        "cpu": config.requirements.cpu,
+        "api": config.requirements.api,
+        "cuda": (),
+    }[config.backend]
     return tuple(dict.fromkeys((*config.requirements.common, config.keyring.executable, *backend)))
 
 

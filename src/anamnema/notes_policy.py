@@ -69,7 +69,7 @@ class NotesPolicy(StrictModel):
             if re.compile(pattern).groups != 1:
                 raise ValueError("binding patterns require one captured group")
         canonical(self.model_options)
-        if _has_credentials(self.model_options):
+        if has_model_credentials(self.model_options):
             raise ValueError("model credentials belong in the project keyring, not request options")
         if {
             "model",
@@ -82,7 +82,8 @@ class NotesPolicy(StrictModel):
         return self
 
 
-def _has_credentials(value: JsonValue) -> bool:
+def has_model_credentials(value: JsonValue) -> bool:
+    """Shared recursive refusal of credential-bearing model-option keys."""
     if isinstance(value, dict):
         forbidden = {
             "api_key",
@@ -95,11 +96,11 @@ def _has_credentials(value: JsonValue) -> bool:
             "extra_headers",
         }
         return any(
-            key.lower().replace("-", "_") in forbidden or _has_credentials(item)
+            key.lower().replace("-", "_") in forbidden or has_model_credentials(item)
             for key, item in value.items()
         )
     if isinstance(value, list):
-        return any(_has_credentials(item) for item in value)
+        return any(has_model_credentials(item) for item in value)
     return False
 
 

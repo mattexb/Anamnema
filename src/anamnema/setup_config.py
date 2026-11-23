@@ -76,6 +76,14 @@ class Keyring(StrictModel):
     provider: Literal["secret-service"]
     namespace: Nonempty
     executable: Nonempty
+    policy: Path | None = None
+
+    @field_validator("policy")
+    @classmethod
+    def explicit_policy(cls, value: Path | None) -> Path | None:
+        if value is not None and not value.is_absolute():
+            raise ValueError("keyring policy path must be absolute")
+        return value
 
 
 class Requirements(StrictModel):
@@ -83,6 +91,7 @@ class Requirements(StrictModel):
 
     common: tuple[Nonempty, ...]
     vulkan: tuple[Nonempty, ...]
+    cpu: tuple[Nonempty, ...] = ()
     api: tuple[Nonempty, ...]
 
 
@@ -91,7 +100,7 @@ class SetupConfig(StrictModel):
 
     schema_version: Literal[1]
     substrate: Literal["claude"]
-    backend: Literal["vulkan", "cuda", "api"]
+    backend: Literal["vulkan", "cpu", "cuda", "api"]
     target: Target
     paths: Paths
     services: Services

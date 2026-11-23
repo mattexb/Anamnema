@@ -192,7 +192,7 @@ def test_apply_fails_before_any_inspection_or_config_read(
     assert output.out == "" and "not implemented" in json.loads(output.err)["error"]
 
 
-@pytest.mark.parametrize("backend,expected", [("vulkan", 0), ("api", 0), ("cuda", 2)])
+@pytest.mark.parametrize("backend,expected", [("vulkan", 0), ("cpu", 0), ("api", 0), ("cuda", 2)])
 def test_cli_uses_selected_backend(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str], backend: str, expected: int
 ) -> None:

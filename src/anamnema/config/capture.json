@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "session_field": "sessionId",
+  "turn_prompt": {"block_type_field": "type", "tool_result_type": "tool_result"},
+  "kinds": {"fact": "fact", "mistake": "failure", "learned_lesson": "principle"},
+  "failure_kinds": ["failure"],
+  "principle_kinds": ["principle"],
+  "event_time_kinds": ["failure"],
+  "max_marks": 2048,
+  "max_text_characters": 12000
+}

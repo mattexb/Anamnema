@@ -1,0 +1,20 @@
+{
+  "max_input_bytes": 65536,
+  "max_output_bytes": 1048576,
+  "read_chunk_bytes": 65536,
+  "timeout_seconds": 300.0,
+  "worker_arguments": [
+    "--print",
+    "--no-session-persistence",
+    "--permission-mode", "dontAsk",
+    "--tools", "",
+    "--output-format", "json",
+    "--setting-sources", "",
+    "--settings", "{\"disableAllHooks\":true}",
+    "--strict-mcp-config",
+    "--mcp-config", "{\"mcpServers\":{}}",
+    "--no-chrome"
+  ],
+  "model_option": "--model",
+  "schema_option": "--json-schema"
+}

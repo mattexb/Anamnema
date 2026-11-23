@@ -46,7 +46,6 @@ class SetupChoices(BaseModel):
         if self.keyring_owner and account and self.keyring_owner != account:
             raise ValueError("the application must use its own account's keyring")
         if self.service_scope == "user":
-            accounts = self.accounts.model_dump().values()
-            if account is None or any(value != account for value in accounts):
-                raise ValueError("user services must name one account for all components")
+            if account is None:
+                raise ValueError("user application services must name their account")
         return self

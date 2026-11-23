@@ -1,0 +1,6 @@
+{
+  "state_file": "stack.json",
+  "lock_file": ".lock",
+  "max_entries": 256,
+  "max_state_bytes": 1048576
+}

@@ -1,0 +1,31 @@
+{
+  "max_input_bytes": 1048576,
+  "max_content_bytes": 2097152,
+  "max_state_bytes": 1048576,
+  "max_pending": 32,
+  "max_read_key_characters": 256,
+  "max_spool_items": 32,
+  "token_bytes": 24,
+  "directory_mode": 448,
+  "file_mode": 384,
+  "state_file": "state.json",
+  "lock_file": ".lock",
+  "spool_directory": "spool",
+  "blob_suffix": ".txt",
+  "temporary_prefix": ".pending-",
+  "session_pattern": "[A-Za-z0-9_-]+",
+  "read_marker": "ANAMNEMA_REQUIRED_READ_V1",
+  "snapshot_marker": "ANAMNEMA_COMPACTION_SNAPSHOT_V1",
+  "snapshot_ack_marker": "ANAMNEMA_COMPACTION_SNAPSHOT_READ_V1",
+  "identity_sources": ["startup", "clear", "fork"],
+  "resume_source": "resume",
+  "compact_source": "compact",
+  "native_events": {"start": "SessionStart", "stop": "Stop"},
+  "native_fields": {
+    "session": "session_id",
+    "event": "hook_event_name",
+    "source": "source",
+    "message": "last_assistant_message",
+    "active": "stop_hook_active"
+  }
+}

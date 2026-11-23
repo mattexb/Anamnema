@@ -11,7 +11,7 @@ from pymongo import UpdateOne
 from pymongo.database import Database
 from pymongo.errors import PyMongoError
 
-from anamnema.archive_codec import decode_source, encode_record
+from anamnema.archive_codec import decode_source, encode_record, recover_record
 from anamnema.archive_models import Kind, Record, Snapshot, canonical, digest
 from anamnema.ingest_config import ArchiveSettings
 from anamnema.setup_config import SetupError
@@ -84,6 +84,40 @@ class MongoArchive:
             raise SetupError(
                 f"archive read-back failed ({type(exc).__name__}); safe to rerun"
             ) from exc
+
+    def restore(self, instance: str, kind: Kind, identities: tuple[str, ...]) -> tuple[Record, ...]:
+        """Recover only an explicit owned bounded identity set, retaining requested order."""
+        if (
+            not instance
+            or not 1 <= len(identities) <= self.settings.batch_size
+            or len(set(identities)) != len(identities)
+        ):
+            raise SetupError("archive restore request exceeds configured count or repeats an id")
+        if kind not in self.settings.collections:
+            raise SetupError("archive restore record kind is unavailable")
+        try:
+            documents = self.database[self.settings.collections[kind]].find(
+                {"_id": {"$in": list(identities)}, "instance": instance}
+            )
+            found: dict[str, Record] = {}
+            total = 0
+            for document in documents:
+                record = recover_record(document, self.settings)
+                total += len(canonical(record.source))
+                if total > self.settings.max_file_bytes:
+                    raise SetupError("archive restore exceeds configured byte bound")
+                if (
+                    record.instance != instance
+                    or record.kind != kind
+                    or record.identity not in identities
+                ):
+                    raise SetupError("archive restore ownership/kind differs")
+                found[record.identity] = record
+        except PyMongoError as exc:
+            raise SetupError(f"archive restore failed ({type(exc).__name__})") from exc
+        if len(found) != len(identities):
+            raise SetupError("archive restore is incomplete or belongs to another assistant")
+        return tuple(found[identity] for identity in identities)
 
     def complete(self, snapshot: Snapshot, records: list[Record]) -> None:
         """A deterministic receipt exists only after all imported records verify."""

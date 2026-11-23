@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Iterator
 from dataclasses import dataclass, replace
 from typing import Literal
 
@@ -36,18 +37,23 @@ def own_words(text: str, policy: SpeechPolicy) -> str:
     return "\n".join(part.strip() for part in parts if part.strip())
 
 
-def without_marked(text: str, policy: SpeechPolicy) -> str:
-    """Remove genuine self-note lines, but preserve fenced/quoted examples."""
+def marked_matches(text: str, policy: SpeechPolicy) -> Iterator[tuple[int, re.Match[str]]]:
+    """One detector serves capture and exclusion; quoted/fenced examples are not said."""
     fenced = False
-    kept: list[str] = []
-    for line in text.splitlines():
+    for number, line in enumerate(text.split("\n")):
         if re.match(policy.fence_pattern, line):
             fenced = not fenced
+            continue
         match = re.match(policy.marked_pattern, line)
         marked = match is not None and match["marker"] in policy.marked_lines
-        if fenced or re.match(policy.quote_pattern, line) or not marked:
-            kept.append(line)
-    return "\n".join(kept).strip()
+        if not fenced and not re.match(policy.quote_pattern, line) and marked and match:
+            yield number, match
+
+
+def without_marked(text: str, policy: SpeechPolicy) -> str:
+    """Remove genuine self-note lines, but preserve fenced/quoted examples."""
+    omitted = {number for number, _ in marked_matches(text, policy)}
+    return "\n".join(line for n, line in enumerate(text.split("\n")) if n not in omitted).strip()
 
 
 def scrub(text: str, policy: SpeechPolicy) -> tuple[str, int]:

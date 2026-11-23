@@ -1,0 +1,6 @@
+{
+  "max_value_bytes": 65536,
+  "max_attribute_characters": 512,
+  "max_injections": 16,
+  "label_prefix": "Anamnema"
+}

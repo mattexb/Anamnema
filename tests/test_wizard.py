@@ -28,10 +28,12 @@ def user_config():
     return collect(load_config(), prompt, lambda: "alex")
 
 
-def test_user_path_collects_one_account_without_installing() -> None:
+def test_user_path_preserves_separate_package_accounts_without_installing() -> None:
     config = user_config()
     assert config.choices.service_scope == "user"
-    assert set(config.choices.accounts.model_dump().values()) == {"alex"}
+    assert config.choices.accounts.application == "alex"
+    assert config.choices.accounts.models == "alex"
+    assert config.choices.accounts.archive is None and config.choices.accounts.graph is None
     assert config.choices.keyring_setup == "manual" and config.choices.keyring_owner == "alex"
     assert config.choices.run_when_logged_out is False and config.backend == "api"
 
@@ -148,7 +150,7 @@ def test_failed_write_cannot_publish_partial_answers(
         save_answers(tmp_path / "missing/answers.json", user_config())
 
 
-@pytest.mark.parametrize("change", ["keyring-owner", "user-accounts", "root-owner"])
+@pytest.mark.parametrize("change", ["keyring-owner", "missing-application", "root-owner"])
 def test_contradictory_account_configuration_is_rejected(change: str) -> None:
     raw = user_config().model_dump(mode="json")
     if change == "keyring-owner":
@@ -156,9 +158,17 @@ def test_contradictory_account_configuration_is_rejected(change: str) -> None:
     elif change == "root-owner":
         raw["choices"]["keyring_owner"] = "root"
     else:
-        raw["choices"]["accounts"]["models"] = "different"
+        raw["choices"]["accounts"]["application"] = None
     with pytest.raises(SetupError):
         parse_config(json.dumps(raw))
+
+
+def test_user_application_profile_can_keep_distinct_daemon_accounts() -> None:
+    raw = user_config().model_dump(mode="json")
+    raw["choices"]["accounts"].update(models="models", archive="mongodb", graph="neo4j")
+    config = parse_config(json.dumps(raw))
+    assert config.choices.accounts.application == "alex"
+    assert config.choices.accounts.models == "models" and config.choices.keyring_owner == "alex"
 
 
 def test_cli_refuses_save_on_dry_run(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:

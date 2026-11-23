@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "windows_collection": "processing_windows",
+  "max_window_records": 100000,
+  "max_manifest_bytes": 8388608,
+  "context_records": 128,
+  "source_turns": 2,
+  "source_tokens": 2500,
+  "characters_per_token": 4
+}

@@ -4,7 +4,11 @@
 
 ### What could you build together if the experience stayed?
 
-**In progress: local development. Setup, Claude import and source-linked note extraction are implemented locally; the complete memory system and installer are not ready.**
+**Site:** [anamnema.mattexb.net](https://anamnema.mattexb.net) | **Paper:** [Memory for the One Who Remembers](https://anamnema.mattexb.net/paper/)
+
+**Paper DOI:** [10.5281/zenodo.24438534](https://doi.org/10.5281/zenodo.24438534)
+
+**Pre-release: the Debian 13 logged-in-user profile has passed isolated installation, real-model memory processing and native Claude lifecycle acceptance. Final integration gates and publication approval are still required.**
 
 ## What is Anamnema?
 
@@ -269,8 +273,19 @@ writing to your project archive requires an explicit `--apply`.
 A [processing preview](docs/PROCESSING.md) also reports closed conversation
 stretches and their source references without sending text to a model.
 Explicit processing `--apply` verifies the archive, uses localhost llama.cpp and
-saves source-linked notes incrementally. The integration is tested with synthetic
-HTTP responses and a disposable database; real-model acceptance is still pending.
+saves source-linked notes incrementally. A disposable Debian 13 guest also passed
+the synthetic full path using a real Gemma notes model through authenticated
+loopback SSH transport: extraction, storage, finishing, search, original source,
+correction and updated cards/briefings. This is compatibility evidence, not a
+model-quality benchmark or a promise of equivalent hardware performance.
+The baseline encoder and reranker pass separate installed-package compatibility
+checks with real model files; see [memory verification](docs/MEMORY.md).
+
+The [continuity implementation](docs/CONTINUITY.md) includes required-read gates,
+snapshot archive sync and an explicit bounded compaction producer. Native Claude
+acceptance covered identity reads, Stop capture, compaction/read acknowledgement,
+briefing delivery and parent-death recovery. Fixture tests remain separate from
+that native evidence.
 
 Keep one decision from your next session, why you made it, and the conversation
 it came from. Bring that note into the following session and see what you can
@@ -282,10 +297,14 @@ bringing the experience back is the point.
 The first installer target is **Debian 13 trixie with native services**, on one
 machine. The current [setup foundation](docs/SETUP.md) validates configuration,
 offers an interactive wizard and produces a read-only plan. A
-[manual keyring guide](docs/KEYRING.md) is available too; installation actions
-are still being built.
+[manual keyring guide](docs/KEYRING.md) is available too. The explicit `install`
+command applies a validated deployment profile; the wizard does not yet generate
+that complete profile. User/keyring login and Claude authentication remain
+operator responsibilities. GPU drivers and hardware setup are not installed.
 
-The first target is one Linux machine. MongoDB keeps the original conversations;
+The application and databases run on one Linux machine; the notes model can
+instead run on an existing GPU host through the explicit SSH-attested profile.
+MongoDB keeps the original conversations;
 Neo4j keeps the connections between notes, sources and subjects. Two small
 models can run on the CPU: e5-small-v2 turns text into numbers that capture its
 meaning for search (the **encoder**); MiniLM compares a question with the found
@@ -369,28 +388,35 @@ conversations and isolated stores cover attribution, correction, replay,
 interruption and instance ownership without using personal memories as fixtures.
 The README and flow change with the behavior they describe.
 
+The [memory core](docs/MEMORY.md) connects verified extraction to Neo4j search,
+original-source lookup and accountable corrections. Its isolated tests use real
+disposable stores, synthetic inference responses and a small synthetic ONNX
+model. Separate installed-package and disposable-guest acceptance exercise real
+models, native services and Claude events; neither establishes model quality.
+
 We report what was actually tested, including skips and missing evidence.
 A mock is not proof of a working model, memory arriving inside the actual AI
 assistant, or a clean-machine installation.
 
 ## Scope and Structure
 
-The planned public workflow includes transcript ingestion, source-linked notes,
+The first-profile workflow includes transcript ingestion, source-linked notes,
 graph storage, recall, people/thing summaries, deeper subject summaries,
 source-backed correction, operation commands and an ordered installer.
-The transcript importer and keyring are being neutralized as internal parts of
-this project. Our private infrastructure, archives and credentials are not
+The transcript importer and keyring are internal parts of this project.
+Our private infrastructure, archives and credentials are not
 included; neither are transcript trimming/deletion commands.
 
 ```text
 README.md                  Reader introduction and integrated memory flow
 pyproject.toml / uv.lock    Project environment and anamnema entry point
-src/anamnema/              Setup, archive import and source-linked note extraction
+src/anamnema/              Setup, archive, extraction and storage/retrieval core
 tests/                     Isolated project tests
 assets/                    Header artwork
 docs/SETUP.md               Setup contract and development checks
 docs/ARCHIVE.md             Import, source identities and verified archive writes
 docs/PROCESSING.md          Source-linked extraction, replay and processing limits
+docs/MEMORY.md              Graph, CPU services, search, sources and corrections
 docs/PREFACE.md             Individually authored accounts and invitation
 docs/CONTRACTS.md           Ingestion, provider and substrate boundaries
 docs/memory-flow.html       Standalone flow
@@ -414,7 +440,7 @@ message, so memory can arrive at the right moment.
 
 | AI assistant / environment | Existing system | Public-copy status |
 | --- | --- | --- |
-| Claude Code | Memory reads conversations and returns through session events | Export/configuration and public installation validation pending |
+| Claude Code | Memory reads conversations and returns through session events | Debian 13 logged-in-user profile tested with Claude Code 2.1.330; see setup and continuity limits |
 | Codex | Conversations can be archived | Reading those records for memory and delivering it inside Codex are the next target |
 | Hermes | Conversations can be preserved | Memory reading and delivery planned |
 | Antigravity (AGY) | Conversations can be preserved | Memory reading and delivery planned |

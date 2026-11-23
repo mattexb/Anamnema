@@ -5,12 +5,15 @@ from __future__ import annotations
 import hashlib
 import http.client
 import os
+from copy import deepcopy
 from pathlib import Path
 
 from pydantic import JsonValue, TypeAdapter, ValidationError
 
-from anamnema.archive_models import canonical
+from anamnema.archive_models import canonical, digest
 from anamnema.extraction_config import ExtractionConfig
+from anamnema.model_attestation import RemoteModelAttestation, read_attestation
+from anamnema.readiness import ServiceNotReady
 from anamnema.setup_config import Endpoint, SetupError
 
 OBJECT = TypeAdapter(dict[str, JsonValue])
@@ -35,12 +38,17 @@ class LlamaProvider:
             self._headers["Authorization"] = f"Bearer {token}"
         self._model_file = model_file
         self._model_stamp = self._stamp_file()
+        self._attestation: RemoteModelAttestation | None = None
+        if config.model_identity == "operator-attested-remote":
+            self._attestation = read_attestation(model_file, config.max_attestation_bytes)
+            if self._attestation.endpoint != endpoint:
+                raise SetupError("remote attestation endpoint differs from the configured tunnel")
         self.identity = self._identify(model_file)
         if self._stamp_file() != self._model_stamp:
             raise SetupError("model file changed during provider identification")
 
     def _identify(self, path: Path) -> dict[str, JsonValue]:
-        hashed = hash_model(path, self.config)
+        hashed = self._attestation.sha256 if self._attestation else hash_model(path, self.config)
         return self._properties(path, hashed)
 
     def _properties(self, path: Path, hashed: str) -> dict[str, JsonValue]:
@@ -54,22 +62,39 @@ class LlamaProvider:
             or props.get("build_info") is None
         ):
             raise SetupError("llama.cpp properties lack model identity")
-        try:
-            matches = Path(model_path).resolve(strict=True) == path.resolve(strict=True)
-        except (OSError, ValueError) as exc:
-            raise SetupError("llama.cpp model path cannot be verified") from exc
+        attestation = self._attestation
+        if attestation is not None:
+            matches = (
+                model_path == attestation.model_path
+                and alias == attestation.alias
+                and canonical(props.get("build_info")) == canonical(attestation.build)
+                and canonical(generation) == canonical(attestation.generation)
+            )
+        else:
+            try:
+                matches = Path(model_path).resolve(strict=True) == path.resolve(strict=True)
+            except (OSError, ValueError) as exc:
+                raise SetupError("llama.cpp model path cannot be verified") from exc
         if not matches:
+            if attestation is not None:
+                raise SetupError("llama.cpp model identity differs from its remote attestation")
             raise SetupError("llama.cpp loaded model path differs from the explicit model file")
         context = generation.get("n_ctx") if isinstance(generation, dict) else None
         if type(context) is not int or context <= 0:
             raise SetupError("llama.cpp properties lack a valid context bound")
-        return {
+        identity: dict[str, JsonValue] = {
             "sha256": hashed,
             "alias": alias,
             "build": props.get("build_info"),
             "generation": generation,
             "context_tokens": context,
         }
+        if attestation is not None:
+            identity.update(
+                verification="operator-attested-remote",
+                attestation=digest(attestation.model_dump(mode="json")),
+            )
+        return identity
 
     def _stamp_file(self) -> tuple[int, int, int, int]:
         try:
@@ -92,9 +117,9 @@ class LlamaProvider:
 
     def generate(self, body: dict[str, JsonValue]) -> str:
         """Count the actual templated prompt before generation, then require a stopped reply."""
+        body = deepcopy(body)
         self.verify_model()
-        messages = body.get("messages")
-        templated = self.call("POST", self.config.template_path, {"messages": messages})
+        templated = self.call("POST", self.config.template_path, body)
         prompt = templated.get("prompt")
         if not isinstance(prompt, str):
             raise SetupError("llama.cpp template response is invalid")
@@ -141,17 +166,21 @@ class LlamaProvider:
         )
         try:
             connection.request(method, path, body=data, headers=self._headers)
-            response = connection.getresponse()
-            if response.status != 200:
-                raise SetupError(f"llama.cpp request failed (HTTP {response.status})")
-            raw = response.read(self.config.max_response_bytes + 1)
-            if len(raw) > self.config.max_response_bytes:
-                raise SetupError("model response exceeds configured transport bound")
+            with connection.getresponse() as response:
+                if response.status != 200:
+                    if response.status == 503:
+                        raise ServiceNotReady("llama.cpp is not ready (HTTP 503)")
+                    raise SetupError(f"llama.cpp request failed (HTTP {response.status})")
+                raw = response.read(self.config.max_response_bytes + 1)
+                if len(raw) > self.config.max_response_bytes:
+                    raise SetupError("model response exceeds configured transport bound")
             result = OBJECT.validate_json(raw)
             canonical(result)
             return result
         except SetupError:
             raise
+        except (ConnectionError, TimeoutError, http.client.RemoteDisconnected) as exc:
+            raise ServiceNotReady(f"llama.cpp transport failed ({type(exc).__name__})") from exc
         except (OSError, http.client.HTTPException, ValidationError, ValueError) as exc:
             raise SetupError(f"llama.cpp transport failed ({type(exc).__name__})") from exc
         finally:

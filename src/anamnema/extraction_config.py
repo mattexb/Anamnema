@@ -3,7 +3,7 @@
 import re
 from importlib.resources import files
 from pathlib import Path
-from typing import Self
+from typing import Literal, Self
 
 from pydantic import Field, ValidationError, field_validator, model_validator
 
@@ -30,6 +30,8 @@ class ExtractionConfig(StrictModel):
     tokenize_path: Nonempty
     model_keyring_entry: Nonempty | None
     model_keyring_field: Nonempty | None
+    model_identity: Literal["local-file", "operator-attested-remote"] = "local-file"
+    max_attestation_bytes: int = Field(default=65536, gt=0)
 
     @field_validator("chunks_collection", "attempts_collection")
     @classmethod

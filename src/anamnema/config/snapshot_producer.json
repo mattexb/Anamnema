@@ -1,0 +1,20 @@
+{
+  "max_transcript_bytes": 16777216,
+  "max_dialogue_bytes": 60000,
+  "max_dialogue_files": 3,
+  "max_header_bytes": 1024,
+  "max_output_bytes": 2097152,
+  "read_chunk_bytes": 65536,
+  "timeout_seconds": 600.0,
+  "entry_cut_mark": "\n[cut here: the next {left} bytes of this message are left out]",
+  "required_headings": ["## 1. State", "## 2. Active thread"],
+  "image_markers": ["data:image/", "base64,", "REMOVED_IMAGE_BY_KIN_TRANSCRIPT_TRIM", "<image", "![", "<img"],
+  "allowed_triggers": ["manual", "auto"],
+  "hook_fields": {"event": "hook_event_name", "session": "session_id", "transcript": "transcript_path", "trigger": "trigger", "cwd": "cwd"},
+  "hook_event": "PreCompact",
+  "native": {"subtype": "subtype", "boundary": "compact_boundary", "model": "model", "synthetic": "<synthetic>", "session": "sessionId", "summary": "isCompactSummary", "timestamp": "timestamp"},
+  "worker_arguments": ["--print", "--effort", "high", "--permission-mode", "dontAsk", "--tools", "Read", "--no-session-persistence", "--setting-sources", "user", "--settings", "{\"disableAllHooks\":true}", "--output-format", "text", "--no-chrome"],
+  "model_option": "--model",
+  "directory_option": "--add-dir",
+  "prompt_separator": "--"
+}

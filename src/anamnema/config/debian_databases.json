@@ -1,0 +1,49 @@
+{
+  "privileged": [
+    "sudo",
+    "-n"
+  ],
+  "command_seconds": 900.0,
+  "max_output_bytes": 65536,
+  "max_receipt_bytes": 262144,
+  "secret_bytes": 32,
+  "ready_wait_seconds": 120.0,
+  "ready_poll_seconds": 1.0,
+  "mongodb": {
+    "key_url": "https://pgp.mongodb.com/server-9.asc",
+    "key_fingerprint": "B3B42B6C39E5CDDEC0A27E3CF366D55B602E502D",
+    "keyring": "/usr/share/keyrings/mongodb-server-9.gpg",
+    "source_file": "/etc/apt/sources.list.d/mongodb-org-9.0.list",
+    "source_line": "deb [ signed-by=/usr/share/keyrings/mongodb-server-9.gpg ] https://repo.mongodb.org/apt/debian trixie/mongodb-org/9.0 main",
+    "packages": [
+      "mongodb-org"
+    ],
+    "package_probe": "mongodb-org-server",
+    "config_file": "/etc/mongod.conf",
+    "data_directory": "/var/lib/mongodb",
+    "service": "mongod.service",
+    "shell": "mongosh",
+    "admin_entry": "archive/mongodb-admin",
+    "admin_user": "anamnema-admin",
+    "application_user": "anamnema",
+    "key_provenance": "Primary fingerprint of https://pgp.mongodb.com/server-9.asc, fetched over HTTPS on a clean Debian 13 host and parsed by its gpg on 2026-11-22 (download SHA-256 a8ec953b159e65ee2e327dde5506008d7693c3c6c3841beed421ec429bd10162)."
+  },
+  "neo4j": {
+    "key_url": "https://debian.neo4j.com/neotechnology.gpg.key",
+    "key_fingerprint": "1EEFB8767D4924B86EAD08A459D700E4D37F5F19",
+    "keyring": "/etc/apt/keyrings/neotechnology.gpg",
+    "source_file": "/etc/apt/sources.list.d/neo4j.list",
+    "source_line": "deb [signed-by=/etc/apt/keyrings/neotechnology.gpg] https://debian.neo4j.com stable latest",
+    "packages": [
+      "neo4j=1:2026.10.2"
+    ],
+    "package_probe": "neo4j",
+    "config_file": "/etc/neo4j/neo4j.conf",
+    "data_directory": "/var/lib/neo4j/data/databases",
+    "service": "neo4j.service",
+    "shell": "cypher-shell",
+    "default_user": "neo4j",
+    "default_password": "neo4j",
+    "key_provenance": "Primary fingerprint of https://debian.neo4j.com/neotechnology.gpg.key, fetched over HTTPS on a clean Debian 13 host and parsed by its gpg on 2026-11-22 (download SHA-256 e9579deb7423fd37b6cd7592752dc8093ac63a2d78782ec321797db409f52513)."
+  }
+}

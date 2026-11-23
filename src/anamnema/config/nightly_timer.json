@@ -1,0 +1,9 @@
+{
+  "unit_name": "anamnema-nightly",
+  "on_calendar": "*-*-* 03:30:00",
+  "randomized_delay_seconds": 600,
+  "persistent": true,
+  "timeout_start_seconds": 21600,
+  "command_seconds": 30.0,
+  "max_state_bytes": 262144
+}

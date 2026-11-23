@@ -1,0 +1,8 @@
+{
+  "collection": "compaction_snapshots",
+  "batch_size": 16,
+  "pair_batch_size": 16,
+  "pair_window_seconds": 1800,
+  "max_summaries": 256,
+  "max_pair_bytes": 8388608
+}

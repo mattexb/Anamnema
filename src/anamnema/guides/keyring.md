@@ -59,5 +59,50 @@ secret-tool store --label='Anamnema archive' service anamnema entry archive/mong
 
 Enter the URI at the terminal's password prompt. This entry belongs to your own
 account and project namespace, never a private/shared source-project namespace.
-Account creation, automatic unlock and full keyring management are not yet
-implemented. Do not put credentials in setup answers as a substitute.
+### Anamnema Commands
+
+The application can now store and verify one item without printing its value:
+
+```sh
+anamnema keyring put --entry archive/mongodb --field uri --confirm-replace --apply
+anamnema keyring verify --entry archive/mongodb --field uri --apply
+```
+
+Supply `--config FILE` for your complete setup and, when needed,
+`--archive-config FILE` for the shared bus/timeout profile. `put` requests the
+value through a hidden terminal prompt. It never takes a value as a command
+argument and refuses an echo fallback. `--confirm-replace` explicitly permits
+creating or replacing that exact service/entry/field item. After storing,
+Anamnema looks up and compares the exact bytes before reporting success. A
+failed verification says the keyring may have changed; it does not claim a
+rollback. The underlying helper's output is withheld on errors.
+
+Both commands default to dry-run: no secret is read, no helper is executed and
+no item changes without `--apply`. For controlled automation, `put --stdin`
+reads the exact UTF-8 value through EOF rather than prompting. Newlines and
+leading/trailing spaces are part of the value, as in `secret-tool`'s non-terminal
+protocol; they are not trimmed. Do not place real values in shell arguments,
+history, files or logs to feed that input. The optional setup `keyring.policy`
+is an absolute path to nonsecret value/attribute limits and label policy.
+
+Tests use a temporary fixture executable, not a real unlocked keyring. Native
+Secret Service acceptance, account creation and automatic/unattended unlock
+remain unfinished. No private index, credential file, SSH helper or remote
+credential-copy command is included. Do not put credentials in setup answers
+as a substitute.
+
+### Launch A Program With Keyring Credentials
+
+An explicit program can receive credentials in its environment rather than its
+command line:
+
+```sh
+anamnema keyring run --apply --secret LLAMA_API_KEY=models/notes:token -- /absolute/path/to/llama-server --host 127.0.0.1
+```
+
+Each `--secret` is an `ENV=ENTRY:FIELD` reference, not a value. The wrapper
+validates all references before lookup, then replaces itself with the program;
+there is no shell and the parent environment is unchanged. Without `--apply`,
+it only previews and never launches the program. Choose trusted executables:
+the launched program controls its own output and can read its credentials.
+Environment transport does not isolate credentials from the same user or root.

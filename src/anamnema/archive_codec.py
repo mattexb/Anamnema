@@ -6,10 +6,49 @@ from typing import Any
 
 from bson import BSON, Binary
 from bson.errors import InvalidDocument
+from pydantic import JsonValue, TypeAdapter, ValidationError
 
-from anamnema.archive_models import Record, canonical
+from anamnema.archive_models import Kind, Record, canonical
 from anamnema.ingest_config import ArchiveSettings
 from anamnema.setup_config import SetupError
+
+JSON_SOURCE = TypeAdapter(dict[str, JsonValue])
+RECORD_KIND = TypeAdapter(Kind)
+
+
+def recover_record(document: dict[str, Any], settings: ArchiveSettings) -> Record:
+    """Recompute the normalized envelope and raw-source digest for any archived record kind."""
+    try:
+        raw = canonical(decode_source(document, settings))
+        if len(raw) > settings.max_file_bytes:
+            raise SetupError("source record exceeds configured byte limit")
+        source = JSON_SOURCE.validate_json(raw)
+        line = document["source_line"]
+        if (
+            type(line) is not int
+            or line < 1
+            or not all(
+                isinstance(document[key], str) and document[key]
+                for key in ("instance", "substrate", "session", "timestamp")
+            )
+        ):
+            raise ValueError("invalid record envelope")
+        record = Record(
+            document["instance"],
+            document["substrate"],
+            document["session"],
+            RECORD_KIND.validate_python(document["kind"], strict=True),
+            document["timestamp"],
+            line,
+            source,
+        )
+        if canonical(record.core()) != canonical({key: document.get(key) for key in record.core()}):
+            raise ValueError("record digest differs")
+        return record
+    except SetupError:
+        raise
+    except (KeyError, TypeError, ValueError, ValidationError) as exc:
+        raise SetupError("archived source is corrupt; no automatic repair") from exc
 
 
 def encode_record(record: Record, settings: ArchiveSettings) -> dict[str, Any]:

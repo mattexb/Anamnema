@@ -1,0 +1,14 @@
+{
+  "max_raw_bytes": 536870912,
+  "max_compressed_bytes": 536870912,
+  "max_manifest_bytes": 16777216,
+  "max_decoder_memory_bytes": 134217728,
+  "max_records": 100000,
+  "compression_preset": 3,
+  "manifest_file": "input.json",
+  "payload_file": "source.json.xz",
+  "lock_file": ".lock",
+  "temporary_prefix": ".prepare-",
+  "directory_mode": 448,
+  "file_mode": 384
+}

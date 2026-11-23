@@ -7,8 +7,20 @@ import time
 
 import pytest
 from extraction_fixtures import ModelService
+from graph_fixtures import disposable_graph
 from pymongo import MongoClient
 from pymongo.errors import PyMongoError
+
+from anamnema.graph_store import GraphStore
+from anamnema.memory_config import load_memory
+
+
+@pytest.fixture(scope="session")
+def graph():
+    with disposable_graph() as (driver, _):
+        store = GraphStore(driver, load_memory().model_copy(update={"dimensions": 4}))
+        store.ensure_schema()
+        yield store
 
 
 @pytest.fixture

@@ -125,7 +125,7 @@ When the whole agreed code is in, demonstrate:
 2. Failure, interruption, replay, malformed replies, unavailable dependencies
    and mixed-assistant access with isolated data; not only mocked success.
 3. Native Claude continuity and complete operation/nightly commands.
-4. End-to-end single-machine Linux setup, including the reviewed clean-VM API
+4. End-to-end single-machine Linux setup, including the reviewed clean-VM local
    notes-model test. Only tested backend/platform paths count as supported.
 5. Full application gates, inspected wheel/archive contents, and installation
    without a private checkout, credentials, hosts or machine runner.

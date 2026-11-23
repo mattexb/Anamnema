@@ -1,9 +1,31 @@
 # Public Memory Contracts
 
-Status: setup planning/wizard, Claude archive import and bounded localhost note
-extraction implemented locally. Semantic processing and native lifecycle integration
-are not complete; real-model/installer acceptance remains pending.
+Status: setup planning/wizard, Claude archive import, bounded localhost extraction
+and the storage/retrieval core implemented locally. Semantic processing and native lifecycle integration
+are not complete. Real baseline encoder/reranker compatibility checks pass;
+real notes-generation and installer acceptance remain pending.
 Schema version: 1. The synthetic fixtures define examples, not real conversations.
+
+The memory boundary is described in [MEMORY.md](MEMORY.md). The same reusable
+engine serves local commands and authenticated HTTP. Mongo owns original source
+records and saved extraction; Neo4j owns derived notes and correction history.
+The public graph schema is independent of the private deployment. A source-backed
+correction never changes or deletes its archived conversations.
+
+Subject naming is described in [NAMING.md](NAMING.md): a separate representation,
+text/source-bound writes after locking, and immediate correction fallback. Its
+explicit command is not yet a complete nightly pipeline.
+
+Verified window references preserve captured source order separately from
+mutable file-line positions. Source display uses the common speech reader and
+bounded context around citations; raw originals are an explicit CLI/HTTP option.
+Missing/corrupt context cannot trigger guessed ordering or archive-wide search.
+
+The loader stores a durable topic-placement marker with each new note, then
+places it by its persisted query vector. Placement is all-or-nothing within its
+own transaction, not atomic with extraction insertion. Failed placement remains
+retryable without rewriting corrected properties or re-embedding known notes.
+Topic identities cannot collide with user-supplied explicit identifier facets.
 
 One project exposes the `anamnema` command. Reuse and neutralize the existing
 transcript importer and keyring internally; users do not assemble private tools.
@@ -57,8 +79,10 @@ adapter cannot be declared supported by adding an enum value alone.
 
 ## Providers
 
-The installer selects `vulkan`, `cuda` or `api` for the notes model. Vulkan is
-the first local implementation; CUDA is reserved and must fail clearly until
+The setup profile selects `vulkan`, `cpu`, `cuda` or `api` for the notes model.
+CPU and Vulkan share the localhost llama.cpp transport; CPU was added for the
+small-model clean-VM acceptance profile, not as a performance claim. CUDA is
+reserved and must fail clearly until
 implemented. API selects an explicit provider, endpoint, model and revision;
 there is no fallback to a named machine or private keyring entries.
 
@@ -109,6 +133,15 @@ directory/marker as the turn-end checker. Compaction writer, injector,
 acknowledger, spool and verified archive sync share one path/marker contract.
 Retrieval outages are visible without making an unavailable service a deadlock;
 read-proof gates and explicit keep/drop decisions are separate from retrieval.
+
+The bounded [continuity core](CONTINUITY.md) implements identity required reads,
+snapshot staging/application/acknowledgement and verified archive sync/pairing.
+The producer's explicit precompute command and bounded PreCompact stdin adapter
+generate through an explicitly configured fresh worker, then stage through the
+same journal. Fixture subprocesses test transport, failure cleanup and continuity;
+they are not native Claude/model acceptance. Real isolated archive checks and
+installed commands do not establish native registration, retrieval delivery or
+turn capture. Those integrations and actual lifecycle acceptance remain required.
 
 ## Synthetic Acceptance Flow
 

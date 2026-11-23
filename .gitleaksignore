@@ -1,0 +1,13 @@
+# Public OpenPGP signing-key fingerprints of the MongoDB and Neo4j Debian repositories, pinned
+# so the installer verifies the vendor key (provenance in the same file). They are published by
+# the vendors and are not credentials; gitleaks' generic-api-key rule matches the field name
+# key_fingerprint. Exactly these two lines are exempt, nothing broader.
+src/anamnema/config/debian_databases.json:generic-api-key:14
+src/anamnema/config/debian_databases.json:generic-api-key:33
+
+# Local, git-ignored files that the required whole-tree scan still reads (SHIP.md, Every Commit).
+# The same two vendor fingerprints, frozen into the guest's database policy for the VM1015 replay:
+build/guest-freeze-db-policy.py:generic-api-key:21
+build/guest-freeze-db-policy.py:generic-api-key:22
+# The IndexNow verification key, public by design (published at the site root):
+launch/site/site.json:generic-api-key:24

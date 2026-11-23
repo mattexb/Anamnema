@@ -5,6 +5,8 @@ import json
 import os
 import subprocess
 import sys
+import time
+from types import SimpleNamespace
 
 import pytest
 from extraction_fixtures import completion
@@ -37,7 +39,9 @@ def workflow(tmp_path, disposable_mongo, model_service):
     archive_path = tmp_path / "archive.json"
     archive_path.write_text(json.dumps(archive), encoding="utf-8")
     keyring = tmp_path / "fixture-keyring"
-    keyring.write_text(f"#!{sys.executable}\nprint({uri!r})\n", encoding="utf-8")
+    keyring.write_text(
+        f"#!{sys.executable}\nimport sys\nsys.stdout.write({uri!r})\n", encoding="utf-8"
+    )
     keyring.chmod(0o700)
     setup = load_config().model_dump(mode="json")
     setup["services"]["archive"]["port"] = client.address[1]
@@ -402,7 +406,7 @@ def test_unimplemented_backend_fails_before_keyring_or_model_access(workflow, ba
     workflow["keyring"].unlink()
     result = workflow["run"]("--apply")
     assert result.returncode == 2
-    assert "local Vulkan" in result.stderr
+    assert "local CPU/Vulkan" in result.stderr
     assert workflow["model"].requests == []
 
 
@@ -498,7 +502,9 @@ def test_worker_pacing_applies_only_to_generation_not_cached_replay(workflow, mo
     provider, store, prepared = components(workflow)
     store.config = store.config.model_copy(update={"pause_every": 1, "pause_seconds": 0.001})
     sleeps = []
-    monkeypatch.setattr("anamnema.extractor.time.sleep", sleeps.append)
+    monkeypatch.setattr(
+        "anamnema.extractor.time", SimpleNamespace(sleep=sleeps.append, monotonic=time.monotonic)
+    )
     report = Extractor(provider, store).run(prepared)
     assert report["model_calls"] == 2
     assert sleeps.count(0.001) == 1
@@ -513,7 +519,7 @@ def test_optional_model_auth_uses_fixture_keyring_without_persisting_token(workf
     uri = workflow["db"].client.address
     script = (
         f"#!{sys.executable}\nimport sys\n"
-        f"print({token!r} if 'models/notes' in sys.argv else 'mongodb://{uri[0]}:{uri[1]}')\n"
+        f"sys.stdout.write({token!r} if 'models/notes' in sys.argv else 'mongodb://{uri[0]}:{uri[1]}')\n"
     )
     workflow["keyring"].write_text(script, encoding="utf-8")
     workflow["execution"].update(model_keyring_entry="models/notes", model_keyring_field="token")

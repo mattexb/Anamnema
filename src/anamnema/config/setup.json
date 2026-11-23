@@ -30,6 +30,7 @@
   "requirements": {
     "common": ["claude"],
     "vulkan": ["vulkaninfo"],
+    "cpu": [],
     "api": []
   }
 }

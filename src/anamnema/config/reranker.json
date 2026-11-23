@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "model_alias": "cross-encoder/ms-marco-MiniLM-L6-v2",
+  "onnx_file": "model.onnx",
+  "tokenizer_file": "tokenizer.json",
+  "special_tokens_file": "special_tokens_map.json",
+  "max_length": 512,
+  "threads": 4,
+  "cpu_mem_arena": false,
+  "max_documents": 100,
+  "max_query_characters": 1000,
+  "max_document_characters": 12000,
+  "pad_token_name": "pad_token"
+}

@@ -9,7 +9,7 @@ from pathlib import Path
 import pytest
 from pymongo.errors import OperationFailure
 
-from anamnema import archive_access, cli
+from anamnema import archive_access, cli, secret_service
 from anamnema.archive_access import connect, keyring_uri
 from anamnema.ingest_config import archive_settings
 from anamnema.setup_config import SetupError, load_config
@@ -20,9 +20,9 @@ def test_neutral_keyring_attributes_and_session_bus(monkeypatch: pytest.MonkeyPa
 
     def runner(command, **kwargs):
         captured.update(command=command, **kwargs)
-        return subprocess.CompletedProcess(command, 0, "mongodb://127.0.0.1:27017\n", "")
+        return subprocess.CompletedProcess(command, 0, "mongodb://127.0.0.1:27017", "")
 
-    monkeypatch.setattr(archive_access.subprocess, "run", runner)
+    monkeypatch.setattr(secret_service.subprocess, "run", runner)
     monkeypatch.delenv("DBUS_SESSION_BUS_ADDRESS", raising=False)
     assert keyring_uri(load_config(), archive_settings()) == "mongodb://127.0.0.1:27017"
     assert captured["command"] == [
@@ -54,7 +54,7 @@ def test_keyring_failures_never_expose_output(
             raise UnicodeDecodeError("utf-8", b"\xff", 0, 1, bait)
         return subprocess.CompletedProcess(command, 1 if failure == "returncode" else 0, "", bait)
 
-    monkeypatch.setattr(archive_access.subprocess, "run", runner)
+    monkeypatch.setattr(secret_service.subprocess, "run", runner)
     with pytest.raises(SetupError) as error:
         keyring_uri(load_config(), archive_settings())
     assert bait not in str(error.value)
@@ -133,7 +133,9 @@ def test_installed_import_uses_only_fixture_keyring_and_disposable_mongo(
 ) -> None:
     uri, client = disposable_mongo
     executable = tmp_path / "fake-keyring"
-    executable.write_text(f"#!{sys.executable}\nprint({uri!r})\n", encoding="utf-8")
+    executable.write_text(
+        f"#!{sys.executable}\nimport sys\nsys.stdout.write({uri!r})\n", encoding="utf-8"
+    )
     executable.chmod(0o700)
     config = load_config().model_dump(mode="json")
     config["keyring"]["executable"] = str(executable)

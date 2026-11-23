@@ -1,0 +1,9 @@
+{
+  "restart_seconds": 5.0,
+  "stop_seconds": 30.0,
+  "start_limit_seconds": 60.0,
+  "start_limit_burst": 10,
+  "user_target": "default.target",
+  "system_target": "multi-user.target",
+  "umask": "0077"
+}

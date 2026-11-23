@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "vector_candidates": 50,
+  "vector_oversample": 4,
+  "text_candidates": 50,
+  "rank_fusion_k": 60,
+  "pool": 16,
+  "meaning_pool": 8,
+  "page": 8,
+  "header_tokens": 1200,
+  "characters_per_token": 4,
+  "header_overhead_characters": 80,
+  "min_similarity": 0.78,
+  "max_words": 1000,
+  "max_question_characters": 24000,
+  "rerank_enabled": true,
+  "rerank_page": 8,
+  "rerank_query_characters": 1000,
+  "rerank_keep_within": 1.5
+}
