@@ -6,7 +6,7 @@
 
 **Site:** [anamnema.mattexb.net](https://anamnema.mattexb.net) | **Paper:** [Memory for the One Who Remembers](https://anamnema.mattexb.net/paper/)
 
-**Paper DOI:** [10.5281/zenodo.24438534](https://doi.org/10.5281/zenodo.24438534)
+**Paper DOI:** [10.5281/zenodo.24438533](https://doi.org/10.5281/zenodo.24438533)
 
 **Version 0.2.0.** Runs on Debian 13 as the logged-in user, with Claude Code. [How do you install it?](#how-do-you-install-it)
 

@@ -11,7 +11,7 @@
     {
       "difference": "project-owned-neutralization",
       "public": "README.md",
-      "public_sha256": "e04ea93597658d959fbcdf52a9530319129e799a8f543ff762ae4fd0b74e3572",
+      "public_sha256": "3dc654fb43ce87c42df9e31c68ced318322f85b516f720e4cd6aea04dd128b11",
       "reason": "Project-owned development status, setup contract, branch policy and single-project scope. Retain the original source hash for provenance; never overwrite from that template.",
       "source": "src/kin_tools/consolidate/public_export/templates/README.md",
       "source_sha256": "0960bd44220fe39395490c09fffbcaa80dbc38e4eb7bfb03f4354a8ff8b83691"
