@@ -193,12 +193,58 @@ def test_shared_event_without_reasons_is_refused_before_it_can_be_embedded(write
 def test_model_boundary_scrubs_notes_and_existing_content_not_only_source_rows(writer):
     writer, model = writer
     body = output()
+    body["lessons"]["L1"].update({"nearest": "E1", "differs": "another correction"})
     model.chat_replies.append(completion(json.dumps(body)))
     raw = "password=NOT_A_REAL_PASSWORD"
     supplied = [{**notes()[0], "text": raw}]
     writer.judge("owner", supplied, [{"lesson_id": "existing", "revision": 1, "statement": raw}])
     prompt = model.calls[-1]["messages"][0]["content"]
     assert "NOT_A_REAL_PASSWORD" not in prompt and "redacted" in prompt
+
+
+EXISTING = {
+    "lesson_id": "existing-id",
+    "revision": 3,
+    "statement": "Run gates in the background",
+    "mechanism": "Blocking the session",
+    "routes": [],
+    "concepts": [],
+    "severity": "normal",
+    "status": "reviewed",
+    "conflict": "",
+}
+
+
+@pytest.mark.parametrize(
+    "fields",
+    [{}, {"nearest": "E1", "differs": " "}, {"nearest": "E7", "differs": "another scope"}],
+)
+def test_a_new_lesson_beside_existing_ones_must_say_how_it_differs(writer, fields):
+    # One rule had splintered into fourteen lessons this way (lesson-delivery fix, 2026-11-27).
+    writer, model = writer
+    body = output()
+    body["lessons"]["L1"].update(fields)
+    model.chat_replies.append(completion(json.dumps(body)))
+    with pytest.raises(SetupError, match="how it differs"):
+        writer.judge("owner", notes(), [EXISTING])
+
+
+def test_a_written_difference_is_accepted_and_never_stored(writer):
+    writer, model = writer
+    body = output()
+    body["lessons"]["L1"].update({"nearest": "E1", "differs": "asks for a different correction"})
+    model.chat_replies.append(completion(json.dumps(body)))
+    result, _ = writer.judge("owner", notes(), [EXISTING])
+    assert len(result) == 1
+    assert "nearest" not in result[0].content.model_dump()
+    assert "differs" not in result[0].content.model_dump()
+
+
+def test_with_no_existing_lessons_a_new_one_needs_no_difference(writer):
+    writer, model = writer
+    model.chat_replies.append(completion(json.dumps(output())))
+    result, _ = writer.judge("owner", notes(), [])
+    assert len(result) == 1
 
 
 def test_default_request_leaves_prompt_space_in_baseline_context(model_service):

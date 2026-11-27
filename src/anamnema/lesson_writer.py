@@ -29,9 +29,16 @@ class PlacedEpisode(StrictModel):
 
 
 class JudgedContent(LessonContent):
-    """Conflicts are explicit, never guessed settled by parser fallback."""
+    """Conflicts are explicit, never guessed settled by parser fallback.
+
+    A new lesson beside existing ones names the nearest (``nearest``, an E label) and writes how it
+    differs from it (``differs``): one rule had splintered into fourteen lessons, each too weak to
+    be delivered. Both fields are answer-only and never stored.
+    """
 
     status: Annotated[Nonempty, WithJsonSchema({"type": "string", "enum": list(JUDGED_STATUSES)})]
+    nearest: str = ""
+    differs: str = ""
 
     @field_validator("status")
     @classmethod
@@ -155,6 +162,13 @@ class LessonWriter:
             raise SetupError("lesson answer exceeds configured lesson count")
         if any(label not in old and not NEW_LABEL.fullmatch(label) for label in answer.lessons):
             raise SetupError("lesson answer names an unknown lesson label")
+        if old and any(
+            label not in old and (content.nearest.strip() not in old or not content.differs.strip())
+            for label, content in answer.lessons.items()
+        ):
+            raise SetupError(
+                "a new lesson does not say how it differs from the nearest existing one"
+            )
         keys = {
             label: str(old[label]["lesson_id"])
             if label in old
@@ -236,6 +250,7 @@ class LessonWriter:
                 ),
             }
         )
+        stored = LessonContent.model_validate(mapped.model_dump(exclude={"nearest", "differs"}))
         return JudgedLesson(
-            key, int(previous["revision"]) if previous else 0, mapped, tuple(episodes)
+            key, int(previous["revision"]) if previous else 0, stored, tuple(episodes)
         )
