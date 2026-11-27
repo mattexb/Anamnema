@@ -75,7 +75,7 @@
     {
       "difference": "project-owned-neutralization",
       "public": "docs/CONTRACTS.md",
-      "public_sha256": "fbcd667ea62a4685b11c89f38e3ab80d10f907fefdcd2ad578f5668f2ac9711e",
+      "public_sha256": "3697025720cbeade8b36080e88882665bc088c22710b5191acd220c5060ec08b",
       "reason": "Project-owned updated contract: neutralized importer/keyring, tested models and Claude-first extenders. Retain the original source hash for provenance; never overwrite from that template.",
       "source": "src/kin_tools/consolidate/public_export/templates/docs/CONTRACTS.md",
       "source_sha256": "1c12d407473f099ea1835f1e9731a6b2f7bcfaff7e35da8c8f8837c28a7e8841"
@@ -139,7 +139,7 @@
     {
       "difference": "project-owned-setup-foundation",
       "public": "src/anamnema/cli.py",
-      "public_sha256": "9321a73df6d6e8704df3e8079a50813c88cec6b64bdb3c673869ac4fb8b32338",
+      "public_sha256": "5339c3b39630086d88d8bdfb15427fa7f282b471e65f41da00fe01acaa3361ca",
       "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
       "source": "project:src/anamnema/cli.py",
       "source_sha256": "9fcd3be36a0e232b0d1ba58cc6839a035e17d3d701d1d9abdd6e0a82bab204a7"
@@ -179,7 +179,7 @@
     {
       "difference": "project-owned-setup-foundation",
       "public": "docs/SETUP.md",
-      "public_sha256": "85a4aca143760aaeb0d597db77fa4959810032a371082fb4c9ecd5542be685d2",
+      "public_sha256": "62c52e182965583ca55556160533a3a9ad40ad4809ef953acba97f2f670a8cd7",
       "reason": "New Anamnema-owned setup planning/configuration, packaging, tests or contract; no private runtime dependency.",
       "source": "project:docs/SETUP.md",
       "source_sha256": "5e0fcc4600f2cf26b76d19263ec60d1d1c8f64d68f3783ece33b0ecfbcd1da7e"
@@ -726,7 +726,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "docs/MEMORY.md",
-      "public_sha256": "159475e8905347b0aed2d1a07469b1ad75a882ba41c0e91dd8fc715284d94f00",
+      "public_sha256": "b4666c9711ee830cebe5d6fbda4cbad458c9f673f0bec5edcf4ad7bea86b3ec0",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:docs/MEMORY.md",
       "source_sha256": "7712e8f926bd04c7ee74d8f87604e9d8e1174a587f128a3d7a50de592a7f827f"
@@ -742,7 +742,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/config/memory_service.json",
-      "public_sha256": "ff54ae9bcf1f27ad744696ba44abc55d6e3317006a191f7b64c689102e4ec225",
+      "public_sha256": "89eda8e7e7339b7d8401d2bbab56c290c419298c9420ed4d98b9ad6585ca8d41",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:src/anamnema/config/memory_service.json",
       "source_sha256": "9c42ee3dfc0a2d09636411459d5b0ad5a1bb8d9cfb1d36b76433ade4494ee10d"
@@ -934,7 +934,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/memory_service.py",
-      "public_sha256": "6176bf04e7b91752da0764a31a16f19e5d792998b3ca02bf5c7e2badd5982ef4",
+      "public_sha256": "9c2aa95beb9719999946af423427515a50fada762145f51364b98cb22184a40c",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:src/anamnema/memory_service.py",
       "source_sha256": "9dd52e52b1cdf74ce360c5795686dd3b9bd1b69886057ded60de061beb6480d4"
@@ -1023,7 +1023,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/service_config.py",
-      "public_sha256": "e0cd05ebfd9501fe6c27197e934051dc42378ea91098c028d66108dcf4fa8024",
+      "public_sha256": "9419e2b4ae3338f703d03127b65473f42269de88d6c56c09ceca2265b2a202f6",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:src/anamnema/service_config.py",
       "source_sha256": "f6a020d973faee132e8c6c7b656d9eba39d446a2812e947a1f844cac4ed86159"
@@ -1715,8 +1715,8 @@
       ],
       "difference": "neutralized-owned-lesson-search",
       "public": "src/anamnema/lesson_search.py",
-      "public_sha256": "13956a9fefaea323b3db591a2cf34ce218e6e326620ba99e3e5fcaf0f248671d",
-      "reason": "Preserve independently reviewed owner-budget widening for lesson candidates and pairing; never use global share estimates or fixed oversampling. Public pairing runs each bounded owned lesson through widening directly instead of the source batched fast path plus deficient-query retry; configured max_items fails visibly rather than silently truncating. Invalid current lessons cannot be candidates. Approximate vector-index behavior remains; no exact-distance or index-rebuild claim.",
+      "public_sha256": "9b78a0afc4dee1d64a21dbf97eed76d224bb882bf95124ec7406a8ffcd4ab808",
+      "reason": "Preserve independently reviewed owner-budget widening for lesson candidates and pairing; never use global share estimates or fixed oversampling. Public pairing runs each bounded owned lesson through widening directly instead of the source batched fast path plus deficient-query retry; configured max_items fails visibly rather than silently truncating. Invalid current lessons cannot be candidates. Approximate vector-index behavior remains; no exact-distance or index-rebuild claim. Scored nearest lessons for pre-action delivery (2026-11-27) use the same owner-budget widening and return the index similarity.",
       "source": "src/kin_tools/consolidate/graph_lessons.py",
       "source_revision": "270eec68dfdc6722653563ada2b215f47b28dc2c",
       "source_sha256": "e69acf2048e294adaa8a58d183bb9e4010195a3588f6d729d8bc0baab6d05ccc"
@@ -1879,7 +1879,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "docs/CONTINUITY.md",
-      "public_sha256": "6f92be314d1b90ebac8cd90ce8b3dda54a0d5bc03474f00b07924168d60f8cef",
+      "public_sha256": "3428c3a602886f5be770307ecd9be6b18982246a39136cf6c1a110ef396fd34e",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:docs/CONTINUITY.md",
       "source_sha256": "54472f31b699297afbe977866268e619b2f8c7ab5c96d56391325a09b1790e0b"
@@ -2952,6 +2952,54 @@
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:tests/test_naming_workflow.py",
       "source_sha256": "c6febb3cdbaf2570020a518b77e06bbfcb6260d0977b030d8185d378f6109cb7"
+    },
+    {
+      "difference": "project-owned-memory-core",
+      "public": "src/anamnema/action_hook.py",
+      "public_sha256": "0a2040af76ec52797ce08f04d8f730e6911659125d2703339117e5d5c84476ee",
+      "reason": "Project-owned pre-action delivery (lesson-delivery fix, 2026-11-27): a PreToolUse hook and /v1/advice route return every admitted owned lesson near the action, chosen by fit with no fixed count, bounded by the hook's context bytes; harmless reads are skipped. Mirrors the KinTools fix's intent, not its code: no command reader, match rules or gate warning.",
+      "source": "project:src/anamnema/action_hook.py",
+      "source_sha256": "0a2040af76ec52797ce08f04d8f730e6911659125d2703339117e5d5c84476ee"
+    },
+    {
+      "difference": "project-owned-memory-core",
+      "public": "src/anamnema/action_lessons.py",
+      "public_sha256": "d89d3d2b1e518a8a8c055ba9275874f0d8c3d1913d89e4dd6dc1c19727425442",
+      "reason": "Project-owned pre-action delivery (lesson-delivery fix, 2026-11-27): a PreToolUse hook and /v1/advice route return every admitted owned lesson near the action, chosen by fit with no fixed count, bounded by the hook's context bytes; harmless reads are skipped. Mirrors the KinTools fix's intent, not its code: no command reader, match rules or gate warning.",
+      "source": "project:src/anamnema/action_lessons.py",
+      "source_sha256": "d89d3d2b1e518a8a8c055ba9275874f0d8c3d1913d89e4dd6dc1c19727425442"
+    },
+    {
+      "difference": "project-owned-memory-core",
+      "public": "src/anamnema/config/action_hook.json",
+      "public_sha256": "ea2c3d39e693a035fdff1ef5af81894ca78eb2f8a800f1726710328f044e0766",
+      "reason": "Project-owned pre-action delivery (lesson-delivery fix, 2026-11-27): a PreToolUse hook and /v1/advice route return every admitted owned lesson near the action, chosen by fit with no fixed count, bounded by the hook's context bytes; harmless reads are skipped. Mirrors the KinTools fix's intent, not its code: no command reader, match rules or gate warning.",
+      "source": "project:src/anamnema/config/action_hook.json",
+      "source_sha256": "ea2c3d39e693a035fdff1ef5af81894ca78eb2f8a800f1726710328f044e0766"
+    },
+    {
+      "difference": "project-owned-memory-core",
+      "public": "src/anamnema/config/action_lessons.json",
+      "public_sha256": "cf0cab518e02eab81b75e9efe076c64fbceaae02573469b077cecd3065409a91",
+      "reason": "Project-owned pre-action delivery (lesson-delivery fix, 2026-11-27): a PreToolUse hook and /v1/advice route return every admitted owned lesson near the action, chosen by fit with no fixed count, bounded by the hook's context bytes; harmless reads are skipped. Mirrors the KinTools fix's intent, not its code: no command reader, match rules or gate warning.",
+      "source": "project:src/anamnema/config/action_lessons.json",
+      "source_sha256": "cf0cab518e02eab81b75e9efe076c64fbceaae02573469b077cecd3065409a91"
+    },
+    {
+      "difference": "project-owned-memory-core",
+      "public": "tests/test_action_hook.py",
+      "public_sha256": "1efd9c53113c425fa5c25c46da4106db20c78240e87320dea5655ab70c13fdb0",
+      "reason": "Project-owned pre-action delivery (lesson-delivery fix, 2026-11-27): a PreToolUse hook and /v1/advice route return every admitted owned lesson near the action, chosen by fit with no fixed count, bounded by the hook's context bytes; harmless reads are skipped. Mirrors the KinTools fix's intent, not its code: no command reader, match rules or gate warning.",
+      "source": "project:tests/test_action_hook.py",
+      "source_sha256": "1efd9c53113c425fa5c25c46da4106db20c78240e87320dea5655ab70c13fdb0"
+    },
+    {
+      "difference": "project-owned-memory-core",
+      "public": "tests/test_action_lessons.py",
+      "public_sha256": "78a9c10ca6098f78223c7c62f9e61d9a61bea67d3254921dc0f9685a44cfcca8",
+      "reason": "Project-owned pre-action delivery (lesson-delivery fix, 2026-11-27): a PreToolUse hook and /v1/advice route return every admitted owned lesson near the action, chosen by fit with no fixed count, bounded by the hook's context bytes; harmless reads are skipped. Mirrors the KinTools fix's intent, not its code: no command reader, match rules or gate warning.",
+      "source": "project:tests/test_action_lessons.py",
+      "source_sha256": "78a9c10ca6098f78223c7c62f9e61d9a61bea67d3254921dc0f9685a44cfcca8"
     }
   ],
   "omissions": [

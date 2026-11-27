@@ -307,7 +307,11 @@ State paths must have no symlink ancestors. Anamnema runs on Linux (Debian 13).
 `anamnema recall-hook` runs on UserPromptSubmit: it reads the native JSON on stdin
 and brings related notes into the conversation. `anamnema briefing-refresh` runs
 on the same event and delivers a rebuilt briefing ([BRIEFINGS.md](BRIEFINGS.md)).
-`anamnema install` registers both.
+`anamnema action-hook` runs on PreToolUse with the same deployment file: for any
+tool but a harmless read it brings every admitted lesson that fits the action,
+chosen by fit rather than a fixed count ([MEMORY.md](MEMORY.md)), within a 5-second
+hook timeout. An outage is a visible notice and never blocks the tool.
+`anamnema install` registers all three.
 
 See the [official hook protocol](https://code.claude.com/docs/en/hooks) for the
 context-only SessionStart and blocking Stop envelopes.

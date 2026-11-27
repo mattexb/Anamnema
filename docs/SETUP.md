@@ -322,8 +322,8 @@ The plan changes nothing. In its output, `databases.mongodb.state` and
 `databases.neo4j.state` read `absent` (`foreign` means that database is already
 installed, and apply refuses it); `runtimes.assets` lists the five downloads;
 `application_units` holds `anamnema-memory.service` and
-`anamnema-capture.service`; `hooks.events` lists `PreCompact`, `SessionEnd`,
-`SessionStart`, `Stop` and `UserPromptSubmit`; `nightly.units` holds the
+`anamnema-capture.service`; `hooks.events` lists `PreCompact`, `PreToolUse`,
+`SessionEnd`, `SessionStart`, `Stop` and `UserPromptSubmit`; `nightly.units` holds the
 nightly service and timer; `parent_death_cleanup_configured` is `true`.
 
 ```sh

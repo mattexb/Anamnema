@@ -14,7 +14,7 @@ import urllib.request
 from collections.abc import Callable
 from importlib.resources import files
 from pathlib import Path
-from typing import Any, Literal, Self, TextIO, cast
+from typing import Any, Literal, Protocol, Self, TextIO, cast
 
 from pydantic import Field, JsonValue, ValidationError, model_validator
 
@@ -136,12 +136,20 @@ def render(result: dict[str, Any], policy: RecallPolicy) -> str:
     return "\n".join([policy.header, *lines]) if lines else ""
 
 
-Fetch = Callable[[str, dict[str, JsonValue], str, RecallPolicy], dict[str, Any]]
+class FetchBounds(Protocol):
+    """The two bounds one local service call needs; recall and action policies both carry them."""
+
+    @property
+    def request_timeout_seconds(self) -> float: ...
+
+    @property
+    def max_response_bytes(self) -> int: ...
 
 
-def fetch(
-    url: str, body: dict[str, JsonValue], bearer: str, policy: RecallPolicy
-) -> dict[str, Any]:
+Fetch = Callable[[str, dict[str, JsonValue], str, FetchBounds], dict[str, Any]]
+
+
+def fetch(url: str, body: dict[str, JsonValue], bearer: str, policy: FetchBounds) -> dict[str, Any]:
     """One local POST; the bearer travels only in the header, never in a log or error."""
     request = urllib.request.Request(  # noqa: S310 - URL built from a validated localhost Endpoint
         url,
@@ -174,6 +182,11 @@ def _bearer(deployment: RecallDeployment, service: ServiceSettings) -> str:
     setup = load_config(deployment.config)
     keyring = SecretService(setup.keyring, archive_settings(deployment.archive_config))
     return keyring.lookup(access[0].entry, access[0].field)
+
+
+def service_bearer(deployment: RecallDeployment, service: ServiceSettings) -> str:
+    """The same instance access rule for every hook that asks the memory service."""
+    return _bearer(deployment, service)
 
 
 def run_recall(

@@ -10,6 +10,7 @@ from typing import Any
 
 from pydantic import ValidationError
 
+from anamnema.action_hook import action_binding, action_hook_policy
 from anamnema.archive_models import digest
 from anamnema.batch_input import input_digest
 from anamnema.batch_journal import BatchJournal
@@ -303,6 +304,7 @@ class NativeInstaller:
             *self.capture_install.hooks,
             recall_binding(r.executable, p.recall_deployment_file, recall_policy()),
             refresh,
+            action_binding(r.executable, p.recall_deployment_file, action_hook_policy()),
         )
 
     def _timer_units(self) -> dict[str, str]:

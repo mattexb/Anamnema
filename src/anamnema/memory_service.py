@@ -8,6 +8,7 @@ from typing import Annotated, Any
 from fastapi import FastAPI
 from pydantic import Field
 
+from anamnema.action_lessons import ActionLessons
 from anamnema.card_operations import CardRequest, EntityRequest, card_operation, entity_operation
 from anamnema.graph_corrections import history
 from anamnema.lesson_graph import LessonGraph
@@ -40,6 +41,13 @@ class SourceRequest(StrictModel):
 
     note: Nonempty
     raw: bool = False
+
+
+class AdviceRequest(StrictModel):
+    """One action about to run; its lessons are chosen by fit, never by a fixed count."""
+
+    action: Nonempty
+    cwd: str | None = None
 
 
 class UnmergeRequest(StrictModel):
@@ -115,5 +123,13 @@ def create_memory_app(
             engine.sources,
         ),
         "Read an owned lesson or explicitly generate/rebuild with verified source evidence.",
+    )
+    service.post(
+        settings.advice_path,
+        AdviceRequest,
+        lambda instance, body: ActionLessons(
+            engine.store, engine.encoder, engine.lesson_settings
+        ).fitting(instance, body.action, body.cwd),
+        "Every admitted owned lesson that fits an action about to run, nearest first.",
     )
     return service.app

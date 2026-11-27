@@ -8,6 +8,7 @@ import sys
 from importlib.resources import files
 from pathlib import Path
 
+from anamnema.action_hook import add_action_hook, run_action_hook
 from anamnema.batch_cli import add_window_batch, run_window_batch
 from anamnema.briefing_delivery_cli import add_briefing_delivery, run_briefing_delivery
 from anamnema.briefing_refresh import add_briefing_refresh, run_briefing_refresh
@@ -55,6 +56,9 @@ def _parser() -> argparse.ArgumentParser:
     )
     add_recall_hook(
         commands.add_parser("recall-hook", help="UserPromptSubmit recall; native JSON on stdin")
+    )
+    add_action_hook(
+        commands.add_parser("action-hook", help="PreToolUse lessons by fit; native JSON on stdin")
     )
     add_briefing_refresh(
         commands.add_parser(
@@ -155,6 +159,9 @@ def main(argv: list[str] | None = None) -> int:
             return 2 if record["failed"] else 0
         if args.command == "recall-hook":
             print(json.dumps(run_recall_hook(args, sys.stdin)))
+            return 0
+        if args.command == "action-hook":
+            print(json.dumps(run_action_hook(args, sys.stdin)))
             return 0
         if args.command == "install":
             print(json.dumps(run_install(args)))

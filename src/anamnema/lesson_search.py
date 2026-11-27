@@ -32,6 +32,27 @@ class LessonSearch:
         )
         return [str(row["id"]) for row in rows]
 
+    def scored(
+        self, instance: str, vector: tuple[float, ...], count: int
+    ) -> list[tuple[str, float]]:
+        """Owned valid lessons nearest an action, with their similarity, nearest first."""
+        self._limit(instance, count)
+        vector_check(vector, self.store.settings)
+        label = self.store.settings.lesson_label
+        rows = owned_nearest(
+            lambda budget: self.store.read(
+                f"CYPHER 25 MATCH (l:{label}) "
+                f"SEARCH l IN (VECTOR INDEX {label.lower()}_passage FOR $vector LIMIT $budget) "
+                "SCORE AS score RETURN l.lesson_id AS id, score, "
+                "l.instance=$instance AND l.valid=true AS mine",
+                vector=list(vector),
+                budget=budget,
+                instance=instance,
+            ),
+            count,
+        )
+        return [(str(row["id"]), float(row["score"])) for row in rows]
+
     def pairs(self, instance: str, count: int, floor: float) -> list[tuple[str, str, float]]:
         """Each valid owned lesson's k owned neighbours, with pair deduplication and a floor."""
         self._limit(instance, count)

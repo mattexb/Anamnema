@@ -34,6 +34,7 @@ class ServiceSettings(StrictModel):
     card_path: Route
     unmerge_path: Route
     lesson_path: Route
+    advice_path: Route
     max_request_bytes: Annotated[int, Field(gt=0)]
     max_response_bytes: Annotated[int, Field(gt=0)]
     body_timeout_seconds: Annotated[float, Field(gt=0, allow_inf_nan=False)]
@@ -57,6 +58,7 @@ class ServiceSettings(StrictModel):
             self.card_path,
             self.unmerge_path,
             self.lesson_path,
+            self.advice_path,
         ]
         if len(set(routes)) != len(routes):
             raise ValueError("service routes must be distinct")

@@ -132,7 +132,11 @@ snapshot staging/application/acknowledgement and verified archive sync/pairing.
 The producer's explicit precompute command and bounded PreCompact stdin adapter
 generate through an explicitly configured fresh worker, then stage through the
 same journal. `anamnema install` registers the hooks: SessionStart, Stop,
-PreCompact, SessionEnd and UserPromptSubmit (recall and briefing refresh).
+PreCompact, SessionEnd, UserPromptSubmit (recall and briefing refresh) and
+PreToolUse (lessons that fit the action). Lessons arrive by fit, never by a fixed
+count: every admitted owned lesson near the action comes, bounded only by the
+hook's context bytes. Harmless reads are skipped. Post-tool and tool-failure
+moments are not yet registered.
 
 ## Acceptance Flow
 

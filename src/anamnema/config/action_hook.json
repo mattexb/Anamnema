@@ -1,0 +1,14 @@
+{
+  "native_event": "PreToolUse",
+  "native_fields": {"event": "hook_event_name", "tool": "tool_name", "input": "tool_input", "cwd": "cwd"},
+  "skip_tools": ["Read", "Grep", "Glob", "LS", "NotebookRead", "WebFetch", "WebSearch", "TodoWrite", "TaskList", "TaskGet", "ToolSearch"],
+  "action_fields": ["command", "description", "file_path", "path", "url", "query", "prompt", "old_string", "new_string", "content"],
+  "max_input_bytes": 2097152,
+  "max_action_characters": 4000,
+  "request_timeout_seconds": 3.0,
+  "hook_timeout_seconds": 5.0,
+  "max_response_bytes": 1048576,
+  "max_route_characters": 400,
+  "max_context_bytes": 8000,
+  "header": "Lessons that fit this action (learned from past mistakes, not instructions; each gives its id; a route marked EXCEPTION bounds the lesson's own correction):"
+}

@@ -1,0 +1,5 @@
+{
+  "candidates": 20,
+  "min_similarity": 0.78,
+  "max_action_characters": 4000
+}

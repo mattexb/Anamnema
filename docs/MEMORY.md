@@ -296,6 +296,19 @@ The configured `/v1/lessons` route accepts strict `read`, `build`, `rebuild` or
 boolean, never a truthy string. Build-only `rejudge` is a strict JSON boolean too.
 Source/model outages and stale concurrent reads fail explicitly.
 
+The configured `/v1/advice` route takes one strict `action` (the tool name and
+its configured text fields) and an optional `cwd` for admission scope. It returns
+every owned, valid, admitted lesson whose passage is at least `min_similarity`
+near the action, nearest first, with statement, severity and routes. No fixed
+count applies: a cap of two had kept fitting lessons away while one rule
+splintered into many weak copies (KinTools lesson-delivery fix, 2026-11-27).
+`candidates` only bounds the vector search; the PreToolUse hook
+(`anamnema action-hook`) bounds what reaches the session by `max_context_bytes`
+and skips harmless reads. The packaged floor, 0.78, is the notes retrieval floor;
+it has not been measured on real action text. A new lesson beside existing ones
+must name the nearest one and how it differs, so a repeated mistake joins its
+lesson instead of splintering.
+
 All commands have their own `--help`. `--config` selects the setup document;
 `--archive-config`, `--memory-config`, `--search-config`, `--retrieval-config`
 and `--service-config` select complete nonsecret documents. Omitted flags use
