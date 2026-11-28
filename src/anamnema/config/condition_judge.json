@@ -1,0 +1,27 @@
+{
+  "prompt": "An AI assistant is about to take one action. Below are rules from its memory, each with the condition under which it applies. Say which conditions hold for THIS action.\nA condition holds when:\n- the action is the situation it describes (same kind of task, system, file or decision), or\n- the action is itself the step it names (starting a test or gate run is \"before the full test run\" or \"running a gate\"; a chained command is \"chaining commands\"), or\n- the action is the very thing the rule warns against.\nRunning a gate (a scoped run on changed files included), tests, lint or a type check is \"checking\" or \"verifying\" a change; a commit or a commit request is \"committing\".\nYou only ever see the action, never what came before it or what the change contains. So judge a condition by the kind of step it names, and take its details of timing or state (\"after editing files\", \"before the full run\", \"a small change\", \"not yet finished\", \"the failure was fixed\") as given: never ask for proof of them.\nA condition does not hold when the action is a different kind of step, or is about another project, machine, feature or person, or when the condition names no step at all, only a circumstance (who is at the keyboard, where the owner works from). When the kind of step is unclear, it does not hold.\n\nAction:\n{action}\n\nConditions:\n{conditions}\n\nList the ids of the conditions that hold.",
+  "system_prompt": "You judge whether rule conditions hold for an action. Answer only in the required JSON.",
+  "worker_arguments": [
+    "--print",
+    "--no-session-persistence",
+    "--permission-mode", "dontAsk",
+    "--tools", "",
+    "--setting-sources", "",
+    "--settings", "{\"disableAllHooks\":true}",
+    "--strict-mcp-config",
+    "--mcp-config", "{\"mcpServers\":{}}",
+    "--no-chrome",
+    "--effort", "low",
+    "--input-format", "stream-json",
+    "--output-format", "stream-json",
+    "--verbose"
+  ],
+  "turns": 20,
+  "answer_seconds": 3.5,
+  "late_seconds": 60.0,
+  "reap_seconds": 30.0,
+  "cache_entries": 2000,
+  "cache_days": 30.0,
+  "max_prompt_bytes": 65536,
+  "version": "1"
+}

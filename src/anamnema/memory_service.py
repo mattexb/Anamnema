@@ -10,6 +10,7 @@ from pydantic import Field
 
 from anamnema.action_lessons import ActionLessons
 from anamnema.card_operations import CardRequest, EntityRequest, card_operation, entity_operation
+from anamnema.condition_judge import ConditionCheck
 from anamnema.graph_corrections import history
 from anamnema.lesson_graph import LessonGraph
 from anamnema.lesson_operations import LessonRequest, lesson_operation
@@ -58,9 +59,16 @@ class UnmergeRequest(StrictModel):
 
 
 def create_memory_app(
-    engine: MemoryEngine, settings: ServiceSettings, tokens: dict[str, str]
+    engine: MemoryEngine,
+    settings: ServiceSettings,
+    tokens: dict[str, str],
+    check: ConditionCheck | None = None,
 ) -> FastAPI:
-    """No anonymous route and no trust in proxy-provided identity headers."""
+    """No anonymous route and no trust in proxy-provided identity headers.
+
+    ``check`` is the condition check for the advice route; one for the life of the service,
+    so its worker stays warm between actions.
+    """
     service = JsonService(settings, tokens, "Anamnema memory")
 
     def search(instance: str, request: SearchRequest) -> dict[str, Any]:
@@ -128,8 +136,8 @@ def create_memory_app(
         settings.advice_path,
         AdviceRequest,
         lambda instance, body: ActionLessons(
-            engine.store, engine.encoder, engine.lesson_settings
+            engine.store, engine.encoder, engine.lesson_settings, check=check
         ).fitting(instance, body.action, body.cwd),
-        "Every admitted owned lesson that fits an action about to run, nearest first.",
+        "Every admitted owned lesson whose route condition holds for an action, nearest first.",
     )
     return service.app

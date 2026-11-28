@@ -12,6 +12,7 @@ from typing import Annotated, Any
 
 from pydantic import Field, ValidationError
 
+from anamnema.condition_judge import ConditionCheck
 from anamnema.graph_store import GraphStore
 from anamnema.lesson_graph import LessonGraph, LessonPending
 from anamnema.lesson_policy import LessonPolicy
@@ -52,13 +53,19 @@ class ActionLessons:
         encoder: CPUEncoder,
         lessons: LessonPolicy,
         policy: ActionPolicy | None = None,
+        check: ConditionCheck | None = None,
     ) -> None:
         self.store, self.encoder = store, encoder
         self.reader = LessonReader(LessonGraph(store), lessons)
         self.policy = policy or action_policy()
+        self.check = check
 
     def fitting(self, instance: str, action: str, cwd: str | None = None) -> dict[str, Any]:
-        """Each fitting lesson with its similarity, statement and routes, nearest first."""
+        """Each fitting lesson with its similarity, statement and routes, nearest first.
+
+        With a condition check, only the lessons with a route whose condition holds come,
+        each with those routes only.
+        """
         if not action.strip() or len(action) > self.policy.max_action_characters:
             raise MemoryInputError("action violates configured lesson limit")
         vector = self.encoder.encode([action], passage=False)[0]
@@ -73,6 +80,13 @@ class ActionLessons:
                 continue
             if lesson["admitted"]:
                 found.append(_shown(lesson, score))
+        if self.check is not None and found:
+            holds = self.check.holding(action, cwd, found)
+            found = [
+                {**item, "routes": [item["routes"][i] for i in holds[item["id"]]]}
+                for item in found
+                if item["id"] in holds
+            ]
         return {"lessons": found}
 
 

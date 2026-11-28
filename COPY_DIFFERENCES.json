@@ -726,7 +726,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "docs/MEMORY.md",
-      "public_sha256": "b4666c9711ee830cebe5d6fbda4cbad458c9f673f0bec5edcf4ad7bea86b3ec0",
+      "public_sha256": "4013cebd6e147b69d3087d97c05e04e4161ec88b8bcd59b0a408c85af72ea263",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:docs/MEMORY.md",
       "source_sha256": "7712e8f926bd04c7ee74d8f87604e9d8e1174a587f128a3d7a50de592a7f827f"
@@ -847,7 +847,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/memory_cli.py",
-      "public_sha256": "3514fcd4aa3e737ecc71ca28001a87395a1da5a6bbef92790c32c3c6a9068128",
+      "public_sha256": "880ca3c4e09a5710d08b17cc8301b1ed2161ba1945ffa13c7b154ed9b877ab51",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:src/anamnema/memory_cli.py",
       "source_sha256": "d4e57582d5501e9e10fe85555f0b88a7b81b270e5f7f835ba3502af1332b5d3c"
@@ -934,7 +934,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/memory_service.py",
-      "public_sha256": "9c2aa95beb9719999946af423427515a50fada762145f51364b98cb22184a40c",
+      "public_sha256": "43c856d2e448cdc887313544463b76935ab9c61c2e873a6cf63ec20d972b516c",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:src/anamnema/memory_service.py",
       "source_sha256": "9dd52e52b1cdf74ce360c5795686dd3b9bd1b69886057ded60de061beb6480d4"
@@ -1879,7 +1879,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "docs/CONTINUITY.md",
-      "public_sha256": "3428c3a602886f5be770307ecd9be6b18982246a39136cf6c1a110ef396fd34e",
+      "public_sha256": "2497ec60e624f29acc88c8da4fc6fb6ad691a711420769a8553927141e5e5e86",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:docs/CONTINUITY.md",
       "source_sha256": "54472f31b699297afbe977866268e619b2f8c7ab5c96d56391325a09b1790e0b"
@@ -2964,7 +2964,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/action_lessons.py",
-      "public_sha256": "d89d3d2b1e518a8a8c055ba9275874f0d8c3d1913d89e4dd6dc1c19727425442",
+      "public_sha256": "ae39f9ad3a7da259a64b80f959d6ff6a32046dfa463a350005ee77897a0ffe2b",
       "reason": "Project-owned pre-action delivery (lesson-delivery fix, 2026-11-27): a PreToolUse hook and /v1/advice route return every admitted owned lesson near the action, chosen by fit with no fixed count, bounded by the hook's context bytes; harmless reads are skipped. Mirrors the KinTools fix's intent, not its code: no command reader, match rules or gate warning.",
       "source": "project:src/anamnema/action_lessons.py",
       "source_sha256": "d89d3d2b1e518a8a8c055ba9275874f0d8c3d1913d89e4dd6dc1c19727425442"
@@ -2972,7 +2972,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/config/action_hook.json",
-      "public_sha256": "ea2c3d39e693a035fdff1ef5af81894ca78eb2f8a800f1726710328f044e0766",
+      "public_sha256": "327f75593e4fbc19c9d827e1fc89f798f66089b26e70216b060cbaf9e457dd17",
       "reason": "Project-owned pre-action delivery (lesson-delivery fix, 2026-11-27): a PreToolUse hook and /v1/advice route return every admitted owned lesson near the action, chosen by fit with no fixed count, bounded by the hook's context bytes; harmless reads are skipped. Mirrors the KinTools fix's intent, not its code: no command reader, match rules or gate warning.",
       "source": "project:src/anamnema/config/action_hook.json",
       "source_sha256": "ea2c3d39e693a035fdff1ef5af81894ca78eb2f8a800f1726710328f044e0766"
@@ -2996,10 +2996,34 @@
     {
       "difference": "project-owned-memory-core",
       "public": "tests/test_action_lessons.py",
-      "public_sha256": "78a9c10ca6098f78223c7c62f9e61d9a61bea67d3254921dc0f9685a44cfcca8",
+      "public_sha256": "622e8470fb79b478875fd9195af8060ea1fa3121051711f7376e2d4731d97055",
       "reason": "Project-owned pre-action delivery (lesson-delivery fix, 2026-11-27): a PreToolUse hook and /v1/advice route return every admitted owned lesson near the action, chosen by fit with no fixed count, bounded by the hook's context bytes; harmless reads are skipped. Mirrors the KinTools fix's intent, not its code: no command reader, match rules or gate warning.",
       "source": "project:tests/test_action_lessons.py",
       "source_sha256": "78a9c10ca6098f78223c7c62f9e61d9a61bea67d3254921dc0f9685a44cfcca8"
+    },
+    {
+      "difference": "project-owned-memory-core",
+      "public": "src/anamnema/condition_judge.py",
+      "public_sha256": "b9b382b4bb4e02e5e24f778fbf239808378b1c1fd3f91170587ba98f477cd5a4",
+      "reason": "Project-owned condition check before an action (noise fix, 2026-11-28): the advice route asks a small tool-free model which candidate route conditions hold and returns only those, with a warm worker kept by the service and a bounded answer cache. Mirrors the KinTools fix's intent and measured prompt; the worker lives in the service, not a separate judge process. No private runtime dependency or production fixture.",
+      "source": "project:src/anamnema/condition_judge.py",
+      "source_sha256": "b9b382b4bb4e02e5e24f778fbf239808378b1c1fd3f91170587ba98f477cd5a4"
+    },
+    {
+      "difference": "project-owned-memory-core",
+      "public": "src/anamnema/config/condition_judge.json",
+      "public_sha256": "ef44ad8c47e724f113b62c363855bbc480294b84e9358d06b205ce1d224486fb",
+      "reason": "Project-owned condition check before an action (noise fix, 2026-11-28): the advice route asks a small tool-free model which candidate route conditions hold and returns only those, with a warm worker kept by the service and a bounded answer cache. Mirrors the KinTools fix's intent and measured prompt; the worker lives in the service, not a separate judge process. No private runtime dependency or production fixture.",
+      "source": "project:src/anamnema/config/condition_judge.json",
+      "source_sha256": "ef44ad8c47e724f113b62c363855bbc480294b84e9358d06b205ce1d224486fb"
+    },
+    {
+      "difference": "project-owned-memory-core",
+      "public": "tests/test_condition_judge.py",
+      "public_sha256": "fecefc869a6dc63e4be96853e2d44b55661aefdc49c37f90e3d5c896a2b578f8",
+      "reason": "Project-owned condition check before an action (noise fix, 2026-11-28): the advice route asks a small tool-free model which candidate route conditions hold and returns only those, with a warm worker kept by the service and a bounded answer cache. Mirrors the KinTools fix's intent and measured prompt; the worker lives in the service, not a separate judge process. No private runtime dependency or production fixture.",
+      "source": "project:tests/test_condition_judge.py",
+      "source_sha256": "fecefc869a6dc63e4be96853e2d44b55661aefdc49c37f90e3d5c896a2b578f8"
     }
   ],
   "omissions": [

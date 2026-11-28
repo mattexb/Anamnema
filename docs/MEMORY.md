@@ -305,7 +305,26 @@ splintered into many weak copies (KinTools lesson-delivery fix, 2026-11-27).
 `candidates` only bounds the vector search; the PreToolUse hook
 (`anamnema action-hook`) bounds what reaches the session by `max_context_bytes`
 and skips harmless reads. The packaged floor, 0.78, is the notes retrieval floor;
-it has not been measured on real action text. A new lesson beside existing ones
+it has not been measured on real action text.
+
+Similarity alone cannot tell a fitting lesson from an off-topic one, so
+`anamnema serve --condition-judge-config <file>` adds a condition check: the
+file is a judge deployment (absolute `executable`, dedicated `cwd`, explicit
+`model`, as for the native judge). A small model is told the action and each
+candidate route's condition and says which hold; only lessons with a holding
+route come, each with those routes only, and none when the check gives no
+answer in `answer_seconds` (3.5 s inside the hook's 5 s). One worker process
+answers `turns` judgements, the next started during its last, so the service
+keeps it warm between actions; it runs tool-free with no settings, hooks, MCP
+servers or session persistence, and `config/condition_judge.json` refuses any
+argument that weakens that floor. Answers are kept in `<cwd>/condition-cache.json`
+per action, lesson, condition text and policy `version`, bounded by
+`cache_entries` (least recently used out first) and `cache_days`. Without the
+option the route keeps the similarity selection alone. Measured on the KinTools
+source (114 recorded actions against blind labels, 2026-11-28): off-topic
+lessons 72 to 4, fitting ones 22 to 37; not yet measured on an Anamnema install.
+
+A new lesson beside existing ones
 must name the nearest one and how it differs, so a repeated mistake joins its
 lesson instead of splintering.
 

@@ -64,6 +64,34 @@ def test_unrelated_stopped_and_foreign_lessons_stay_away(lessons):
     assert finder.fitting(owner, "purge retention")["lessons"] == []
 
 
+class Holding:
+    """A condition check that says one route of one lesson holds."""
+
+    def __init__(self, holds):
+        self.holds, self.asked = holds, []
+
+    def holding(self, action, cwd, found):
+        self.asked.append((action, cwd, [item["id"] for item in found]))
+        return self.holds
+
+
+def test_with_the_condition_check_only_holding_lessons_and_routes_come(lessons):
+    owner, graph = lessons
+    for identity in ("lesson-one", "lesson-two"):
+        save(owner, graph, identity)
+    check = Holding({"lesson-two": [0]})
+    finder = ActionLessons(graph.store, Encoder(), lesson_policy(), check=check)  # type: ignore[arg-type]
+    found = finder.fitting(owner, "Bash\ncommand: purge retention", "/work")["lessons"]
+    assert [item["id"] for item in found] == ["lesson-two"]
+    assert found[0]["routes"][0]["condition"] == "Before using retention"
+    assert check.asked[0][:2] == ("Bash\ncommand: purge retention", "/work")
+    assert sorted(check.asked[0][2]) == ["lesson-one", "lesson-two"]
+    assert ActionLessons(graph.store, Encoder(), lesson_policy(), check=check).fitting(  # type: ignore[arg-type]
+        owner, "Bash\ncommand: ls"
+    ) == {"lessons": []}
+    assert len(check.asked) == 1  # nothing near: the check is not asked
+
+
 def test_action_bounds_are_explicit(lessons):
     owner, graph = lessons
     finder = ActionLessons(graph.store, Encoder(), lesson_policy())

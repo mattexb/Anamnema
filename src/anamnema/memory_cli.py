@@ -18,11 +18,14 @@ from anamnema.capture_cli import CaptureInput, add_capture_arguments, prepare_ca
 from anamnema.card_cli import CARD_COMMANDS, add_card_arguments, run_cards, selected_builder
 from anamnema.card_policy import card_policy
 from anamnema.chunks import chunks
+from anamnema.condition_judge import ConditionCheck, condition_check, condition_policy
+from anamnema.continuity_state import source_text
 from anamnema.extraction_config import extraction_config
 from anamnema.extraction_store import ExtractionStore
 from anamnema.graph_corrections import history
 from anamnema.graph_store import GraphStore, connect_graph
 from anamnema.ingest_config import ArchiveSettings, archive_settings
+from anamnema.judge_config import JudgeConfig
 from anamnema.lesson_cli import (
     LESSON_COMMANDS,
     add_lesson_arguments,
@@ -139,6 +142,12 @@ def add_memory_commands(commands: CommandParsers) -> None:
             add_lesson_arguments(name, command)
         if name == "capture":
             add_capture_arguments(command)
+        if name == "serve":
+            command.add_argument(
+                "--condition-judge-config",
+                type=Path,
+                help="judge deployment (executable, cwd, model) that checks lesson conditions",
+            )
         if name in ("check", "serve", "build-lessons"):
             command.add_argument("--lesson-model-file", type=Path, required=name == "build-lessons")
         if name in ("check", "serve", "build-cards"):
@@ -357,9 +366,22 @@ def _dispatch(
                 f"correction file cannot be read/validated ({type(exc).__name__})"
             ) from exc
         return engine.check(args.instance, correction)
-    app = create_memory_app(engine, service, tokens)
+    app = create_memory_app(engine, service, tokens, _condition_check(args))
     uvicorn.run(app, host=service.bind.host, port=service.bind.port, access_log=False)
     return {"status": "success", "service": "memory-stopped"}
+
+
+def _condition_check(args: argparse.Namespace) -> ConditionCheck | None:
+    """The advice route's condition check, when a judge deployment is named; else none."""
+    path = getattr(args, "condition_judge_config", None)
+    if path is None:
+        return None
+    policy = condition_policy()
+    try:
+        deployment = JudgeConfig.model_validate_json(source_text(path, policy.max_prompt_bytes))
+    except ValidationError as exc:
+        raise SetupError("condition judge deployment is invalid") from exc
+    return condition_check(deployment, policy)
 
 
 def _store(
