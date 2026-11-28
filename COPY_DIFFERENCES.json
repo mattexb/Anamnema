@@ -726,7 +726,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "docs/MEMORY.md",
-      "public_sha256": "4013cebd6e147b69d3087d97c05e04e4161ec88b8bcd59b0a408c85af72ea263",
+      "public_sha256": "902a7bde22f8de76be257b33cf61aae2959b15c1d2a44d021ec56b7c1a7266ae",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:docs/MEMORY.md",
       "source_sha256": "7712e8f926bd04c7ee74d8f87604e9d8e1174a587f128a3d7a50de592a7f827f"
@@ -847,7 +847,7 @@
     {
       "difference": "project-owned-memory-core",
       "public": "src/anamnema/memory_cli.py",
-      "public_sha256": "880ca3c4e09a5710d08b17cc8301b1ed2161ba1945ffa13c7b154ed9b877ab51",
+      "public_sha256": "030533a6c4b4f4d04c67174e6157c60a1b8bafdeab330fff3e43c9d5962c9b76",
       "reason": "Project-owned M4 integration/configuration, command/service wiring, documentation or synthetic isolated-store/HTTP/ONNX tests. No private runtime dependency or production fixture.",
       "source": "project:src/anamnema/memory_cli.py",
       "source_sha256": "d4e57582d5501e9e10fe85555f0b88a7b81b270e5f7f835ba3502af1332b5d3c"
@@ -1663,7 +1663,7 @@
       ],
       "difference": "neutralized-lesson-persistence",
       "public": "src/anamnema/lesson_cli.py",
-      "public_sha256": "137ad08b6f80d7f67a90fee30e9aed7f9fe12f60623b83626b6760808299682f",
+      "public_sha256": "5e02c1c1a7e3f72aa78cf84ce673be09e03b5f3900e01a48cf20c141e7adfaf3",
       "reason": "Preserve reviewed 0.7.21 one-judgement transaction for all lessons, history, concept/episode links and unresolved note marks, with existing lesson/episode ownership refusal. Retain six-content-field version triggers and complete snapshots. Public scoped identities, deterministic input/lesson lock ordering, source-content tokens, actual archive records and generation-revision guards add bounded race/stale-input protection. Pending-only normal retries skip committed decisions; explicit rejudge is shared by CLI/HTTP and never adds correction votes. Strict structured output exposes configured status/evidence/severity enums and rejects malformed/unknown fields rather than source fallback/dropping. Use verified local model transport, complete bounded sanitized payloads and configured vocabulary, not private runners/catalogues. Source atomicity/ownership fixes independently verified before porting; no public-only workaround. Native delivery, automatic feed and installer remain separate work.",
       "source": "src/kin_tools/consolidate/cli/lessons.py",
       "source_revision": "fdd710c01b04bba651404ad0639d5406f7e0cab1",
@@ -3024,6 +3024,22 @@
       "reason": "Project-owned condition check before an action (noise fix, 2026-11-28): the advice route asks a small tool-free model which candidate route conditions hold and returns only those, with a warm worker kept by the service and a bounded answer cache. Mirrors the KinTools fix's intent and measured prompt; the worker lives in the service, not a separate judge process. No private runtime dependency or production fixture.",
       "source": "project:tests/test_condition_judge.py",
       "source_sha256": "fecefc869a6dc63e4be96853e2d44b55661aefdc49c37f90e3d5c896a2b578f8"
+    },
+    {
+      "difference": "project-owned-memory-core",
+      "public": "src/anamnema/lesson_reword.py",
+      "public_sha256": "8107858f756ad0fd1b7a89500585b4ff5b70d4217feebd1f70e1bcbbdb20579a",
+      "reason": "Project-owned hand rewording of a lesson's routes (2026-11-28): reword-lesson writes new routes through the same revision- and evidence-guarded judgement write, each route citing the lesson's own episode notes, with a fresh passage embedding. Mirrors KinTools 0.8.2 `lesson --routes-file`; no private runtime dependency or production fixture.",
+      "source": "project:src/anamnema/lesson_reword.py",
+      "source_sha256": "1a13cfcdef40abe5691097d604de52513ec350cb3b568272b5283efa4b5a1ca4"
+    },
+    {
+      "difference": "project-owned-memory-core",
+      "public": "tests/test_lesson_reword.py",
+      "public_sha256": "37a5ca0485736c5e4ca5ea5a211f1ed8b1a56e0e4924429af9f4e51d185069ee",
+      "reason": "Project-owned hand rewording of a lesson's routes (2026-11-28): reword-lesson writes new routes through the same revision- and evidence-guarded judgement write, each route citing the lesson's own episode notes, with a fresh passage embedding. Mirrors KinTools 0.8.2 `lesson --routes-file`; no private runtime dependency or production fixture.",
+      "source": "project:tests/test_lesson_reword.py",
+      "source_sha256": "37a5ca0485736c5e4ca5ea5a211f1ed8b1a56e0e4924429af9f4e51d185069ee"
     }
   ],
   "omissions": [

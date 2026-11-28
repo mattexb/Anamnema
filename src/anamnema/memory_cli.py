@@ -31,6 +31,7 @@ from anamnema.lesson_cli import (
     add_lesson_arguments,
     run_against,
     run_lessons,
+    run_reword,
     selected_lessons,
 )
 from anamnema.lesson_graph import LessonGraph
@@ -107,6 +108,7 @@ def add_memory_commands(commands: CommandParsers) -> None:
         "lesson": "read an owned current lesson or explicitly inspect its history",
         "build-lessons": "aggregate source-backed notes or rebuild an existing lesson",
         "lesson-against": "nominate a source-backed counterexample without counting delivery",
+        "reword-lesson": "reword an owned lesson's routes by hand, as a new version",
         "serve": "serve memory on localhost with per-instance bearer authentication",
         "serve-reranker": "serve the packaged CPU ONNX reranker on localhost",
     }
@@ -289,6 +291,8 @@ def run_memory(args: argparse.Namespace) -> dict[str, Any]:
             return store_capture(capture, original, graph, sources, encoder)
         if args.command == "name-notes":
             return run_naming(args, setup, archive, graph, encoder, sources)
+        if args.command == "reword-lesson":
+            return run_reword(args, graph, encoder)
         lessons = selected_lessons(args, setup, archive, graph, encoder, sources)
         if args.command == "build-lessons":
             return run_lessons(args, lessons, graph)

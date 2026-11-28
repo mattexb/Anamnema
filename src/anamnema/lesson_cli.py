@@ -1,27 +1,42 @@
 """Explicit lesson generation selection and source-independent historical inspection."""
 
 import argparse
+from pathlib import Path
 from typing import Any
+
+from pydantic import TypeAdapter, ValidationError
 
 from anamnema.extraction_config import extraction_config
 from anamnema.graph_store import GraphStore
 from anamnema.ingest_config import ArchiveSettings
 from anamnema.lesson_builder import LessonBuilder
 from anamnema.lesson_graph import LessonGraph
+from anamnema.lesson_models import LessonRoute
 from anamnema.lesson_operations import LessonRequest, lesson_operation
 from anamnema.lesson_policy import lesson_policy
+from anamnema.lesson_reword import reword_routes
 from anamnema.lesson_writer import LessonWriter
 from anamnema.local_model import local_model
 from anamnema.memory_sources import SourceLookup
 from anamnema.search_services import CPUEncoder
-from anamnema.setup_config import SetupConfig
+from anamnema.setup_config import SetupConfig, SetupError
 
-LESSON_COMMANDS = ("lesson", "build-lessons", "lesson-against")
+ROUTES = TypeAdapter(tuple[LessonRoute, ...])
+LESSON_COMMANDS = ("lesson", "build-lessons", "lesson-against", "reword-lesson")
 
 
 def add_lesson_arguments(name: str, parser: argparse.ArgumentParser) -> None:
     """Separate current/historical reads from initial aggregation and explicit rebuilds."""
-    if name == "lesson":
+    if name == "reword-lesson":
+        parser.add_argument("--lesson", required=True)
+        parser.add_argument(
+            "--routes-file",
+            type=Path,
+            required=True,
+            help="JSON list of {condition, correction, notes, exception}",
+        )
+        parser.add_argument("--reason", required=True, help="why the routes change")
+    elif name == "lesson":
         parser.add_argument("--lesson", required=True)
         parser.add_argument("--historical", action="store_true")
         parser.add_argument("--cwd", help="activity scope for lesson admission")
@@ -65,6 +80,19 @@ def run_lessons(
     )
     graph.ensure_schema()
     return lesson_operation(LessonGraph(graph), builder, args.instance, request)
+
+
+def run_reword(args: argparse.Namespace, graph: GraphStore, encoder: CPUEncoder) -> dict[str, Any]:
+    """Reword one owned lesson's routes from a checked JSON file, as a new version."""
+    try:
+        raw = args.routes_file.read_text(encoding="utf-8")
+        routes = ROUTES.validate_json(raw)
+    except (OSError, UnicodeError, ValidationError) as exc:
+        raise SetupError(f"routes file is invalid ({type(exc).__name__})") from exc
+    graph.ensure_schema()
+    return reword_routes(
+        LessonGraph(graph), encoder, args.instance, args.lesson, routes, args.reason
+    )
 
 
 def run_against(

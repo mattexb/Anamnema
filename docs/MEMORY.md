@@ -291,6 +291,15 @@ counterevidence; a reputation-only check does not erase unchanged counterevidenc
 Reads expose evidence holdback, real-event counts, support/against vote and
 admission, without removing the lesson's audit/history.
 
+`reword-lesson --lesson LESSON --routes-file FILE --reason REASON` replaces an owned
+lesson's routes by hand: a JSON list of `{condition, correction, notes, exception}`,
+each route citing notes among the lesson's own episodes. It is a new version through
+the same revision- and evidence-guarded write as a judgement: the old routes go to
+the lesson's history, each episode note's source token is checked again, and the
+passage embedding is computed from the new text. A condition too narrow for the
+action it names (only "the full gate", never a scoped gate run) keeps a fitting
+lesson away; this is how it is widened without a model rebuild.
+
 The configured `/v1/lessons` route accepts strict `read`, `build`, `rebuild` or
 `against` operations under the service's own bearer. Historical access is a JSON
 boolean, never a truthy string. Build-only `rejudge` is a strict JSON boolean too.
